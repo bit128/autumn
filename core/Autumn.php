@@ -51,8 +51,21 @@ class Autumn
 	* @author 洪波
 	* @version 15.02.25
 	*/
-	public function loader($class_name, $instance_name = '')
-	{}
+	public function import($package)
+	{
+		$package = ucfirst($package);
+		$paths = array(
+			ROOT . '/core/' . $package . '.php',
+			ROOT . '/library/' . $package . '.php'
+			);
+		foreach ($paths as $p)
+		{
+			if(file_exists($p))
+			{
+				require_once($p);
+			}
+		}
+	}
 
 	/**
 	* 路由器

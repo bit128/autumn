@@ -4,7 +4,13 @@ class Site extends Controller
 {
 	public function actionIndex()
 	{
-		echo 'ok';
+		//require ROOT . '/core/Mysql.php';
+		//$rs = Mysql::inst()->queryAll("select * from t_user");
+		//print_r($rs);
+		//require ROOT . '/core/Orm.php';
+		Autumn::app()->import('Orm');
+		//echo Orm::model('t_user')->count();
+		Orm::model('t_user')->haha();
 	}
 
 	public function actionHome()
