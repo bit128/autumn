@@ -51,8 +51,6 @@ class Orm
 		$this->table_name = $table_name;
 		//加载数据库依赖
 		Autumn::app()->import('Mysql');
-		//加载查询规则依赖
-		Autumn::app()->import('Criteria');
 	}
 	
 	/**

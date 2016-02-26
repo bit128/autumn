@@ -2,6 +2,12 @@
 
 class Site extends Controller
 {
+	public function actionTest()
+	{
+		Autumn::app()->instance('user');
+		Autumn::app()->user->say();
+	}
+
 	public function actionIndex()
 	{
 		header("Content-Type:text/html;charset=UTF-8");
@@ -11,6 +17,11 @@ class Site extends Controller
 		//require ROOT . '/core/Orm.php';
 		Autumn::app()->import('Orm');
 		Autumn::app()->import('Criteria');
+		$criteria = new Criteria;
+		$criteria->addCondition("user_id='56cfb39f2948a'");
+		$rs = Orm::model('t_user')->find($criteria);
+		print_r($rs);
+		
 		//echo Orm::model('t_user')->count();
 		//Orm::model('t_user')->haha();
 		//$criteria = new Criteria;

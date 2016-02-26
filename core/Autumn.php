@@ -29,6 +29,16 @@ class Autumn
 		}
 	}
 
+	public function __get($key)
+	{
+		return $this->$key;
+	}
+
+	public function __set($key, $value)
+	{
+		$this->$key = $value;
+	}
+
 	public static function app($config = array())
 	{
 		//如果实例不存在，则全新实例化
@@ -43,6 +53,31 @@ class Autumn
 	{
 		$this->parseUrl();
 		$this->router();
+	}
+
+	/**
+	* 注入对象实例
+	* ======
+	* @param $package 		包名
+	* @param $class 		类名
+	* @param $class_name 	实例化名称
+	* ======
+	* @author 洪波
+	* @version 16.02.26
+	*/
+	public function instance($class, $package = 'models',  $class_name = '')
+	{
+		$file = ROOT . '/app/' . $package . '/' . strtolower($class) . '.php';
+		if(file_exists($file))
+		{
+			require_once($file);
+			if($class_name == '')
+			{
+				$class_name = strtolower($class);
+			}
+			$class = ucfirst($class);
+			$this->$class_name = new $class;
+		}
 	}
 
 	/**
