@@ -112,8 +112,7 @@ class Autumn
 	{
 		if($this->controller != '')
 		{
-			require_once ROOT . '/core/Controller.php';
-
+			$this->import('Controller');
 			$cf = ROOT . $this->controller_path . $this->controller . '.php';
 			if(file_exists($cf))
 			{
