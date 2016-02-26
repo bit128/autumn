@@ -13,7 +13,7 @@ $config = array(
 		'host' => '127.0.0.1',
 		'user' => 'root',
 		'password' => 'hong_1987',
-		'dbname' => 'v2'
+		'dbname' => 'bookstore'
 		),
 	//框架默认配置项
 	'default_index' => 'index.php',

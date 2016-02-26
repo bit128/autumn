@@ -3,7 +3,7 @@
 * 对象关系映射模型
 * ======
 * @author 洪波
-* @version 15.02.25
+* @version 16.02.25
 */
 class Orm
 {
@@ -25,7 +25,7 @@ class Orm
 	* @return object-self
 	* ======
 	* @author 洪波
-	* @version 15.07.22
+	* @version 16.02.25
 	*/
 	public static function model($table_name, $new = false)
 	{
@@ -43,7 +43,7 @@ class Orm
 	* @param $table_name	操作表名称
 	* ======
 	* @author 洪波
-	* @version 15.07.22
+	* @version 16.02.25
 	*/
 	private function __construct($table_name)
 	{
@@ -63,7 +63,7 @@ class Orm
 	* @return mixed
 	* ======
 	* @author 洪波
-	* @version 15.07.22
+	* @version 16.02.25
 	*/
 	public function __get($name)
 	{
@@ -84,7 +84,7 @@ class Orm
 	* @param $value 记录值
 	* ======
 	* @author 洪波
-	* @version 15.07.22
+	* @version 16.02.25
 	*/
 	public function __set($name, $value)
 	{
@@ -97,7 +97,7 @@ class Orm
 	* @return array
 	* ======
 	* @author 洪波
-	* @version 15.07.23
+	* @version 16.02.25
 	*/
 	public function getAttributes()
 	{
@@ -108,7 +108,7 @@ class Orm
 	* 刷新动态记录值
 	* ======
 	* @author 洪波
-	* @version 15.07.22
+	* @version 16.02.25
 	*/
 	public function flush()
 	{
@@ -122,7 +122,7 @@ class Orm
 	* @param $table_name 	操作表名称
 	* ======
 	* @author 洪波
-	* @version 15.07.22
+	* @version 16.02.25
 	*/
 	public function setTable($table_name)
 	{
@@ -137,7 +137,7 @@ class Orm
 	* @return integer
 	* ======
 	* @author 洪波
-	* @version 15.07.22
+	* @version 16.02.25
 	*/
 	public function count($condition = null)
 	{
@@ -157,13 +157,210 @@ class Orm
 		return Mysql::inst()->queryScalar($sql);
 	}
 
-	public function haha()
+	/**
+	* 查找单行记录
+	* ======
+	* @param $condition 	criteria对象 | string查询条件
+	* ======
+	* @return stdClass object | object-self(仅当包含主键查询)
+	* ======
+	* @author 洪波
+	* @version 16.02.26
+	*/
+	public function find($condition = null, $pk = '')
 	{
-		$criteria = new Criteria;
-		$criteria->addCondition("name='hongbo'");
-		$criteria->addCondition("age=12 OR gender=2");
-		$criteria->addInCondition('age', array(11, 12, 13));
+		$this->flush();
+		$this->pk = $pk;
+		
+		$sql = "select * from " . $this->table_name;
+		if($condition)
+		{
+			if($condition instanceof Criteria)
+			{
+				$sql = "select " . $condition->select . " from " . $this->table_name;
+				if($condition->condition)
+					$sql .= ' where ' . $condition->condition;
+			}
+			else
+			{
+				$sql .= ' where ' . $condition;
+			}
+		}
 
-		echo $criteria->condition;
+		$result = Mysql::inst()->queryRow($sql);
+	
+		if($pk != '')
+		{
+			$this->ar = (array) $result;
+			return self::$_instance;
+		}
+		else
+		{
+			return $result;
+		}
 	}
+
+	/**
+	* 查找多行记录
+	* ======
+	* @param $condition 	criteria对象 | string查询条件
+	* ======
+	* @param array<stdClass object>
+	* ======
+	* @author 洪波
+	* @version 16.02.26
+	*/
+	public function findAll($condition = null)
+	{
+		$this->flush();
+		
+		$sql = "select * from " . $this->table_name;
+		if($condition)
+		{
+			if($condition instanceof Criteria)
+			{
+				$sql = "select " . $condition->select . " from " . $this->table_name;
+				if($condition->condition)
+					$sql .= ' where ' . $condition->condition;
+				if($condition->order)
+					$sql .= ' order by ' . $condition->order;
+				if($condition->offset != -1)
+					$sql .= ' limit ' . $condition->offset;
+				if($condition->limit != -1)
+					$sql .= ',' . $condition->limit;
+			}
+			else
+			{
+				$sql .= ' where ' . $condition;
+			}
+		}
+		return Mysql::inst()->queryAll($sql);
+	}
+
+	/**
+	* 保存记录
+	* ======
+	* @return boolean
+	* ======
+	* @author 洪波
+	* @version 16.02.26
+	*/
+	public function save()
+	{
+		if($this->ar)
+		{
+			//空主键则插入数据
+			if($this->pk == '')
+			{
+				$field = '';
+				$value = '';
+				foreach ($this->ar as $k => $v)
+				{
+					$field .= ',' . $k;
+					$value .= ",'" . addslashes($v) . "'";
+				}
+				$sql = "insert into " . $this->table_name . " (" . substr($field, 1) . ") values (" . substr($value, 1) . ")";
+
+				return Mysql::inst()->query($sql);
+			}
+			//包含主键则更新数据
+			else
+			{
+				$pk_val = $this->ar[$this->pk];
+				unset($this->ar[$this->pk]);
+				return $this->updateAll($this->ar, "{$this->pk} = '{$pk_val}'");
+			}
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	/**
+	* 按条件修改记录
+	* ======
+	* @param $data			修改数据数组
+	* @param $condition 	criteria对象 | string查询条件
+	* ======
+	* @return boolean
+	* ======
+	* @author 洪波
+	* @version 16.02.26
+	*/
+	public function updateAll($data, $condition)
+	{	
+		$sql = "update " . $this->table_name . " set ";
+		$set = "";
+		foreach ($data as $k => $v)
+		{
+			$set .= "," . $k . "='" . addslashes($v) . "'";
+		}
+		$sql .= substr($set, 1);
+		if($condition)
+		{
+			if($condition instanceof Criteria)
+			{
+				if($condition->condition)
+					$sql .= ' where ' . $condition->condition;
+			}
+			else
+			{
+				$sql .= ' where ' . $condition;
+			}
+		}
+		$this->flush();
+		return Mysql::inst()->query($sql);
+	}
+
+	/**
+	* 删除当前动态记录
+	* ======
+	* @return boolean
+	* ======
+	* @author 洪波
+	* @version 16.02.26
+	*/
+	public function delete()
+	{
+		if($this->ar && $this->pk != '')
+		{
+			$pk_val = $this->ar[$this->pk];
+			return $this->deleteAll("{$this->pk} = '{$pk_val}'");
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	
+	/**
+	* 按条件删除记录
+	* ======
+	* @param $condition 	criteria对象 | string查询条件
+	* ======
+	* @return boolean
+	* ======
+	* @author 洪波
+	* @version 16.02.26
+	*/
+	public function deleteAll($condition)
+	{
+		$sql = "delete from " . $this->table_name;
+		if($condition)
+		{
+			if($condition instanceof Criteria)
+			{
+				if($condition->condition)
+					$sql .= ' where ' . $condition->condition;
+			}
+			else
+			{
+				$sql .= ' where ' . $condition;
+			}
+		}
+		$this->flush();
+		return Mysql::inst()->query($sql);
+	}
+
 }
