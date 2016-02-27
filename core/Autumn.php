@@ -8,9 +8,6 @@
 class Autumn
 {
 	const FRAMEWORK_VERSION = 1.0;
-	const DEFAULT_INDEX = 'index.php';
-	const DEFAULT_CONTROLLER = 'site';
-	const DEFAULT_ACTION = 'index';
 
 	//Autumn实例
 	private static $_instance = null;
@@ -18,13 +15,11 @@ class Autumn
 	private $_config = array();
 
 	//默认控制器
-	private $controller = self::DEFAULT_CONTROLLER;
+	private $controller = '';
 	//默认action
-	private $action = self::DEFAULT_ACTION;
+	private $action = '';
 	//url参数表
 	public $query_params = array();
-	//控制器路径
-	private $controller_path = '/app/controllers/';
 
 	/**
 	* Autumn构造方法
@@ -38,6 +33,8 @@ class Autumn
 		if($config)
 		{
 			$this->_config = $config;
+			$this->controller = $this->config('default_controller');
+			$this->action = $this->config('default_action');
 		}
 	}
 
@@ -139,7 +136,7 @@ class Autumn
 		if($this->controller != '')
 		{
 			$this->import('Controller');
-			$cf = ROOT . $this->controller_path . $this->controller . '.php';
+			$cf = ROOT . $this->config('controller_path') . $this->controller . '.php';
 			if(file_exists($cf))
 			{
 				require_once $cf;
@@ -162,7 +159,7 @@ class Autumn
 		$url_param = array_filter(explode('/', $_SERVER['PHP_SELF']));
 		$parse_count = 2;
 		$query = '';
-		$index = $this->config('default_index', self::DEFAULT_INDEX);
+		$index = $this->config('default_index');
 		foreach ($url_param as $v)
 		{
 			if($v == $index)
