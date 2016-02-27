@@ -19,5 +19,6 @@ $config = array(
 	'default_index' => 'index.php',
 	'default_controller' => 'site',
 	'default_action' => 'index',
-	'controller_path' => '/app/controllers/'
+	'controller_path' => '/app/controllers/',
+	'view_path' => '/app/views/'
 	);

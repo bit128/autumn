@@ -100,7 +100,7 @@ class Controller
 	*/
 	public function renderPartial($view, $data = array(), $output = true)
 	{
-		$view = ROOT . '/app/views/' . $view . '.php';
+		$view = ROOT . Autumn::app()->config('view_path') . $view . '.php';
 		if(file_exists($view))
 		{
 			//载入用户变量
