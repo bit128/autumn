@@ -12,15 +12,27 @@ class Autumn
 	const DEFAULT_CONTROLLER = 'site';
 	const DEFAULT_ACTION = 'index';
 
+	//Autumn实例
 	private static $_instance = null;
+	//全局配置
 	private $_config = array();
 
+	//默认控制器
 	private $controller = self::DEFAULT_CONTROLLER;
+	//默认action
 	private $action = self::DEFAULT_ACTION;
+	//url参数表
 	public $query_params = array();
-
+	//控制器路径
 	private $controller_path = '/app/controllers/';
 
+	/**
+	* Autumn构造方法
+	* 载入全局配置变量
+	* ======
+	* @author 洪波
+	* @version 15.02.26
+	*/
 	public function __construct($config)
 	{
 		if($config)
@@ -39,6 +51,14 @@ class Autumn
 		$this->$key = $value;
 	}
 
+	/**
+	* 静态获取Autumn实例
+	* ======
+	* @param $config 	全局配置文件
+	* ======
+	* @author 洪波
+	* @version 16.02.26
+	*/
 	public static function app($config = array())
 	{
 		//如果实例不存在，则全新实例化
@@ -49,6 +69,12 @@ class Autumn
 		return self::$_instance;
 	}
 
+	/**
+	* 运行application
+	* ======
+	* @author 洪波
+	* @version 16.02.26
+	*/
 	public function run()
 	{
 		$this->parseUrl();

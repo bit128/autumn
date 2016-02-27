@@ -27,10 +27,6 @@ class Controller
 		{
 			$value = $_GET[$key];
 		}
-		else
-		{
-			print_r($_GET);
-		}
 		return $value;
 	}
 
