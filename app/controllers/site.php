@@ -9,11 +9,4 @@ class Site extends Controller
 			Autumn::app()->config('app_name'),
 			Autumn::app()->config('version');
 	}
-
-	public function actionTest()
-	{
-		Autumn::app()->import('ValidateCode');
-		$validateCode = new ValidateCode();
-		$validateCode->show();
-	}
 }

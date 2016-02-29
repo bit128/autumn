@@ -106,6 +106,8 @@ class Autumn
 	/**
 	* 模块加载器
 	* ======
+	* @param $package 类名
+	* ======
 	* @author 洪波
 	* @version 15.02.25
 	*/
@@ -121,6 +123,25 @@ class Autumn
 			if(file_exists($p))
 			{
 				require_once($p);
+			}
+		}
+	}
+
+	/**
+	* 模块加载器组
+	* ======
+	* @param $packages 	类名数组
+	* ======
+	* @author 洪波
+	* @version 15.02.29
+	*/
+	public function imports($packages)
+	{
+		if(is_array($packages))
+		{
+			foreach ($packages as $v)
+			{
+				$this->import($v);
 			}
 		}
 	}
