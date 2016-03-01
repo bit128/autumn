@@ -35,6 +35,11 @@ class Autumn
 			$this->_config = $config;
 			$this->controller = $this->config('default_controller');
 			$this->action = $this->config('default_action');
+			//载入核心类
+			foreach ($config['core_class'] as $v)
+			{
+				$this->import($v);
+			}
 		}
 	}
 
@@ -156,7 +161,7 @@ class Autumn
 	{
 		if($this->controller != '')
 		{
-			$this->import('Controller');
+			//$this->import('Controller');
 			$cf = ROOT . $this->config('controller_path') . $this->controller . '.php';
 			if(file_exists($cf))
 			{

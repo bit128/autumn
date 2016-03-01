@@ -6,7 +6,7 @@
 * @author 洪波
 * @version 16.11.30
 */
-class Session
+class Session extends Cache
 {
 	//类静态实例
 	private static $_instance;
@@ -17,6 +17,12 @@ class Session
 
 	private function __clone(){}
 
+	/**
+	* 静态单例获取缓存实例
+	* ======
+	* @author 洪波
+	* @version 16.03.01
+	*/
 	public static function inst()
 	{
 		if(! (self::$_instance instanceof self))

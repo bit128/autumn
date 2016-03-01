@@ -13,8 +13,5 @@ class Site extends Controller
 	public function actionTest()
 	{
 		header("Content-Type:text/html;charset=UTF-8");
-		Autumn::app()->import('Pagination');
-		$page = new Pagination(23, 5, 1, '/site/home');
-		echo $page->build();
 	}
 }

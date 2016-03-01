@@ -7,7 +7,7 @@
 */
 class Controller
 {
-
+	//布局模板
 	public $layout_name = 'layout';
 
 	/**
