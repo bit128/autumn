@@ -9,9 +9,4 @@ class Site extends Controller
 			Autumn::app()->config('app_name'),
 			Autumn::app()->config('version');
 	}
-
-	public function actionTest()
-	{
-		echo 'hi';
-	}
 }
