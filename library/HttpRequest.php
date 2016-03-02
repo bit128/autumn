@@ -130,7 +130,6 @@ class HttpRequest
 		{
 			die('the url is null!');
 		}	
-
 		$curl = curl_init($this->url);
 		//设置消息头
 		if($this->headers)
@@ -143,7 +142,6 @@ class HttpRequest
 			curl_setopt($curl, CURLOPT_POST, 1);
 			curl_setopt($curl, CURLOPT_POSTFIELDS, $this->fields);
 		}
-
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);

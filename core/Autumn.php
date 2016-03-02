@@ -15,9 +15,9 @@ class Autumn
 	private $_config = array();
 
 	//默认控制器
-	private $controller = '';
+	public $controller = '';
 	//默认action
-	private $action = '';
+	public $action = '';
 	//url参数表
 	public $query_params = array();
 
@@ -79,6 +79,7 @@ class Autumn
 	*/
 	public function run()
 	{
+		$this->log(2, 'New UV');
 		$this->parseUrl();
 		$this->router();
 	}
@@ -161,7 +162,6 @@ class Autumn
 	{
 		if($this->controller != '')
 		{
-			//$this->import('Controller');
 			$cf = ROOT . $this->config('controller_path') . $this->controller . '.php';
 			if(file_exists($cf))
 			{
@@ -169,6 +169,8 @@ class Autumn
 				$class = ucfirst($this->controller);
 				$action = 'action' . ucfirst($this->action);
 				(new $class)->$action();
+				//记录访问日志
+				$this->log(3, 'View:' . $this->controller . '/' . $this->action);
 			}
 		}
 	}
@@ -216,6 +218,26 @@ class Autumn
 			{
 				$this->action = $v;
 				-- $parse_count;
+			}
+		}
+	}
+
+	/**
+	* 记录系统日志
+	* ======
+	* @param $level 	过滤级别
+	* @param $content 	内容
+	* ======
+	* @author 洪波
+	* @version 16.03.02
+	*/
+	public function log($level, $content)
+	{
+		if($c = $this->config('log'))
+		{
+			if($c['enable'])
+			{
+				Log::inst()->systemRecord($level, $content);
 			}
 		}
 	}

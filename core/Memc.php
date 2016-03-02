@@ -5,7 +5,7 @@
 * @author 洪波
 * @version 16.03.01
 */
-class Memcaches extends Cache
+class Memc implements Cache
 {
 	//类静态实例
 	private static $_instance;

@@ -14,6 +14,8 @@ $config = array(
 		'Controller',
 		//缓存基础类 - 可选
 		'Cache',
+		//核心日志类 - 可选
+		'Log',
 		),
 	//数据库配置
 	/*
@@ -39,6 +41,15 @@ $config = array(
 		'db' => 0,
 		'limit' => 60
 		),*/
+	'log' => array(
+		'enable' => false,
+		'level' => 1,
+		'dir' => './app/caches/',
+		'cache' => false,
+		'log_prefix' => 'log_',
+		'log_file' => 'Ymd',
+		'log_postfix' => '.log',
+		),
 	//框架默认配置项
 	'default_index' => 'index.php',
 	'default_controller' => 'site',
