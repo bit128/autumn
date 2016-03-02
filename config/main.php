@@ -32,13 +32,13 @@ $config = array(
 		'Log',
 		),
 	//数据库配置
-	/*
-	'mysql' => array(
+	'database' => array(
+		'driver' => 'Mysql',
 		'host' => '127.0.0.1',
 		'user' => 'root',
 		'password' => 'hong_1987',
 		'dbname' => 'bookstore'
-		),*/
+		),
 	//memcache缓存
 	/*
 	'memcache' => array(

@@ -8,7 +8,9 @@
 class Orm
 {
 	//静态化实例
-	public static $_instance;
+	private static $_instance;
+	//数据库驱动实例
+	private $_db;
 	//操作表名称
 	private $table_name;
 	//动态记录数组
@@ -50,7 +52,10 @@ class Orm
 		//设置表名称
 		$this->table_name = $table_name;
 		//加载数据库依赖
-		Autumn::app()->import('Mysql');
+		$driver = Autumn::app()->config('database')['driver'];
+		Autumn::app()->imports(array('Db', $driver));
+		//载入数据库驱动（需要实现Db接口）
+		$this->_db = $driver::inst();
 	}
 	
 	/**
@@ -152,7 +157,7 @@ class Orm
 				$sql .= ' where ' . $condition;
 			}
 		}
-		return Mysql::inst()->queryScalar($sql);
+		return $this->_db->queryScalar($sql);
 	}
 
 	/**
@@ -185,7 +190,7 @@ class Orm
 			}
 		}
 
-		$result = Mysql::inst()->queryRow($sql);
+		$result = $this->_db->queryRow($sql);
 	
 		if($pk != '')
 		{
@@ -232,7 +237,7 @@ class Orm
 				$sql .= ' where ' . $condition;
 			}
 		}
-		return Mysql::inst()->queryAll($sql);
+		return $this->_db->queryAll($sql);
 	}
 
 	/**
@@ -259,7 +264,7 @@ class Orm
 				}
 				$sql = "insert into " . $this->table_name . " (" . substr($field, 1) . ") values (" . substr($value, 1) . ")";
 
-				return Mysql::inst()->query($sql);
+				return $this->_db->query($sql);
 			}
 			//包含主键则更新数据
 			else
@@ -308,7 +313,7 @@ class Orm
 			}
 		}
 		$this->flush();
-		return Mysql::inst()->query($sql);
+		return $this->_db->query($sql);
 	}
 
 	/**
@@ -358,7 +363,7 @@ class Orm
 			}
 		}
 		$this->flush();
-		return Mysql::inst()->query($sql);
+		return $this->_db->query($sql);
 	}
 
 }

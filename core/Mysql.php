@@ -5,7 +5,7 @@
 * @author 洪波
 * @version 15.02.25
 */
-class Mysql
+class Mysql implements Db
 {
 	private static $_instance = null;
 	protected $_db;
@@ -21,7 +21,7 @@ class Mysql
 	*/
 	private function __construct()
 	{
-		$config = Autumn::app()->config('mysql');
+		$config = Autumn::app()->config('database');
 		$this->_db = mysql_connect($config['host'], $config['user'], $config['password']);
 		mysql_query("set names 'utf8'");
 		mysql_select_db($config['dbname']);

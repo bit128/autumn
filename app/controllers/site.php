@@ -14,7 +14,8 @@ class Site extends Controller
 
 	public function actionTest()
 	{
-		$user = Autumn::app()->model('user');
-		$user->add();
+		Autumn::app()->import('Orm');
+		$rs = Orm::model('t_user')->findAll();
+		print_r($rs);
 	}
 }
