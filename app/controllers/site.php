@@ -14,7 +14,7 @@ class Site extends Controller
 
 	public function actionTest()
 	{
-		Autumn::app()->model('user')->user_name = 'haha';
-		Autumn::app()->model('user')->say();
+		$user = Autumn::app()->model('user');
+		$user->add();
 	}
 }
