@@ -180,16 +180,13 @@ class Autumn
 	private function parseUrl()
 	{
 		//获取query string
-		$url_param = array_filter(explode('/', $_SERVER['PHP_SELF']));
+		$index = $this->config('router')['index'];
+		$url = str_replace($index, '', $_SERVER['REQUEST_URI']);
+		$url_param = array_filter(explode('/', $url));
 		$parse_count = 2;
 		$query = '';
-		$index = $this->config('router')['index'];
 		foreach ($url_param as $v)
 		{
-			if($v == $index)
-			{
-				continue;
-			}
 			//获取请求参数
 			if($parse_count == 0)
 			{

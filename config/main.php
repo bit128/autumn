@@ -10,7 +10,7 @@ $config = array(
 	'version' => '1.0',
 	//路由器设置
 	'router' => array(
-		'index' => 'index.php',
+		'index' => '/index.php',
 		'controller' => 'site',
 		'action' => 'index'
 		),
