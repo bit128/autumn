@@ -8,14 +8,5 @@ class Site extends Controller
 		echo 'Welcome to ',
 			Autumn::app()->config('app_name'),
 			Autumn::app()->config('version');
-		
-
-	}
-
-	public function actionTest()
-	{
-		Autumn::app()->import('Orm');
-		$rs = Orm::model('t_user')->findAll();
-		print_r($rs);
 	}
 }
