@@ -8,8 +8,20 @@
 $config = array(
 	'app_name' => 'Autumn',
 	'version' => '1.0',
+	//路由器设置
+	'router' => array(
+		'index' => 'index.php',
+		'controller' => 'site',
+		'action' => 'index'
+		),
+	//应用路径
+	'path' => array(
+		'controller' => '/app/controllers/',
+		'view' => '/app/views/',
+		'model' => '/app/models/'
+		),
 	//自动加载核心类库
-	'core_class' => array(
+	'import' => array(
 		//核心控制器 - 必须
 		'Controller',
 		//缓存基础类 - 可选
@@ -44,16 +56,10 @@ $config = array(
 	'log' => array(
 		'enable' => false,
 		'level' => 1,
-		'dir' => './app/caches/',
+		'dir' => '/app/caches/',
 		'cache' => false,
 		'log_prefix' => 'log_',
 		'log_file' => 'Ymd',
 		'log_postfix' => '.log',
 		),
-	//框架默认配置项
-	'default_index' => 'index.php',
-	'default_controller' => 'site',
-	'default_action' => 'index',
-	'controller_path' => '/app/controllers/',
-	'view_path' => '/app/views/'
 	);

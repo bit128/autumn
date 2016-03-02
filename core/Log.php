@@ -134,7 +134,7 @@ class Log
 	*/
 	private function writeLog($log_data)
 	{
-		$save_path = $this->log_dir . $this->log_file;
+		$save_path = ROOT . $this->log_dir . $this->log_file;
 		file_put_contents($save_path, json_encode($log_data) . "\n", FILE_APPEND);
 	}
 }

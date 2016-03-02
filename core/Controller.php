@@ -76,7 +76,7 @@ class Controller
 	*/
 	public function render($view, $data = array())
 	{
-		$layout = ROOT . '/app/views/' . $this->layout_name . '.php';
+		$layout = ROOT . Autumn::app()->config('path')['view'] . $this->layout_name . '.php';
 		if(file_exists($layout))
 		{
 			$content = $this->renderPartial($view, $data, false);
@@ -100,7 +100,7 @@ class Controller
 	*/
 	public function renderPartial($view, $data = array(), $output = true)
 	{
-		$view = ROOT . Autumn::app()->config('view_path') . $view . '.php';
+		$view = ROOT . Autumn::app()->config('path')['view'] . $view . '.php';
 		if(file_exists($view))
 		{
 			//载入用户变量

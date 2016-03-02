@@ -20,6 +20,8 @@ class Autumn
 	public $action = '';
 	//url参数表
 	public $query_params = array();
+	//单例对象数组
+	private $models = array();
 
 	/**
 	* Autumn构造方法
@@ -33,24 +35,14 @@ class Autumn
 		if($config)
 		{
 			$this->_config = $config;
-			$this->controller = $this->config('default_controller');
-			$this->action = $this->config('default_action');
+			$this->controller = $config['router']['controller'];
+			$this->action = $config['router']['action'];
 			//载入核心类
-			foreach ($config['core_class'] as $v)
+			if($config['import'])
 			{
-				$this->import($v);
+				$this->imports($config['import']);
 			}
 		}
-	}
-
-	public function __get($key)
-	{
-		return $this->$key;
-	}
-
-	public function __set($key, $value)
-	{
-		$this->$key = $value;
 	}
 
 	/**
@@ -87,25 +79,29 @@ class Autumn
 	/**
 	* 注入对象实例
 	* ======
-	* @param $package 		包名
-	* @param $class 		类名
-	* @param $class_name 	实例化名称
+	* @param $model 	模块名
+	* @param $single 	单例模式
 	* ======
 	* @author 洪波
 	* @version 16.02.26
 	*/
-	public function instance($class, $package = 'models',  $class_name = '')
+	public function model($model, $single = false)
 	{
-		$file = ROOT . '/app/' . $package . '/' . strtolower($class) . '.php';
-		if(file_exists($file))
+		$file = ROOT . $this->config('path')['model'] . strtolower($model) . '.php';
+		//单例复用
+		if($single && isset($this->models[$model]))
 		{
-			require_once($file);
-			if($class_name == '')
+			return $this->models[$model];
+		}
+		else if(file_exists($file))
+		{
+			if(! isset($this->models[$model]))
 			{
-				$class_name = strtolower($class);
+				require_once($file);
 			}
-			$class = ucfirst($class);
-			$this->$class_name = new $class;
+			$class = ucfirst($model);
+			$this->models[$model] = new $class;
+			return $this->models[$model];
 		}
 	}
 
@@ -162,7 +158,7 @@ class Autumn
 	{
 		if($this->controller != '')
 		{
-			$cf = ROOT . $this->config('controller_path') . $this->controller . '.php';
+			$cf = ROOT . $this->config('path')['controller'] . $this->controller . '.php';
 			if(file_exists($cf))
 			{
 				require_once $cf;
@@ -187,7 +183,7 @@ class Autumn
 		$url_param = array_filter(explode('/', $_SERVER['PHP_SELF']));
 		$parse_count = 2;
 		$query = '';
-		$index = $this->config('default_index');
+		$index = $this->config('router')['index'];
 		foreach ($url_param as $v)
 		{
 			if($v == $index)
