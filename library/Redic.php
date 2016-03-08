@@ -14,7 +14,7 @@ class Redic implements Cache
 	//缓存服务器
 	private $host = '127.0.0.1';
 	//缓存端口号
-	private $port = 11211;
+	private $port = 6379;
 	//数据库编号
 	private $db = 0;
 	//默认缓存时间
@@ -57,7 +57,7 @@ class Redic implements Cache
 	{
 		if($this->_cache != null)
 		{
-			$this->_cache->close();
+			//$this->_cache->close();
 		}
 	}
 

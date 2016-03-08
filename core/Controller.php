@@ -10,6 +10,8 @@ class Controller
 	//布局模板
 	public $layout_name = 'layout';
 
+	public function init(){}
+
 	/**
 	* 获取get请求参数
 	* ======
