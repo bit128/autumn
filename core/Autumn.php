@@ -163,12 +163,12 @@ class Autumn
 			{
 				require_once $cf;
 				$class = ucfirst($this->controller);
-				$action = 'action' . ucfirst($this->action);
-				$obj = new $class;
-				$obj->init();
-				$obj->$action();
+				//$action = 'action' . ucfirst($this->action);
+				$obj = new $class($this->controller, $this->action);
+				//$obj->init();
+				//$obj->$action();
 				//记录访问日志
-				$this->log(3, 'View:' . $this->controller . '/' . $this->action);
+				//$this->log(3, 'View:' . $this->controller . '/' . $this->action);
 			}
 		}
 	}

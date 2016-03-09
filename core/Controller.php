@@ -9,7 +9,38 @@ class Controller
 {
 	//布局模板
 	public $layout_name = 'layout';
+	//控制器名称
+	public $controller_name;
+	//动作名称
+	public $action_name;
 
+	/**
+	* 构造方法
+	* ======
+	* @param $controller_name 	控制器名称
+	* @param $action_name 		动作名称
+	* ======
+	* @author 洪波
+	* @version 16.03.09
+	*/
+	public function __construct($controller_name, $action_name)
+	{
+		$this->controller_name = $controller_name;
+		$this->action_name = $action_name;
+		//初始化控制器
+		$this->init();
+		//执行动作
+		$action = 'action' . ucfirst($action_name);
+		$this->$action();
+	}
+
+	/**
+	* 控制器初始化方法
+	* 子类重写用来替代构造方法
+	* ======
+	* @author 洪波
+	* @version 16.03.09
+	*/
 	public function init(){}
 
 	/**
@@ -102,7 +133,7 @@ class Controller
 	*/
 	public function renderPartial($view, $data = array(), $output = true)
 	{
-		$view = ROOT . Autumn::app()->config('path')['view'] . $view . '.php';
+		$view = ROOT . Autumn::app()->config('path')['view'] . $this->controller_name . '/' . $view . '.php';
 		if(file_exists($view))
 		{
 			//载入用户变量
