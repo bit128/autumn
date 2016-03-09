@@ -32,13 +32,14 @@ $config = array(
 		'Log',
 		),
 	//数据库配置
+	/*
 	'database' => array(
 		'driver' => 'Mysql',
 		'host' => '127.0.0.1',
 		'user' => 'root',
 		'password' => 'hong_1987',
 		'dbname' => 'bookstore'
-		),
+		),*/
 	//memcache缓存
 	/*
 	'memcache' => array(
@@ -55,6 +56,8 @@ $config = array(
 		'db' => 0,
 		'limit' => 60
 		),*/
+	//系统日志
+	/*
 	'log' => array(
 		'enable' => false,
 		'level' => 1,
@@ -63,5 +66,5 @@ $config = array(
 		'log_prefix' => 'log_',
 		'log_file' => 'Ymd',
 		'log_postfix' => '.log',
-		),
+		),*/
 	);

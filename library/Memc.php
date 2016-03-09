@@ -1,6 +1,6 @@
 <?php
 /**
-* memcache缓存类
+* Memcache缓存类
 * ======
 * @author 洪波
 * @version 16.03.01
