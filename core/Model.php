@@ -8,7 +8,32 @@
 abstract class Model
 {
 	//模型属性
-	private $attributes;
+	private $attributes = array();
+
+	/**
+	* 设置属性值
+	* ======
+	* @author 洪波
+	* @version 16.03.09
+	*/
+	public function __set($key, $value)
+	{
+		$this->$attributes[$key] = $value;
+	}
+
+	/**
+	* 设置属性值
+	* ======
+	* @author 洪波
+	* @version 16.03.09
+	*/
+	public function __get($key)
+	{
+		if(isset($this->attributes[$key]))
+		{
+			return $this->attributes[$key];
+		}
+	}
 
 	/**
 	* 设置模型属性
@@ -20,7 +45,8 @@ abstract class Model
 	*/
 	public function setAttributes($attributes)
 	{
-		$this->attributes = $attributes;
+		if(is_array($attributes))
+			$this->attributes = $attributes;
 	}
 
 	/**
