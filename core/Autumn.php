@@ -162,13 +162,10 @@ class Autumn
 			if(file_exists($cf))
 			{
 				require_once $cf;
-				$class = ucfirst($this->controller);
-				//$action = 'action' . ucfirst($this->action);
+				$class = ucfirst($this->controller) . 'Controller';
 				$obj = new $class($this->controller, $this->action);
-				//$obj->init();
-				//$obj->$action();
 				//记录访问日志
-				//$this->log(3, 'View:' . $this->controller . '/' . $this->action);
+				$this->log(3, 'View:' . $this->controller . '/' . $this->action);
 			}
 		}
 	}
