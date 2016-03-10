@@ -8,9 +8,5 @@ class SiteController extends Controller
 		echo 'Welcome to ',
 			Autumn::app()->config('app_name'),
 			Autumn::app()->config('version');
-
-		echo '<br>';
-
-		echo Autumn::app()->model('user')->add();
 	}
 }

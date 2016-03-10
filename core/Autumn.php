@@ -158,7 +158,7 @@ class Autumn
 	{
 		if($this->controller != '')
 		{
-			$cf = ROOT . $this->config('path')['controller'] . $this->controller . '.php';
+			$cf = ROOT . $this->config('path')['controller'] . ucfirst($this->controller) . 'Controller.php';
 			if(file_exists($cf))
 			{
 				require_once $cf;

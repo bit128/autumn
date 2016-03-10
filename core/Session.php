@@ -69,7 +69,7 @@ class Session implements Cache
 			$limit = $this->limit;
 		}
 		$value = base64_encode($value);
-		setcookie($key, $value, time() + $limit);
+		setcookie($key, $value, time() + $limit, '/');
 		$_COOKIE[$key] = $value;
 	}
 
