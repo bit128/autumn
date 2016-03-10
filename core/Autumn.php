@@ -149,6 +149,33 @@ class Autumn
 	}
 
 	/**
+	* 加载模型
+	* ======
+	* @param $mode 	模型 string | array
+	* ======
+	* @author 洪波
+	* @version 16.03.10
+	*/
+	public function importModel($mode)
+	{
+		$path = ROOT . $this->config('path')['model'];
+		if(is_array($mode))
+		{
+			foreach ($mode as $v)
+			{
+				if(file_exists($path . $v . '.php'))
+				{
+					require_once($path . $v . '.php');
+				}
+			}
+		}
+		else if(file_exists($path . $mode . '.php'))
+		{
+			require_once($path . $mode . '.php');
+		}
+	}
+
+	/**
 	* 路由器
 	* ======
 	* @author 洪波
