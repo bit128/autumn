@@ -7,8 +7,9 @@ class User extends Model
 	* @author 洪波
 	* @version 16.03.02
 	*/
-	public function add(){
-		echo 'hi';
+	public function add()
+	{
+		return 'hello,world!';
 	}
 
 	/**

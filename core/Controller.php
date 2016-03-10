@@ -44,6 +44,17 @@ class Controller
 	public function init(){}
 
 	/**
+	* 判断是否是post请求
+	* ======
+	* @author 洪波
+	* @version 16.03.10
+	*/
+	public function isPostRequest()
+	{
+		return isset($_POST);
+	}
+	
+	/**
 	* 获取get请求参数
 	* ======
 	* @author 洪波

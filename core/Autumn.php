@@ -80,12 +80,12 @@ class Autumn
 	* 注入对象实例
 	* ======
 	* @param $model 	模块名
-	* @param $single 	单例模式
+	* @param $single 	默认单例模式
 	* ======
 	* @author 洪波
 	* @version 16.02.26
 	*/
-	public function model($model, $single = false)
+	public function model($model, $single = true)
 	{
 		$file = ROOT . $this->config('path')['model'] . strtolower($model) . '.php';
 		//单例复用

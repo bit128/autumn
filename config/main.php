@@ -1,6 +1,6 @@
 <?php
 /**
-* phpSpring主配置文件
+* autumn主配置文件
 * ======
 * @author 洪波
 * @version 15.02.08
