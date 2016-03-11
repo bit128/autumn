@@ -38,8 +38,7 @@ class Autumn
 			$this->controller = $config['router']['controller'];
 			$this->action = $config['router']['action'];
 			//设置加载类路径
-			set_include_path(get_include_path() . PATH_SEPARATOR .implode(PATH_SEPARATOR, $config['import']));
-			spl_autoload_register();
+			spl_autoload_register('Loader::autoload');
 		}
 	}
 
@@ -170,6 +169,27 @@ class Autumn
 		else
 		{
 			return $default;
+		}
+	}
+}
+
+/**
+* 类加载器
+* ======
+* @author 洪波
+* @version 16.03.11
+*/
+class Loader
+{
+	public static function autoload($class)
+	{
+		foreach (Autumn::app()->config('import') as $v)
+		{
+			$file = $v . $class . '.php';
+			if(is_file($file))
+			{
+				require_once($file);
+			}
 		}
 	}
 }

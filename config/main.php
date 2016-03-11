@@ -18,10 +18,10 @@ $config = array(
 	'view_path' => '/app/views/',
 	//自动加载类目录
 	'import' => array(
-		'core',
-		'library',
-		'app/controllers',
-		'app/models',
+		'core/',
+		'library/',
+		'app/controllers/',
+		'app/models/',
 		),
 	//数据库配置
 	/*
