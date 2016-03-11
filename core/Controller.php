@@ -9,10 +9,8 @@ class Controller
 {
 	//布局模板
 	public $layout_name = 'layout';
-	//控制器名称
-	public $controller_name;
-	//动作名称
-	public $action_name;
+	//路由名
+	public $route;
 
 	/**
 	* 构造方法
@@ -25,8 +23,7 @@ class Controller
 	*/
 	public function __construct($controller_name, $action_name)
 	{
-		$this->controller_name = $controller_name;
-		$this->action_name = $action_name;
+		$this->route = $controller_name . '/' . $action_name;
 		//初始化控制器
 		$this->init();
 		//执行动作
@@ -144,7 +141,7 @@ class Controller
 	*/
 	public function renderPartial($view, $data = array(), $output = true)
 	{
-		$view = ROOT . Autumn::app()->config('view_path') . $this->controller_name . '/' . $view . '.php';
+		$view = ROOT . Autumn::app()->config('view_path') . Autumn::app()->controller . '/' . $view . '.php';
 		if(file_exists($view))
 		{
 			//载入用户变量
