@@ -1,5 +1,5 @@
 <?php
-class User extends Model
+class M_user extends Model
 {
 	/**
 	* 动态模型添加

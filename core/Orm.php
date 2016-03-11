@@ -53,7 +53,6 @@ class Orm
 		$this->table_name = $table_name;
 		//加载数据库依赖
 		$driver = Autumn::app()->config('database')['driver'];
-		Autumn::app()->imports(array('Db', $driver));
 		//载入数据库驱动（需要实现Db接口）
 		$this->_db = $driver::inst();
 	}

@@ -14,22 +14,14 @@ $config = array(
 		'controller' => 'site',
 		'action' => 'index'
 		),
-	//应用路径
-	'path' => array(
-		'controller' => '/app/controllers/',
-		'view' => '/app/views/',
-		'model' => '/app/models/'
-		),
-	//自动加载核心类库
+	//视图目录
+	'view_path' => '/app/views/',
+	//自动加载类目录
 	'import' => array(
-		//核心控制器 - 必须
-		'Controller',
-		//核心模型类 - 可选
-		'Model',
-		//缓存基础类 - 可选
-		'Cache',
-		//核心日志类 - 可选
-		'Log',
+		'core',
+		'library',
+		'app/controllers',
+		'app/models',
 		),
 	//数据库配置
 	/*

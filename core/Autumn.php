@@ -7,7 +7,7 @@
 */
 class Autumn
 {
-	const FRAMEWORK_VERSION = 1.0;
+	const FRAMEWORK_VERSION = 1.01;
 
 	//Autumn实例
 	private static $_instance = null;
@@ -37,11 +37,9 @@ class Autumn
 			$this->_config = $config;
 			$this->controller = $config['router']['controller'];
 			$this->action = $config['router']['action'];
-			//载入核心类
-			if($config['import'])
-			{
-				$this->imports($config['import']);
-			}
+			//设置加载类路径
+			set_include_path(get_include_path() . PATH_SEPARATOR .implode(PATH_SEPARATOR, $config['import']));
+			spl_autoload_register();
 		}
 	}
 
@@ -77,105 +75,6 @@ class Autumn
 	}
 
 	/**
-	* 注入对象实例
-	* ======
-	* @param $model 	模块名
-	* @param $single 	默认单例模式
-	* ======
-	* @author 洪波
-	* @version 16.02.26
-	*/
-	public function model($model, $single = true)
-	{
-		$file = ROOT . $this->config('path')['model'] . strtolower($model) . '.php';
-		//单例复用
-		if($single && isset($this->models[$model]))
-		{
-			return $this->models[$model];
-		}
-		else if(file_exists($file))
-		{
-			if(! isset($this->models[$model]))
-			{
-				require_once($file);
-			}
-			$class = ucfirst($model);
-			$this->models[$model] = new $class;
-			return $this->models[$model];
-		}
-	}
-
-	/**
-	* 模块加载器
-	* ======
-	* @param $package 类名
-	* ======
-	* @author 洪波
-	* @version 15.02.25
-	*/
-	public function import($package)
-	{
-		$package = ucfirst($package);
-		$paths = array(
-			ROOT . '/core/' . $package . '.php',
-			ROOT . '/library/' . $package . '.php'
-			);
-		foreach ($paths as $p)
-		{
-			if(file_exists($p))
-			{
-				require_once($p);
-			}
-		}
-	}
-
-	/**
-	* 模块加载器组
-	* ======
-	* @param $packages 	类名数组
-	* ======
-	* @author 洪波
-	* @version 15.02.29
-	*/
-	public function imports($packages)
-	{
-		if(is_array($packages))
-		{
-			foreach ($packages as $v)
-			{
-				$this->import($v);
-			}
-		}
-	}
-
-	/**
-	* 加载模型
-	* ======
-	* @param $mode 	模型 string | array
-	* ======
-	* @author 洪波
-	* @version 16.03.10
-	*/
-	public function importModel($mode)
-	{
-		$path = ROOT . $this->config('path')['model'];
-		if(is_array($mode))
-		{
-			foreach ($mode as $v)
-			{
-				if(file_exists($path . $v . '.php'))
-				{
-					require_once($path . $v . '.php');
-				}
-			}
-		}
-		else if(file_exists($path . $mode . '.php'))
-		{
-			require_once($path . $mode . '.php');
-		}
-	}
-
-	/**
 	* 路由器
 	* ======
 	* @author 洪波
@@ -185,15 +84,10 @@ class Autumn
 	{
 		if($this->controller != '')
 		{
-			$cf = ROOT . $this->config('path')['controller'] . ucfirst($this->controller) . 'Controller.php';
-			if(file_exists($cf))
-			{
-				require_once $cf;
-				$class = ucfirst($this->controller) . 'Controller';
-				$obj = new $class($this->controller, $this->action);
-				//记录访问日志
-				$this->log(3, 'View:' . $this->controller . '/' . $this->action);
-			}
+			$class = ucfirst($this->controller) . 'Controller';
+			$obj = new $class($this->controller, $this->action);
+			//记录访问日志
+			$this->log(3, 'View:' . $this->controller . '/' . $this->action);
 		}
 	}
 

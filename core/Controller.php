@@ -120,14 +120,14 @@ class Controller
 	*/
 	public function render($view, $data = array())
 	{
-		$layout = ROOT . Autumn::app()->config('path')['view'] . $this->layout_name . '.php';
+		$layout = ROOT . Autumn::app()->config('view_path') . $this->layout_name . '.php';
 		if(file_exists($layout))
 		{
 			$content = $this->renderPartial($view, $data, false);
 			//加载layout视图
 			ob_start();
 			ob_implicit_flush(false);
-			require($layout);
+			include($layout);
 			echo ob_get_clean();
 		}
 		
@@ -144,7 +144,7 @@ class Controller
 	*/
 	public function renderPartial($view, $data = array(), $output = true)
 	{
-		$view = ROOT . Autumn::app()->config('path')['view'] . $this->controller_name . '/' . $view . '.php';
+		$view = ROOT . Autumn::app()->config('view_path') . $this->controller_name . '/' . $view . '.php';
 		if(file_exists($view))
 		{
 			//载入用户变量
