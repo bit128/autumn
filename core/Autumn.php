@@ -98,9 +98,13 @@ class Autumn
 	*/
 	private function parseUrl()
 	{
-		//获取query string
 		$index = $this->config('router')['index'];
 		$url = str_replace($index, '', $_SERVER['REQUEST_URI']);
+		//去除query string
+		if($c = strpos($url, '?'))
+		{
+			$url = substr($url, 0, $c);
+		}
 		$url_param = array_filter(explode('/', $url));
 		$parse_count = 2;
 		$query = '';
