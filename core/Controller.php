@@ -7,10 +7,8 @@
 */
 class Controller
 {
-	//布局模板
-	public $layout_name = 'layout';
 	//路由名
-	public $route;
+	public $route = '';
 
 	/**
 	* 构造方法
@@ -48,7 +46,7 @@ class Controller
 	*/
 	public function isPostRequest()
 	{
-		return isset($_POST);
+		return isset($_POST) && $_POST;
 	}
 	
 	/**
@@ -105,64 +103,4 @@ class Controller
 
 		return $value != '' ? $value : $default;
 	}
-
-	/**
-	* 渲染布局视图
-	* ======
-	* @param $view 	视图名称
-	* @param $data 	参数列表
-	* ======
-	* @author 洪波
-	* @version 15.02.25
-	*/
-	public function render($view, $data = array())
-	{
-		$layout = ROOT . Autumn::app()->config('view_path') . $this->layout_name . '.php';
-		if(file_exists($layout))
-		{
-			$content = $this->renderPartial($view, $data, false);
-			//加载layout视图
-			ob_start();
-			ob_implicit_flush(false);
-			include($layout);
-			echo ob_get_clean();
-		}
-		
-	}
-
-	/**
-	* 渲染单视图
-	* ======
-	* @param $view 	视图名称
-	* @param $data 	参数列表
-	* ======
-	* @author 洪波
-	* @version 16.02.25
-	*/
-	public function renderPartial($view, $data = array(), $output = true)
-	{
-		$view = ROOT . Autumn::app()->config('view_path') . Autumn::app()->controller . '/' . $view . '.php';
-		if(file_exists($view))
-		{
-			//载入用户变量
-			if(is_array($data))
-			{
-				extract($data, EXTR_PREFIX_SAME, 'data');
-			}
-			//渲染视图内容
-			header("Content-Type:text/html; charset=UTF-8");
-			ob_start();
-			ob_implicit_flush(false);
-			require($view);
-			if($output)
-			{
-				echo ob_get_clean();
-			}
-			else
-			{
-				return ob_get_clean();
-			}
-		}
-	}
-
 }

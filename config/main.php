@@ -14,8 +14,12 @@ $config = array(
 		'controller' => 'site',
 		'action' => 'index'
 		),
-	//视图目录
-	'view_path' => '/app/views/',
+	//视图设置
+	'view' => array(
+		'path' => '/app/views/',
+		'cache_dir' => '/app/caches/',
+		'cache_limit' => 86400
+		),
 	//自动加载类目录
 	'import' => array(
 		'core/',
