@@ -28,8 +28,8 @@ $config = array(
 	'database' => array(
 		'driver' => 'Mysql',
 		'host' => '127.0.0.1',
-		'user' => 'root',
-		'password' => 'hong_1987',
+		'user' => 'user',
+		'password' => '',
 		'dbname' => 'bookstore'
 		),*/
 	//memcache缓存
