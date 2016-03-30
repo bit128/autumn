@@ -7,7 +7,7 @@
 */
 class Mysql implements Db
 {
-	private static $_instance = null;
+	private static $_instance;
 	protected $_db;
 
 	private function __clone(){}
@@ -19,9 +19,9 @@ class Mysql implements Db
 	* @author 洪波
 	* @version 16.02.25
 	*/
-	private function __construct()
+	private function __construct($db_config)
 	{
-		$config = Autumn::app()->config('database');
+		$config = Autumn::app()->config($db_config);
 		$this->_db = mysql_connect($config['host'], $config['user'], $config['password']);
 		mysql_query("set names 'utf8'");
 		mysql_select_db($config['dbname']);
@@ -35,7 +35,11 @@ class Mysql implements Db
 	*/
 	public function __destruct()
 	{
-		mysql_close($this->_db);
+		if($this->_db != null)
+		{
+			mysql_close($this->_db);
+			$this->_db = null;
+		}
 	}
 
 	/**
@@ -44,11 +48,13 @@ class Mysql implements Db
 	* @author 洪波
 	* @version 16.02.25
 	*/
-	public static function inst()
+	public static function inst($db_config, $new = false)
 	{
-		if(! (self::$_instance instanceof self))
+		if(! (self::$_instance instanceof self) || $new)
 		{
-			self::$_instance = new self();
+			if(self::$_instance)
+				self::$_instance = null;
+			self::$_instance = new self($db_config);
 		}
 		return self::$_instance;
 	}
@@ -73,8 +79,15 @@ class Mysql implements Db
 	public function queryScalar($sql)
 	{
 		$result = mysql_query($sql, $this->_db);
-		$set = mysql_fetch_array($result);
-		return $set[0];
+		if($result)
+		{
+			$set = mysql_fetch_array($result);
+			return $set[0];
+		}
+		else
+		{
+			Autumn::app()->exception('数据库表名称不存在');
+		}
 	}
 
 	/**
@@ -86,7 +99,14 @@ class Mysql implements Db
 	public function queryRow($sql)
 	{
 		$result = mysql_query($sql, $this->_db);
-		return mysql_fetch_object($result);
+		if($result)
+		{
+			return mysql_fetch_object($result);
+		}
+		else
+		{
+			Autumn::app()->exception('数据库表名称不存在');
+		}
 	}
 
 	/**
@@ -98,11 +118,18 @@ class Mysql implements Db
 	public function queryAll($sql)
 	{
 		$result = mysql_query($sql, $this->_db);
-		$set = array();
-		while ($item = mysql_fetch_object($result))
+		if($result)
 		{
-			$set[] = $item;
+			$set = array();
+			while ($item = mysql_fetch_object($result))
+			{
+				$set[] = $item;
+			}
+			return $set;
 		}
-		return $set;
+		else
+		{
+			Autumn::app()->exception('数据库表名称不存在');
+		}
 	}
 }

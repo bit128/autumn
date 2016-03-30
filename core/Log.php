@@ -47,7 +47,7 @@ class Log
 		else
 		{
 			$this->log_level = self::LEVEL_DEBUG;
-			$this->log_dir = './';
+			$this->log_dir = '/';
 			$this->log_file = 'log_' . date('His') . '.log';
 		}
 	}
@@ -80,7 +80,7 @@ class Log
 	*/
 	public function systemRecord($level, $content)
 	{
-		if($level <= $this->log_level)
+		if($this->enable && $level <= $this->log_level)
 		{
 			$this->record($content, '0000', self::TAG_SYSTEM);
 		}
@@ -96,32 +96,29 @@ class Log
 	*/
 	public function record($content, $code = '0000', $tag = 'User')
 	{
-		if($this->enable)
+		$time = time();
+		$log_data = array(
+			'tag' => $tag,
+			'code' => $code,
+			'content' => $content,
+			'date' => date('Y-m-d H:i:s', $time),
+			'time' => $time,
+			);
+		switch ($this->log_level)
 		{
-			$time = time();
-			$log_data = array(
-				'tag' => $tag,
-				'code' => $code,
-				'content' => $content,
-				'date' => date('Y-m-d H:i:s', $time),
-				'time' => $time,
-				);
-			switch ($this->log_level)
-			{
-				case self::LEVEL_PRUDUCT:
-					$log_data['ip'] = $_SERVER['REMOTE_ADDR'];
-					break;
-				case self::LEVEL_DEVLOPER:
-					$log_data['ip'] = $_SERVER['REMOTE_ADDR'];
-					$log_data['referer'] = $_SERVER['HTTP_REFERER'];
-					break;
-				case self::LEVEL_DEBUG:
-					$log_data['ip'] = $_SERVER['REMOTE_ADDR'];
-					$log_data['referer'] = $_SERVER['HTTP_REFERER'];
-					$log_data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-			}
-			$this->writeLog($log_data);
+			case self::LEVEL_PRUDUCT:
+				$log_data['ip'] = $_SERVER['REMOTE_ADDR'];
+				break;
+			case self::LEVEL_DEVLOPER:
+				$log_data['ip'] = $_SERVER['REMOTE_ADDR'];
+				$log_data['referer'] = $_SERVER['HTTP_REFERER'];
+				break;
+			case self::LEVEL_DEBUG:
+				$log_data['ip'] = $_SERVER['REMOTE_ADDR'];
+				$log_data['referer'] = $_SERVER['HTTP_REFERER'];
+				$log_data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 		}
+		$this->writeLog($log_data);
 	}
 
 	/**

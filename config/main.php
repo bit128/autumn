@@ -52,7 +52,6 @@ $config = array(
 		'limit' => 60
 		),*/
 	//系统日志
-	/*
 	'log' => array(
 		'enable' => false,
 		'level' => 1,
@@ -61,5 +60,5 @@ $config = array(
 		'log_prefix' => 'log_',
 		'log_file' => 'Ymd',
 		'log_postfix' => '.log',
-		),*/
+		),
 	);

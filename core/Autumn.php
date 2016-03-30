@@ -161,6 +161,8 @@ class Autumn
 	/**
 	* 获取系统配置项
 	* ======
+	* @param $key 	配置键
+	* ======
 	* @author 洪波
 	* @version 15.02.25
 	*/
@@ -173,6 +175,27 @@ class Autumn
 		else
 		{
 			return $default;
+		}
+	}
+
+	/**
+	* 系统异常处理
+	* ======
+	* @author 洪波
+	* @version 16.03.30
+	*/
+	public function exception($content, $interrupt = true)
+	{
+		header("Content-Type:text/html; charset=utf-8");
+		echo '<div style="text-align:center;padding:10px;border:1px dashed #ccc;color:#ff4e00;background:#eee;">',
+			'<p style="color:#666;"><strong style="font-size:20px;">警告：系统异常</strong></p>',
+			'<div style="border-top:1px dashed #ccc; padding:20px;">',$content,'</div>',
+			'<p style="color:#999;"><small>Autumn版本：',self::FRAMEWORK_VERSION,'</small></p></div>';
+		//记录异常日志
+		Log::inst()->record($content, '0001', Log::TAG_SYSTEM);
+		if($interrupt)
+		{
+			exit;
 		}
 	}
 }

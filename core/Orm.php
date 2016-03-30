@@ -19,23 +19,31 @@ class Orm
 	private $pk = '';
 	//动态记录模式
 	private $active = false;
+
+	public $ts;
 	
 	/**
 	* 静态获取实例对象
 	* ======
 	* @param $table_name	操作表名称
 	* @param $new 			是否全新创建
+	* @param $db_config 	数据库配置
 	* ======
 	* @return object-self
 	* ======
 	* @author 洪波
 	* @version 16.02.25
 	*/
-	public static function model($table_name, $new = false)
+	public static function model($table_name, $new = false, $db_config = 'database')
 	{
 		if(! (self::$_instance instanceof self) || $new)
 		{
-			self::$_instance = new self($table_name);
+			if(self::$_instance)
+			{
+				self::$_instance->_db == null;
+				self::$_instance = null;
+			}	
+			self::$_instance = new self($table_name, $db_config);
 		}
 		self::$_instance->setTable($table_name);
 		return self::$_instance;
@@ -45,20 +53,41 @@ class Orm
 	* 私有化构造方法
 	* ======
 	* @param $table_name	操作表名称
+	* @param $db_config 	数据库配置
 	* ======
 	* @author 洪波
 	* @version 16.02.25
 	*/
-	private function __construct($table_name)
+	private function __construct($table_name, $db_config)
 	{
 		//设置表名称
 		$this->table_name = $table_name;
-		//加载数据库依赖
-		$driver = Autumn::app()->config('database')['driver'];
-		//载入数据库驱动（需要实现Db接口）
-		$this->_db = $driver::inst();
+		//初始化化数据库驱动
+		$this->initDriver($db_config);
 		//获取表结构
 		$this->struct();
+
+		$this->ts = time();
+	}
+
+	/**
+	* 初始化化数据库驱动
+	* ======
+	* @param $db_config 	数据库配置
+	* ======
+	* @author 洪波
+	* @version 16.03.30
+	*/
+	public function initDriver($db_config)
+	{
+		//加载数据库依赖
+		if(! Autumn::app()->config($db_config))
+		{
+			Autumn::app()->exception('缺少数据库配置文件');
+		}
+		$driver = Autumn::app()->config($db_config)['driver'];
+		//载入数据库驱动（需要实现Db接口）
+		$this->_db = $driver::inst($db_config, true);
 	}
 	
 	/**
