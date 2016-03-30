@@ -17,6 +17,8 @@ class Orm
 	private $ar = array();
 	//动态记录主键
 	private $pk = '';
+	//动态记录模式
+	private $active = false;
 	
 	/**
 	* 静态获取实例对象
@@ -55,6 +57,8 @@ class Orm
 		$driver = Autumn::app()->config('database')['driver'];
 		//载入数据库驱动（需要实现Db接口）
 		$this->_db = $driver::inst();
+		//获取表结构
+		$this->struct();
 	}
 	
 	/**
@@ -107,18 +111,6 @@ class Orm
 	}
 	
 	/**
-	* 刷新动态记录值
-	* ======
-	* @author 洪波
-	* @version 16.02.25
-	*/
-	public function flush()
-	{
-		$this->ar = array();
-		$this->pk = '';
-	}
-	
-	/**
 	* 设置操作表名称
 	* ======
 	* @param $table_name 	操作表名称
@@ -129,6 +121,59 @@ class Orm
 	public function setTable($table_name)
 	{
 		$this->table_name = $table_name;
+	}
+
+	/**
+	* 刷新动态记录值
+	* ======
+	* @author 洪波
+	* @version 16.02.25
+	*/
+	public function flush()
+	{
+		$this->ar = array();
+		$this->pk = '';
+		$this->active = false;
+	}
+
+	/**
+	* 获取表结构
+	* ======
+	* @author 洪波
+	* @version 16.03.30
+	*/
+	private function struct()
+	{
+		$this->flush();
+		//获取表结构
+		$st = $this->_db->queryAll('desc ' . $this->table_name);
+		if($st)
+		{
+			$number = array('int', 'tinyint', 'smallint', 'mediumint', 'bigint', 'float', 'double', 'decimal');
+			foreach ($st as $v)
+			{
+				//判定字段类型
+				$d = '';
+				$t = explode('(', $v->Type)[0];
+				if(in_array($t, $number))
+				{
+					$d = 0;
+				}
+				//判定主键
+				if($v->Key == 'PRI')
+				{
+					$this->pk = $v->Field;
+					#设置char(13)主键默认值为uniqid()
+					if($v->Type == 'char(13)')
+					{
+						$d = uniqid();
+					}
+				}
+				//设置默认值
+				$this->ar[$v->Field] = $d;
+			}
+			unset($st);
+		}
 	}
 
 	/**
@@ -163,16 +208,22 @@ class Orm
 	* 查找单行记录
 	* ======
 	* @param $condition 	criteria对象 | string查询条件
+	* @param $active 		是否动态映射
 	* ======
-	* @return stdClass object | object-self(仅当包含主键查询)
+	* @return stdClass object
 	* ======
 	* @author 洪波
 	* @version 16.02.26
 	*/
-	public function find($condition = null, $pk = '')
+	public function find($condition = null, $active = false)
 	{
-		$this->flush();
-		$this->pk = $pk;
+		//如果表主键不存在，则获取表结构
+		if($this->pk != '')
+		{
+			$this->struct();
+		}
+		//ActiveRecord模式
+		$this->active = $active;
 		
 		$sql = "select * from " . $this->table_name;
 		if($condition)
@@ -190,8 +241,8 @@ class Orm
 		}
 
 		$result = $this->_db->queryRow($sql);
-	
-		if($pk != '')
+		
+		if($active)
 		{
 			$this->ar = (array) $result;
 			return self::$_instance;
@@ -249,33 +300,26 @@ class Orm
 	*/
 	public function save()
 	{
-		if($this->ar)
+		//如果不是ActiveRecord模式，则新插入数据
+		if(! $this->active)
 		{
-			//空主键则插入数据
-			if($this->pk == '')
+			$field = '';
+			$value = '';
+			foreach ($this->ar as $k => $v)
 			{
-				$field = '';
-				$value = '';
-				foreach ($this->ar as $k => $v)
-				{
-					$field .= ',' . $k;
-					$value .= ",'" . addslashes($v) . "'";
-				}
-				$sql = "insert into " . $this->table_name . " (" . substr($field, 1) . ") values (" . substr($value, 1) . ")";
+				$field .= ',' . $k;
+				$value .= ",'" . addslashes($v) . "'";
+			}
+			$sql = "insert into " . $this->table_name . " (" . substr($field, 1) . ") values (" . substr($value, 1) . ")";
 
-				return $this->_db->query($sql);
-			}
-			//包含主键则更新数据
-			else
-			{
-				$pk_val = $this->ar[$this->pk];
-				unset($this->ar[$this->pk]);
-				return $this->updateAll($this->ar, "{$this->pk} = '{$pk_val}'");
-			}
+			return $this->_db->query($sql);
 		}
+		//包含主键则更新数据
 		else
 		{
-			return 0;
+			$pk_val = $this->ar[$this->pk];
+			unset($this->ar[$this->pk]);
+			return $this->updateAll($this->ar, "{$this->pk} = '{$pk_val}'");
 		}
 	}
 
@@ -325,7 +369,7 @@ class Orm
 	*/
 	public function delete()
 	{
-		if($this->ar && $this->pk != '')
+		if($this->active)
 		{
 			$pk_val = $this->ar[$this->pk];
 			return $this->deleteAll("{$this->pk} = '{$pk_val}'");
