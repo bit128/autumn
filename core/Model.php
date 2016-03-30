@@ -8,105 +8,115 @@
 abstract class Model
 {
 	//模型属性
-	private $attributes = array();
+	public $table_name;
 
 	/**
-	* 设置属性值
+	* 自动插入表记录
 	* ======
 	* @author 洪波
-	* @version 16.03.09
+	* @version 16.03.30
 	*/
-	public function __set($key, $value)
+	public function insert($data = array(), $post = true)
 	{
-		$this->$attributes[$key] = $value;
-	}
+		$orm = Orm::model($this->table_name, true);
 
-	/**
-	* 设置属性值
-	* ======
-	* @author 洪波
-	* @version 16.03.09
-	*/
-	public function __get($key)
-	{
-		if(isset($this->attributes[$key]))
+		foreach($orm->getAttributes() as $k => $v)
 		{
-			return $this->attributes[$key];
+			//处理来自POST请求参数
+			if($post && isset($_POST[$k]))
+			{
+				$orm->$k = $_POST[$k];
+			}
+			//处理data数据
+			if($data && isset($data[$k]))
+			{
+				$orm->$k = $data[$k];
+			}
+		}
+		if($orm->save())
+		{
+			$pk = $orm->pk;
+			return $orm->$pk;
+		}
+		else
+		{
+			return 0;
 		}
 	}
 
 	/**
-	* 设置模型属性
+	* （通过主键）获取单行记录
 	* ======
-	* @param $attributes 	模型属性
+	* @param $pk_id 	主键id
 	* ======
 	* @author 洪波
-	* @version 16.03.02
+	* @version 16.03.30
 	*/
-	public function setAttributes($attributes)
+	public function get($pk_id)
 	{
-		if(is_array($attributes))
-			$this->attributes = $attributes;
+		$orm = Orm::model($this->table_name);
+		$pk = $orm->pk;
+		return $orm->find($pk . "='" . $pk_id . "'");
 	}
 
 	/**
-	* 获取模型属性
-	* ======
-	* @author 洪波
-	* @version 16.03.02
-	*/
-	public function getAttributes()
-	{
-		return $this->attributes;
-	}
-
-	/**
-	* 动态模型添加
-	* ======
-	* @author 洪波
-	* @version 16.03.02
-	*/
-	abstract function add();
-
-	/**
-	* 动态模型获取
-	* ======
-	* @param $id 模型id
-	* ======
-	* @author 洪波
-	* @version 16.03.02
-	*/
-	abstract function get($id);
-
-	/**
-	* 动态模型获取列表
+	* 获取记录列表
 	* ======
 	* @param $offset 	游标位置
 	* @param $limit 	偏移量
+	* @param $criteria 	查询条件对象
 	* ======
 	* @author 洪波
-	* @version 16.03.02
+	* @version 16.03.30
 	*/
-	abstract function getList($offset, $limit);
+	public function getList($offset, $limit, $criteria = null)
+	{
+		//统计数量
+		$count = Orm::model($this->table_name)->count($criteria);
+		//分页
+		if(!($criteria instanceof Criteria))
+		{
+			$criteria = new Criteria;
+		}
+		$criteria->offset = $offset;
+		$criteria->limit = $limit;
+		//获取列表
+		$list = Orm::model($this->table_name)->findAll($criteria);
+		//返回结果
+		return array(
+			'count' => $count,
+			'result' => $list
+			);
+	}
 
 	/**
-	* 动态模型修改
+	* （通过主键）更新记录
 	* ======
-	* @param $id 模型id
+	* @param $pk_id 	主键id
 	* ======
 	* @author 洪波
-	* @version 16.03.02
+	* @version 16.03.30
 	*/
-	abstract function update($id);
+	public function update($pk_id, $data)
+	{
+		$orm = Orm::model($this->table_name);
+		$pk = $orm->pk;
+		return $orm->UpdateAll($data, $pk . "='" . $pk_id . "'");
+	}
 
 	/**
-	* 动态模型删除
+	* （通过主键）删除记录
 	* ======
-	* @param $id 模型id
+	* @param $pk_id 	主键id
 	* ======
 	* @author 洪波
-	* @version 16.03.02
+	* @version 16.03.30
 	*/
-	abstract function delete($id);
+	public function delete($pk_id)
+	{
+		$orm = Orm::model($this->table_name);
+		$pk = $orm->pk;
+		return $orm->deleteAll($pk . "='" . $pk_id . "'");
+	}
 
 }

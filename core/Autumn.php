@@ -84,9 +84,16 @@ class Autumn
 		if($this->controller != '')
 		{
 			$class = ucfirst($this->controller) . 'Controller';
-			$obj = new $class($this->controller, $this->action);
-			//记录访问日志
-			$this->log(3, 'View:' . $this->controller . '/' . $this->action);
+			if(class_exists($class))
+			{
+				new $class($this->controller, $this->action);
+				//记录访问日志
+				$this->log(3, 'View:' . $this->controller . '/' . $this->action);
+			}
+			else
+			{
+				Autumn::app()->exception('Controller不存在，请检查URL是否正确');
+			}
 		}
 	}
 

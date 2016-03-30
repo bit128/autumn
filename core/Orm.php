@@ -16,11 +16,9 @@ class Orm
 	//动态记录数组
 	private $ar = array();
 	//动态记录主键
-	private $pk = '';
+	public $pk = '';
 	//动态记录模式
 	private $active = false;
-
-	public $ts;
 	
 	/**
 	* 静态获取实例对象
@@ -66,8 +64,6 @@ class Orm
 		$this->initDriver($db_config);
 		//获取表结构
 		$this->struct();
-
-		$this->ts = time();
 	}
 
 	/**

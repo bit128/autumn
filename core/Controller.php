@@ -26,7 +26,14 @@ class Controller
 		$this->init();
 		//执行动作
 		$action = 'action' . ucfirst($action_name);
-		$this->$action();
+		if(method_exists($this, $action))
+		{
+			$this->$action();
+		}
+		else
+		{
+			Autumn::app()->exception('当前Controller不存在此Action，请检查URL是否正确');
+		}
 	}
 
 	/**
