@@ -6,7 +6,7 @@
 * @author 洪波
 * @version 16.11.30
 */
-class Session implements Cache
+class Session
 {
 	//类静态实例
 	private static $_instance;

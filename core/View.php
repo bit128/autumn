@@ -61,7 +61,7 @@ class View
 	public function render($view, $data = array(), $output = true)
 	{
 		$layout = ROOT . $this->config['path'] . $this->layout_name . '.php';
-		if(file_exists($layout))
+		if(is_file($layout))
 		{
 			$content = $this->renderPartial($view, $data, false);
 			//加载layout视图
@@ -92,7 +92,7 @@ class View
 	public function renderPartial($view, $data = array(), $output = true)
 	{
 		$view = ROOT . $this->config['path'] . $this->controller . '/' . $view . '.php';
-		if(file_exists($view))
+		if(is_file($view))
 		{
 			//载入用户变量
 			if(is_array($data))
@@ -150,7 +150,7 @@ class View
 			}
 			$cache .= '.html';
 			//判断缓存文件是否存在，是否过期
-			if(file_exists($cache)
+			if(is_file($cache)
 				&& time() - filemtime($cache) < $this->config['cache_limit'])
 			{
 				header("Content-Type:text/html; charset=UTF-8");

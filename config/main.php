@@ -28,30 +28,13 @@ $config = array(
 		'app/models/',
 		),
 	//数据库配置
-	/*
 	'database' => array(
 		'driver' => 'Mysql',
 		'host' => '127.0.0.1',
 		'user' => '',
 		'password' => '',
-		'dbname' => ''
-		),*/
-	//memcache缓存
-	/*
-	'memcache' => array(
-		'host' => '127.0.0.1',
-		'port' => 11211,
-		'limit' => 60,
-		'compress' => false
-		),*/
-	//redis缓存
-	/*
-	'redis' => array(
-		'host' => '127.0.0.1',
-		'port' => '6379',
-		'db' => 0,
-		'limit' => 60
-		),*/
+		'dbname' => 'test'
+		),
 	//系统日志
 	'log' => array(
 		'enable' => false,

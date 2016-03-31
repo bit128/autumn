@@ -22,9 +22,15 @@ class Mysql implements Db
 	private function __construct($db_config)
 	{
 		$config = Autumn::app()->config($db_config);
-		$this->_db = mysql_connect($config['host'], $config['user'], $config['password']);
-		mysql_query("set names 'utf8'");
-		mysql_select_db($config['dbname']);
+		if($this->_db = @ mysql_connect($config['host'], $config['user'], $config['password']))
+		{
+			mysql_query("set names 'utf8'");
+			mysql_select_db($config['dbname']);
+		}
+		else
+		{
+			Autumn::app()->exception('数据库配置错误，请检查Mysql相关配置');
+		}
 	}
 
 	/**
@@ -86,7 +92,7 @@ class Mysql implements Db
 		}
 		else
 		{
-			Autumn::app()->exception('数据库表名称不存在');
+			Autumn::app()->exception('数据库配置错误，或表名称不存在');
 		}
 	}
 
@@ -105,7 +111,7 @@ class Mysql implements Db
 		}
 		else
 		{
-			Autumn::app()->exception('数据库表名称不存在');
+			Autumn::app()->exception('数据库配置错误，或表名称不存在');
 		}
 	}
 
@@ -129,7 +135,7 @@ class Mysql implements Db
 		}
 		else
 		{
-			Autumn::app()->exception('数据库表名称不存在');
+			Autumn::app()->exception('数据库配置错误，或表名称不存在');
 		}
 	}
 }

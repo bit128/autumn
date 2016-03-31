@@ -7,7 +7,7 @@
 */
 class Autumn
 {
-	const FRAMEWORK_VERSION = 1.01;
+	const FRAMEWORK_VERSION = 1.02;
 
 	//Autumn实例
 	private static $_instance = null;
@@ -20,8 +20,6 @@ class Autumn
 	public $action = '';
 	//url参数表
 	public $query_params = array();
-	//单例对象数组
-	private $models = array();
 
 	/**
 	* Autumn构造方法
@@ -64,41 +62,30 @@ class Autumn
 	* 运行application
 	* ======
 	* @author 洪波
-	* @version 16.02.26
+	* @version 16.03.31
 	*/
 	public function run()
 	{
-		$this->log(2, 'New UV');
+		//解析url
 		$this->parseUrl();
-		$this->router();
-	}
-
-	/**
-	* 路由器
-	* ======
-	* @author 洪波
-	* @version 15.02.25
-	*/
-	private function router()
-	{
-		if($this->controller != '')
+		//url路由
+		$class = ucfirst($this->controller) . 'Controller';
+		if($this->controller != '' && class_exists($class))
 		{
-			$class = ucfirst($this->controller) . 'Controller';
-			if(class_exists($class))
-			{
-				new $class($this->controller, $this->action);
-				//记录访问日志
-				$this->log(3, 'View:' . $this->controller . '/' . $this->action);
-			}
-			else
-			{
-				Autumn::app()->exception('Controller不存在，请检查URL是否正确');
-			}
+			//记录访问日志
+			$this->log(Log::LEVEL_DEVLOPER, 'New UV');
+			$this->log(Log::LEVEL_DEBUG, 'View:' . $this->controller . '/' . $this->action);
+			//实例化控制器
+			new $class($this->controller, $this->action);
+		}
+		else
+		{
+			Autumn::app()->exception('Controller不存在，请检查URL是否正确');
 		}
 	}
 
 	/**
-	* url解析解析
+	* 解析url
 	* ======
 	* @author 洪波
 	* @version 16.02.25
