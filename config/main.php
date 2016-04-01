@@ -7,7 +7,7 @@
 */
 $config = array(
 	'app_name' => 'Autumn',
-	'version' => '1.0',
+	'version' => '1.02',
 	//路由器设置
 	'router' => array(
 		'index' => '/index.php',
