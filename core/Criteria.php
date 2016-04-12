@@ -21,7 +21,20 @@ class Criteria
 	public $limit = -1;
 
 	/**
-	* 增加查询条件
+	* 增加查询条件[过滤单引号]
+	* ======
+	* @author 洪波
+	* @version 16.04.12
+	*/
+	public function add($key, $value, $operator = 'AND')
+	{
+		//过滤单引号
+		$value = str_replace("'", '', $value);
+		$this->addCondition($key . "='" . $value . "'", $operator);
+	}
+
+	/**
+	* 增加查询条件[不推荐直接使用]
 	* ======
 	* @param $condition 	新条件
 	* @param $operator 		连接符号
