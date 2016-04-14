@@ -7,8 +7,6 @@
 */
 class Controller
 {
-	//路由名
-	public $route = '';
 
 	/**
 	* 构造方法
@@ -21,7 +19,6 @@ class Controller
 	*/
 	public function __construct($controller_name, $action_name)
 	{
-		$this->route = $controller_name . '/' . $action_name;
 		//初始化控制器
 		$this->init();
 		//执行动作

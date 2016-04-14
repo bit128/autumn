@@ -16,6 +16,9 @@ class View
 	//控制器名称
 	private $controller = '';
 
+	//路由
+	public $route = '';
+
 	/**
 	* 构造方法设置控制器名称
 	* ======
@@ -91,7 +94,8 @@ class View
 	*/
 	public function renderPartial($view, $data = array(), $output = true)
 	{
-		$view = ROOT . $this->config['path'] . $this->controller . '/' . $view . '.php';
+		$this->route = $this->controller . '/' . $view;
+		$view = ROOT . $this->config['path'] . $this->route . '.php';
 		if(is_file($view))
 		{
 			//载入用户变量
