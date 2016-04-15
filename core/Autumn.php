@@ -99,11 +99,15 @@ class Autumn
 		{
 			$url = substr($url, 0, $c);
 		}
-		$url_param = array_filter(explode('/', $url));
+		$url_param = explode('/', $url);
 		$parse_count = 2;
 		$query = '';
 		foreach ($url_param as $v)
 		{
+			if($v == '')
+			{
+				continue;
+			}
 			//获取请求参数
 			if($parse_count == 0)
 			{
