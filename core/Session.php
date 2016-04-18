@@ -84,7 +84,7 @@ class Session
 	*/
 	public function get($key, $default = '')
 	{
-		if($_COOKIE[$key])
+		if(isset($_COOKIE[$key]))
 		{
 			return base64_decode($_COOKIE[$key]);
 		}
