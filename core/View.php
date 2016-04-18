@@ -94,7 +94,7 @@ class View
 	*/
 	public function renderPartial($view, $data = array(), $output = true)
 	{
-		$this->route = $this->controller . '/' . $view;
+		$this->route = $this->controller . DIRECTORY_SEPARATOR . $view;
 		$view = ROOT . $this->config['path'] . $this->route . '.php';
 		if(is_file($view))
 		{
