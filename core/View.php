@@ -67,6 +67,11 @@ class View
 		if(is_file($layout))
 		{
 			$content = $this->renderPartial($view, $data, false);
+			//layout加载用户变量
+			if(is_array($data))
+			{
+				extract($data, EXTR_PREFIX_SAME, 'data');
+			}
 			//加载layout视图
 			ob_start();
 			ob_implicit_flush(false);
