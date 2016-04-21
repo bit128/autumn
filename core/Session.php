@@ -104,7 +104,7 @@ class Session
 	*/
 	public function delete($key)
 	{
-		setcookie($key, '');
+		setcookie($key, '', 0, '/');
 		$_COOKIE[$key] = '';
 	}
 }
