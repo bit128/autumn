@@ -9,8 +9,6 @@ class Orm
 {
 	//静态化实例
 	private static $_instance;
-	//静态化数据库驱动实例
-	private static $_sdb;
 	//数据库驱动实例
 	private $_db;
 	//操作表名称
@@ -47,31 +45,6 @@ class Orm
 		}
 		self::$_instance->setTable($table_name);
 		return self::$_instance;
-	}
-
-	/**
-	* 获取数据库驱动对象
-	* ======
-	* @param $new 			是否全新实例化
-	* @param $db_config 	数据库配置字段
-	* ======
-	* @author 洪波
-	* @version 16.04.25
-	*/
-	public static function sdb($new = false, $db_config = 'database')
-	{
-		if(self::$_sdb || !$new)
-		{
-			//加载数据库依赖
-			if(! Autumn::app()->config($db_config))
-			{
-				Autumn::app()->exception('缺少数据库配置文件');
-			}
-			$driver = Autumn::app()->config($db_config)['driver'];
-			//载入数据库驱动（需要实现Db接口）
-			self::$_sdb = $driver::inst($db_config, true);
-		}
-		return self::$_sdb;
 	}
 	
 	/**
@@ -147,6 +120,18 @@ class Orm
 	public function __set($name, $value)
 	{
 		$this->ar[$name] = $value;
+	}
+
+	/**
+	* 获取数据库驱动对象
+	* ======
+	* ======
+	* @author 洪波
+	* @version 16.04.25
+	*/
+	public function getDb()
+	{
+		return $this->_db;
 	}
 	
 	/**
