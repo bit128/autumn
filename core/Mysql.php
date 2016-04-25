@@ -51,6 +51,9 @@ class Mysql implements Db
 	/**
 	* 静态化获取数据库对象实例
 	* ======
+	* @param $b_config 	数据库配置字段
+	* @param $new 		是否全新实例化
+	* ======
 	* @author 洪波
 	* @version 16.02.25
 	*/
