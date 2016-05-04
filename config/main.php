@@ -8,6 +8,8 @@
 $config = array(
 	'app_name' => 'Autumn',
 	'version' => '1.02',
+	//开启session
+	'session_start' => true,
 	//路由器设置
 	'router' => array(
 		'index' => '/index.php',

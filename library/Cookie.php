@@ -1,12 +1,11 @@
 <?php
 /**
-* 用户会话持久类
-* 通过cookie实现
+* cookie应用类
 * ======
 * @author 洪波
 * @version 16.11.30
 */
-class Session
+class Cookie
 {
 	//类静态实例
 	private static $_instance;

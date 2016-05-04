@@ -66,6 +66,10 @@ class Autumn
 	*/
 	public function run()
 	{
+		if($this->config('session_start'))
+		{
+			session_start();
+		}
 		//解析url
 		$this->parseUrl();
 		//url路由
