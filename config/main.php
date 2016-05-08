@@ -47,4 +47,12 @@ $config = array(
 		'log_file' => 'Ymd',
 		'log_postfix' => '.log',
 		),
+	//电子邮件服务
+	'smtp' => array(
+		'host' => 'smtp.qq.com',
+		'port' => 25,
+		'user' => 'xxxxxx@qq.com',
+		'passwd' => 'xxxxxx',
+		'debug' => false,
+		),
 	);
