@@ -12,7 +12,7 @@ class Orm
 	//数据库驱动实例
 	private $_db;
 	//操作表名称
-	private $table_name;
+	private $table_name = '';
 	//动态记录数组
 	private $ar = array();
 	//动态记录主键
@@ -157,7 +157,12 @@ class Orm
 	*/
 	public function setTable($table_name)
 	{
-		$this->table_name = $table_name;
+		if($this->table_name != $table_name)
+		{
+			$this->table_name = $table_name;
+			$this->struct();
+		}
+		
 	}
 
 	/**
@@ -255,10 +260,11 @@ class Orm
 	public function find($condition = null, $active = false)
 	{
 		//如果表主键不存在，则获取表结构
+		/*
 		if($this->pk != '')
 		{
 			$this->struct();
-		}
+		}*/
 		//ActiveRecord模式
 		$this->active = $active;
 		
@@ -281,8 +287,15 @@ class Orm
 		
 		if($active)
 		{
-			$this->ar = (array) $result;
-			return self::$_instance;
+			if($result)
+			{
+				$this->ar = (array) $result;
+				return self::$_instance;
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{
