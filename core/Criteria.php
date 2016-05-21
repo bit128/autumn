@@ -72,5 +72,9 @@ class Criteria
 		{
 			$this->condition = '(' . $this->condition . ') ' . $operator . ' (' . $condition . ')';
 		}
+		else
+		{
+			$this->condition = $condition;
+		}
 	}
 }
