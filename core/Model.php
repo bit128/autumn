@@ -11,7 +11,23 @@ abstract class Model
 	public $table_name;
 
 	/**
+	* 统计行记录数量
+	* ======
+	* @param $criteria 	查询条件对象
+	* ======
+	* @author 洪波
+	* @version 16.06.28
+	*/
+	public function count($criteria = null)
+	{
+		return Orm::model($this->table_name)->count($criteria);
+	}
+
+	/**
 	* 自动插入表记录
+	* ======
+	* @param $data 	表字段数据
+	* @param $post 	是否接受post表单数据
 	* ======
 	* @author 洪波
 	* @version 16.03.30
@@ -72,7 +88,7 @@ abstract class Model
 	public function getList($offset, $limit, $criteria = null)
 	{
 		//统计数量
-		$count = Orm::model($this->table_name)->count($criteria);
+		$count = $this->count($criteria);
 		//分页
 		if(!($criteria instanceof Criteria))
 		{
