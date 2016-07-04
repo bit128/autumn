@@ -70,11 +70,12 @@ class Orm
 	* 初始化化数据库驱动
 	* ======
 	* @param $db_config 	数据库配置
+	* @param $new 			是否全新加载数据库驱动
 	* ======
 	* @author 洪波
 	* @version 16.03.30
 	*/
-	public function initDriver($db_config)
+	public function initDriver($db_config, $new = false)
 	{
 		//加载数据库依赖
 		if(! Autumn::app()->config($db_config))
@@ -83,7 +84,7 @@ class Orm
 		}
 		$driver = Autumn::app()->config($db_config)['driver'];
 		//载入数据库驱动（需要实现Db接口）
-		$this->_db = $driver::inst($db_config, true);
+		$this->_db = $driver::inst($db_config, $new);
 	}
 	
 	/**
