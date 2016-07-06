@@ -7,7 +7,7 @@
 */
 $config = array(
 	'app_name' => 'Autumn',
-	'version' => '1.02',
+	'version' => '1.03',
 	//开启session
 	'session_start' => true,
 	//路由器设置

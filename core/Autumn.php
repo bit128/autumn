@@ -7,7 +7,7 @@
 */
 class Autumn
 {
-	const FRAMEWORK_VERSION = 1.02;
+	const FRAMEWORK_VERSION = 1.03;
 
 	//Autumn实例
 	private static $_instance = null;
@@ -36,7 +36,16 @@ class Autumn
 			$this->controller = $config['router']['controller'];
 			$this->action = $config['router']['action'];
 			//设置加载类路径
-			spl_autoload_register('Loader::autoload');
+			spl_autoload_register(function($classname){
+				foreach (Autumn::app()->config('import') as $v)
+				{
+					$file = $v . $classname . '.php';
+					if(is_file($file))
+					{
+						require_once($file);
+					}
+				}
+			});
 		}
 	}
 
@@ -198,27 +207,6 @@ class Autumn
 		if($interrupt)
 		{
 			exit;
-		}
-	}
-}
-
-/**
-* 类加载器
-* ======
-* @author 洪波
-* @version 16.03.11
-*/
-class Loader
-{
-	public static function autoload($class)
-	{
-		foreach (Autumn::app()->config('import') as $v)
-		{
-			$file = $v . $class . '.php';
-			if(is_file($file))
-			{
-				require_once($file);
-			}
 		}
 	}
 }
