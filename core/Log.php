@@ -1,4 +1,5 @@
 <?php
+namespace core;
 /**
 * 核心日志类
 * ======

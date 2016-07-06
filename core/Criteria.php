@@ -1,4 +1,5 @@
 <?php
+namespace core;
 /**
 * 查询规则类
 * ======

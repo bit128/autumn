@@ -1,4 +1,5 @@
 <?php
+namespace core;
 /**
 * 视图解析器
 * ======

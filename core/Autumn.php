@@ -1,4 +1,5 @@
 <?php
+namespace core;
 /**
 * 核心类
 * ======
@@ -7,7 +8,7 @@
 */
 class Autumn
 {
-	const FRAMEWORK_VERSION = 1.03;
+	const FRAMEWORK_VERSION = 1.10;
 
 	//Autumn实例
 	private static $_instance = null;
@@ -37,6 +38,12 @@ class Autumn
 			$this->action = $config['router']['action'];
 			//设置加载类路径
 			spl_autoload_register(function($classname){
+				$file = str_replace('\\', '/', $classname) . '.php';
+				if(is_file($file))
+				{
+					require_once($file);
+				}
+				/*
 				foreach (Autumn::app()->config('import') as $v)
 				{
 					$file = $v . $classname . '.php';
@@ -44,7 +51,7 @@ class Autumn
 					{
 						require_once($file);
 					}
-				}
+				}*/
 			});
 		}
 	}
@@ -82,7 +89,7 @@ class Autumn
 		//解析url
 		$this->parseUrl();
 		//url路由
-		$class = ucfirst($this->controller) . 'Controller';
+		$class = 'app\controllers\\' . ucfirst($this->controller) . 'Controller';
 		if($this->controller != '' && class_exists($class))
 		{
 			//记录访问日志

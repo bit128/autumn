@@ -1,4 +1,5 @@
 <?php
+namespace core;
 /**
 * 数据库驱动接口
 * ======

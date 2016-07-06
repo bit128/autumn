@@ -1,4 +1,5 @@
 <?php
+namespace library;
 /**
 * 图片验证码
 * ======

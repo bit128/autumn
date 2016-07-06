@@ -1,4 +1,6 @@
 <?php
+namespace library;
+use core\Autumn;
 /**
 * 电子邮件服务类
 * 基于smtp实现

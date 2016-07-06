@@ -1,4 +1,5 @@
 <?php
+namespace core;
 /**
 * Mysql数据库操作基础类
 * ======

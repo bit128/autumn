@@ -1,4 +1,5 @@
 <?php
+namespace library;
 /**
 * cookie应用类
 * ======

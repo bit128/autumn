@@ -1,4 +1,6 @@
 <?php
+namespace library;
+use core\Autumn;
 /**
 * session应用类
 * ======

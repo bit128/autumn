@@ -1,4 +1,5 @@
 <?php
+namespace library;
 /**
 * 网络文件
 * ======

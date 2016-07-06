@@ -1,4 +1,5 @@
 <?php
+namespace core;
 /**
 * 对象关系映射模型
 * ======
@@ -82,7 +83,7 @@ class Orm
 		{
 			Autumn::app()->exception('缺少数据库配置文件');
 		}
-		$driver = Autumn::app()->config($db_config)['driver'];
+		$driver = '\core\\' . Autumn::app()->config($db_config)['driver'];
 		//载入数据库驱动（需要实现Db接口）
 		$this->_db = new $driver($db_config);
 	}

@@ -7,7 +7,7 @@
 */
 $config = array(
 	'app_name' => 'Autumn',
-	'version' => '1.03',
+	'version' => '1.10',
 	//开启session
 	'session_start' => true,
 	//路由器设置
@@ -21,13 +21,6 @@ $config = array(
 		'path' => '/app/views/',
 		'cache_dir' => '/app/caches/',
 		'cache_limit' => 86400
-		),
-	//自动加载类目录
-	'import' => array(
-		'core/',
-		'library/',
-		'app/controllers/',
-		'app/models/',
 		),
 	//数据库配置
 	'database' => array(

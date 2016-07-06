@@ -1,4 +1,5 @@
 <?php
+namespace core;
 /**
 * 模型基础类
 * ======

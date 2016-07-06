@@ -1,4 +1,5 @@
 <?php
+namespace library;
 /**
 * HTTP请求类
 * ======
