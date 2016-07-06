@@ -3,7 +3,7 @@
 * 对象关系映射模型
 * ======
 * @author 洪波
-* @version 16.02.25
+* @version 16.07.06
 */
 class Orm
 {
@@ -73,9 +73,9 @@ class Orm
 	* @param $new 			是否全新加载数据库驱动
 	* ======
 	* @author 洪波
-	* @version 16.03.30
+	* @version 16.07.06
 	*/
-	public function initDriver($db_config, $new = false)
+	public function initDriver($db_config)
 	{
 		//加载数据库依赖
 		if(! Autumn::app()->config($db_config))
@@ -84,7 +84,7 @@ class Orm
 		}
 		$driver = Autumn::app()->config($db_config)['driver'];
 		//载入数据库驱动（需要实现Db接口）
-		$this->_db = $driver::inst($db_config, $new);
+		$this->_db = new $driver($db_config);
 	}
 	
 	/**
@@ -120,7 +120,7 @@ class Orm
 	*/
 	public function __set($name, $value)
 	{
-		$this->ar[$name] = $value;
+		$this->ar[$name] = htmlspecialchars(addslashes($value));
 	}
 
 	/**
@@ -359,7 +359,7 @@ class Orm
 			foreach ($this->ar as $k => $v)
 			{
 				$field .= ',' . $k;
-				$value .= ",'" . addslashes($v) . "'";
+				$value .= ",'" . $v . "'";
 			}
 			$sql = "insert into " . $this->table_name . " (" . substr($field, 1) . ") values (" . substr($value, 1) . ")";
 

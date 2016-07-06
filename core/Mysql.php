@@ -1,25 +1,20 @@
 <?php
 /**
-* 数据库操作基础类
+* Mysql数据库操作基础类
 * ======
 * @author 洪波
-* @version 15.02.25
+* @version 16.07.06
 */
 class Mysql implements Db
 {
-	private static $_instance;
-	protected $_db;
-
-	private function __clone(){}
 
 	/**
-	* 私有化构造方法
-	* 单例模式创建数据库连接
+	* 构造方法创建数据库连接
 	* ======
 	* @author 洪波
 	* @version 16.02.25
 	*/
-	private function __construct($db_config)
+	public function __construct($db_config)
 	{
 		$config = Autumn::app()->config($db_config);
 		if($this->_db = @ mysql_connect($config['host'], $config['user'], $config['password']))
@@ -52,14 +47,13 @@ class Mysql implements Db
 	* 静态化获取数据库对象实例
 	* ======
 	* @param $b_config 	数据库配置字段
-	* @param $new 		是否全新实例化
 	* ======
 	* @author 洪波
 	* @version 16.02.25
 	*/
-	public static function inst($db_config, $new = false)
+	public static function inst($db_config)
 	{
-		if(! (self::$_instance instanceof self) || $new)
+		if(! (self::$_instance instanceof self))
 		{
 			if(self::$_instance)
 				self::$_instance = null;

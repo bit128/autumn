@@ -28,9 +28,7 @@ class Criteria
 	*/
 	public function add($key, $value, $operator = 'AND')
 	{
-		//过滤单引号
-		$value = str_replace("'", '', $value);
-		$this->addCondition($key . "='" . $value . "'", $operator);
+		$this->addCondition($key . "='" . addslashes($value) . "'", $operator);
 	}
 
 	/**
