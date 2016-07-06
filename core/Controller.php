@@ -8,17 +8,18 @@ namespace core;
 */
 class Controller
 {
+	const CODE_SUCCESS	= 1000; //响应码 - 成功
+	const CODE_FAIL		= 1001; //响应码 - 失败
 
 	/**
 	* 构造方法
 	* ======
-	* @param $controller_name 	控制器名称
 	* @param $action_name 		动作名称
 	* ======
 	* @author 洪波
 	* @version 16.03.09
 	*/
-	public function __construct($controller_name, $action_name)
+	public function __construct($action_name)
 	{
 		//初始化控制器
 		$this->init();
@@ -47,11 +48,15 @@ class Controller
 	* 判断是否是post请求
 	* ======
 	* @author 洪波
-	* @version 16.03.10
+	* @version 16.07.06
 	*/
 	public function isPostRequest()
 	{
-		return isset($_POST) && $_POST;
+		if(isset($_SERVER['REQUEST_METHOD']))
+		{
+			return strtoupper($_SERVER['REQUEST_METHOD']) == 'POST' ? true : false;
+		}
+		return false;
 	}
 	
 	/**
@@ -107,5 +112,40 @@ class Controller
 		}
 
 		return $value != '' ? $value : $default;
+	}
+
+	/**
+	* 响应json结果
+	* ======
+	* @param $result 	结果内容
+	* @param $code 		响应码
+	* @param $error 	报错信息
+	* ======
+	* @author 洪波
+	* @version 16.07.06
+	*/
+	public function resultJSON($result, $code = self::CODE_SUCCESS, $error = '')
+	{
+		header('content-type:application/json');
+		echo json_encode(array(
+			'code' => $code,
+			'result' => $result,
+			'error' => $error,
+			'date' => date('Y-m-d H:i:s', time())
+			));
+		exit;
+	}
+
+	/**
+	* 页面重定向
+	* ======
+	* @param $path 	定向路径
+	* ======
+	* @author 洪波
+	* @version 16.07.06
+	*/
+	public function redirect($path)
+	{
+		header('Location:' . $path);
 	}
 }

@@ -43,15 +43,6 @@ class Autumn
 				{
 					require_once($file);
 				}
-				/*
-				foreach (Autumn::app()->config('import') as $v)
-				{
-					$file = $v . $classname . '.php';
-					if(is_file($file))
-					{
-						require_once($file);
-					}
-				}*/
 			});
 		}
 	}
@@ -96,7 +87,7 @@ class Autumn
 			$this->log(Log::LEVEL_DEVLOPER, 'New UV');
 			$this->log(Log::LEVEL_DEBUG, 'View:' . $this->controller . '/' . $this->action);
 			//实例化控制器
-			new $class($this->controller, $this->action);
+			new $class($this->action);
 		}
 		else
 		{
