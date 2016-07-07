@@ -1,11 +1,12 @@
 <?php
-namespace library;
 /**
 * HTTP请求类
 * ======
 * @author 洪波
 * @version 16.02.29
 */
+namespace library;
+
 class HttpRequest
 {
 	//请求地址

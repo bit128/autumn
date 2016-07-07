@@ -1,11 +1,12 @@
 <?php
-namespace core;
 /**
 * 核心日志类
 * ======
 * @author 洪波
 * @version 16.03.02
 */
+namespace core;
+
 class Log
 {
 	//类静态实例

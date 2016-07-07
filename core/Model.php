@@ -1,11 +1,12 @@
 <?php
-namespace core;
 /**
 * 模型基础类
 * ======
 * @author 洪波
 * @version 16.03.02
 */
+namespace core;
+
 abstract class Model
 {
 	//模型属性

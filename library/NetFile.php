@@ -1,11 +1,12 @@
 <?php
-namespace library;
 /**
 * 网络文件
 * ======
 * @author 洪波
 * @version 16.02.29
 */
+namespace library;
+
 class NetFile
 {
 	//上传文件错误类型

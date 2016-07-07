@@ -1,11 +1,12 @@
 <?php
-namespace core;
 /**
 * 对象关系映射模型
 * ======
 * @author 洪波
 * @version 16.07.06
 */
+namespace core;
+
 class Orm
 {
 	//静态化实例

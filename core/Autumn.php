@@ -1,11 +1,12 @@
 <?php
-namespace core;
 /**
 * 核心类
 * ======
 * @author 洪波
 * @version 16.02.25
 */
+namespace core;
+
 class Autumn
 {
 	const FRAMEWORK_VERSION = 1.10;

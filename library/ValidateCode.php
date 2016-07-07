@@ -1,11 +1,12 @@
 <?php
-namespace library;
 /**
 * 图片验证码
 * ======
 * @author 洪波
 * @version 16.02.29
 */
+namespace library;
+
 class ValidateCode
 {
 	const CHARS 		= '2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,J,K,L,M,N,P,Q,R,T,U,V,W,X,Y,Z';

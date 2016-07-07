@@ -1,11 +1,12 @@
 <?php
-namespace library;
 /**
 * cookie应用类
 * ======
 * @author 洪波
 * @version 16.11.30
 */
+namespace library;
+
 class Cookie
 {
 	//类静态实例

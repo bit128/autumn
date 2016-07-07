@@ -1,11 +1,12 @@
 <?php
-namespace library;
 /**
 * 分页
 * ======
 * @author 洪波
 * @version 16.02.29
 */
+namespace library;
+
 class Pagination
 {
 

@@ -1,11 +1,12 @@
 <?php
-namespace core;
 /**
 * 视图解析器
 * ======
 * @author 洪波
 * @version 16.03.29
 */
+namespace core;
+
 class View
 {
 	//布局模板

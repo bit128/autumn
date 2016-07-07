@@ -1,12 +1,14 @@
 <?php
-namespace library;
-use core\Autumn;
 /**
 * session应用类
 * ======
 * @author 洪波
 * @version 16.11.30
 */
+namespace library;
+
+use core\Autumn;
+
 class Session
 {
 	//类静态实例

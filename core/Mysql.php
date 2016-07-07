@@ -1,11 +1,12 @@
 <?php
-namespace core;
 /**
 * Mysql数据库操作基础类
 * ======
 * @author 洪波
 * @version 16.07.06
 */
+namespace core;
+
 class Mysql implements Db
 {
 

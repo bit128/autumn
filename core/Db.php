@@ -1,11 +1,12 @@
 <?php
-namespace core;
 /**
 * 数据库驱动接口
 * ======
 * @author 洪波
 * @version 16.03.02
 */
+namespace core;
+
 interface Db
 {
 	/**

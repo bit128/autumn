@@ -1,6 +1,4 @@
 <?php
-namespace library;
-use core\Autumn;
 /**
 * 电子邮件服务类
 * 基于smtp实现
@@ -8,6 +6,10 @@ use core\Autumn;
 * @author 洪波
 * @version 16.05.08
 */
+namespace library;
+
+use core\Autumn;
+
 class SmtpEmail
 {
 	private $host;

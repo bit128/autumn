@@ -1,11 +1,12 @@
 <?php
-namespace core;
 /**
 * 控制器
 * ======
 * @author 洪波
 * @version 15.02.25
 */
+namespace core;
+
 class Controller
 {
 	const CODE_SUCCESS	= 1000; //响应码 - 成功
