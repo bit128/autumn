@@ -9,7 +9,7 @@ namespace core;
 
 class Autumn
 {
-	const FRAMEWORK_VERSION = 1.10;
+	const FRAMEWORK_VERSION = 1.20;
 
 	//Autumn实例
 	private static $_instance = null;
@@ -80,14 +80,37 @@ class Autumn
 		}
 		//解析url
 		$this->parseUrl();
-		//url路由
+		//启动控制器执行动作
+		$this->start();
+	}
+
+	/**
+	* 请求转发
+	* ======
+	* @param $controller 	新控制器名称
+	* @param $action 		动作名称
+	* ======
+	* @author 洪波
+	* @version 16.07.13
+	*/
+	public function transfer($controller, $action)
+	{
+		$this->controller = $controller;
+		$this->action = $action;
+		$this->start();
+	}
+
+	/**
+	* 启动控制器执行动作
+	* ======
+	* @author 洪波
+	* @version 16.07.13
+	*/
+	private function start()
+	{
 		$class = 'app\controllers\\' . ucfirst($this->controller) . 'Controller';
 		if($this->controller != '' && class_exists($class))
 		{
-			//记录访问日志
-			$this->log(Log::LEVEL_DEVLOPER, 'New UV');
-			$this->log(Log::LEVEL_DEBUG, 'View:' . $this->controller . '/' . $this->action);
-			//实例化控制器
 			new $class($this->action);
 		}
 		else
@@ -149,26 +172,6 @@ class Autumn
 	}
 
 	/**
-	* 记录系统日志
-	* ======
-	* @param $level 	过滤级别
-	* @param $content 	内容
-	* ======
-	* @author 洪波
-	* @version 16.03.02
-	*/
-	public function log($level, $content)
-	{
-		if($c = $this->config('log'))
-		{
-			if($c['enable'])
-			{
-				Log::inst()->systemRecord($level, $content);
-			}
-		}
-	}
-
-	/**
 	* 获取系统配置项
 	* ======
 	* @param $key 	配置键
@@ -201,8 +204,6 @@ class Autumn
 			'<p style="color:#666;"><strong style="font-size:20px;">警告：系统异常</strong></p>',
 			'<div style="border-top:1px dashed #ccc; padding:20px;">',$content,'</div>',
 			'<p style="color:#999;"><small>Autumn版本：',self::FRAMEWORK_VERSION,'</small></p></div>';
-		//记录异常日志
-		Log::inst()->record($content, '0001', Log::TAG_SYSTEM);
 		if($interrupt)
 		{
 			exit;

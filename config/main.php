@@ -7,7 +7,7 @@
 */
 $config = array(
 	'app_name' => 'Autumn',
-	'version' => '1.10',
+	'version' => '1.20',
 	//开启session
 	'session_start' => true,
 	//路由器设置
@@ -19,7 +19,7 @@ $config = array(
 	//视图设置
 	'view' => array(
 		'path' => '/app/views/',
-		'cache_dir' => '/app/caches/',
+		'cache_dir' => '/app/runtime/',
 		'cache_limit' => 86400
 		),
 	//数据库配置
@@ -29,16 +29,6 @@ $config = array(
 		'user' => '',
 		'password' => '',
 		'dbname' => 'test'
-		),
-	//系统日志
-	'log' => array(
-		'enable' => false,
-		'level' => 1,
-		'dir' => '/app/caches/',
-		'cache' => false,
-		'log_prefix' => 'log_',
-		'log_file' => 'Ymd',
-		'log_postfix' => '.log',
 		),
 	//电子邮件服务
 	'smtp' => array(
