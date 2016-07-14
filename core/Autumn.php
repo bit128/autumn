@@ -9,7 +9,7 @@ namespace core;
 
 class Autumn
 {
-	const FRAMEWORK_VERSION = 1.22;
+	const FRAMEWORK_VERSION = 1.23;
 
 	//Autumn实例
 	private static $_instance = null;
@@ -47,6 +47,15 @@ class Autumn
 				else
 				{
 					$this->exception($classname . ' 类没有找到，请检查命名空间或确认引入路径是否正确');
+				}
+			});
+			//内部异常机制
+			set_error_handler(function($level, $message, $file, $line, $context){
+				if($this->config('debug'))
+				{
+					$content = '<p>异常等级：' . $level . '</p><p style="font-size:18px">'
+						. $message . '</p><p>' . $file . ' (第 ' . $line . ' 行)</p>';
+					$this->exception($content);
 				}
 			});
 		}

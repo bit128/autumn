@@ -8,6 +8,8 @@
 $config = array(
 	'app_name' => 'Autumn',
 	'version' => '1',
+	//开启调试模式
+	'debug' => true,
 	//开启session
 	'session_start' => true,
 	//路由器设置
