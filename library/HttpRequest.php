@@ -17,6 +17,8 @@ class HttpRequest
 	private $headers = array();
 	//请求方法
 	private $method;
+	//响应结果
+	public $response;
 
 	const METHOD_POST = 1;
 	const METHOD_GET = 0;
@@ -35,7 +37,11 @@ class HttpRequest
 	{	
 		$this->url = $url;
 		$this->fields = $fields;
-		$this->headers = $headers;
+		$this->headers = array(
+			'User-Agent: Mozilla/5.0 Autumn 1.21',
+			'Accept-Encoding: gzip, deflate',
+			);
+		$this->headers += $headers;
 	}
 
 	/**
@@ -88,7 +94,9 @@ class HttpRequest
 	public function get($url = '')
 	{
 		if($url != '')
+		{
 			$this->url = $url;
+		}
 		//设置请求方法为GET
 		$this->method = self::METHOD_GET;
 		return $this->curl();
@@ -107,16 +115,19 @@ class HttpRequest
 	public function post($url = '', $fields = array(), $headers = array())
 	{
 		if($url != '')
+		{
 			$this->url = $url;
-
+		}
 		if($fields)
+		{
 			$this->fields = $fields;
-
+		}
 		if($headers)
-			$this->headers = $headers;
+		{
+			$this->headers += $headers;
+		}
 		//设置请求方法为POST
 		$this->method = self::METHOD_POST;
-
 		return $this->curl();
 	}
 
@@ -132,24 +143,26 @@ class HttpRequest
 		{
 			die('the url is null!');
 		}	
-		$curl = curl_init($this->url);
+		$ch = curl_init($this->url);
 		//设置消息头
 		if($this->headers)
 		{
-			curl_setopt($curl, CURLOPT_HTTPHEADER, $this->headers);
+			//print_r($this->headers);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
 		}
 		//设置请求方法
 		if($this->method == self::METHOD_POST)
 		{
-			curl_setopt($curl, CURLOPT_POST, 1);
-			curl_setopt($curl, CURLOPT_POSTFIELDS, $this->fields);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $this->fields);
 		}
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
-		$result = curl_exec($curl);
-		//$response = curl_getinfo($curl);
-		curl_close($curl);
+		//curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		$result = curl_exec($ch);
+		$this->response = curl_getinfo($ch);
+		curl_close($ch);
 
 		return $result;
 	}

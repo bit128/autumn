@@ -10,12 +10,6 @@ namespace core;
 class Controller
 {
 
-	//请求处理类实例
-	public $request;
-
-	//响应处理类实例
-	protected $response;
-
 	/**
 	* 构造方法
 	* ======
@@ -32,8 +26,6 @@ class Controller
 		$action = 'action' . ucfirst($action_name);
 		if(method_exists($this, $action))
 		{
-			$this->request = new Request;
-			$this->response = new Response;
 			$this->$action();
 		}
 		else

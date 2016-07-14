@@ -2,6 +2,7 @@
 namespace app\controllers;
 use core\Autumn;
 use core\Controller;
+use core\Request;
 //use core\View;
 
 /**
@@ -17,6 +18,6 @@ class SiteController extends Controller
 		header("Content-Type:text/html;charset=UTF-8");
 		echo 'Welcome to ',
 			Autumn::app()->config('app_name'), ' ',
-			Autumn::app()->config('version');
+			Autumn::FRAMEWORK_VERSION;
 	}
 }
