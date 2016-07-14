@@ -253,23 +253,17 @@ class Orm
 	* 查找单行记录
 	* ======
 	* @param $condition 	criteria对象 | string查询条件
-	* @param $active 		是否动态映射
+	* @param $is_active 	是否动态映射
 	* ======
 	* @return stdClass object
 	* ======
 	* @author 洪波
 	* @version 16.02.26
 	*/
-	public function find($condition = null, $active = false)
+	public function find($condition = null, $is_active = false)
 	{
-		//如果表主键不存在，则获取表结构
-		/*
-		if($this->pk != '')
-		{
-			$this->struct();
-		}*/
 		//ActiveRecord模式
-		$this->active = $active;
+		$this->active = $is_active;
 		
 		$sql = "select * from " . $this->table_name;
 		if($condition)

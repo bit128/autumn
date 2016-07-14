@@ -38,7 +38,7 @@ class Controller
 		}
 		else
 		{
-			Autumn::app()->exception('当前Controller不存在此Action，请检查URL是否正确');
+			Autumn::app()->exception('404.2 您访问的页面不见了，呜呜～～');
 		}
 	}
 

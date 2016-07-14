@@ -44,7 +44,7 @@ class NetFile
 	* @param $save_path 保存路径
 	* ======
 	* @author 洪波
-	* @version 16.02.29
+	* @version 16.07.14
 	*/
 	public function download($src, $save_path, $file_name = '')
 	{
@@ -52,16 +52,15 @@ class NetFile
 		{
 			$file_name = uniqid() . '.jpg';
 		}
-		$image = null;
-		//将远程文件读入缓冲区
-		ob_start();
-		readfile($src);
-		$image = ob_get_contents();
-		ob_end_clean();
-		//从缓冲区保存文件
-		$file = fopen($save_path . $file_name, 'a');
-		fwrite($file, $image);
-		fclose($file);
+		//获取网络图片
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $src);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		//写入文件
+		file_put_contents($save_path . $file_name, $data);
 
 		return $file_name;
 	}

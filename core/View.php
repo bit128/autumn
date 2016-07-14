@@ -87,7 +87,10 @@ class View
 				return ob_get_clean();
 			}
 		}
-		
+		else
+		{
+			Autumn::app()->exception('视图模板未找到，请检查路径');
+		}
 	}
 
 	/**
@@ -123,6 +126,10 @@ class View
 			{
 				return ob_get_clean();
 			}
+		}
+		else
+		{
+			Autumn::app()->exception('视图文件未找到，请检查路径');
 		}
 	}
 

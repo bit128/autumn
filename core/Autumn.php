@@ -9,12 +9,12 @@ namespace core;
 
 class Autumn
 {
-	const FRAMEWORK_VERSION = 1.20;
+	const FRAMEWORK_VERSION = 1.21;
 
 	//Autumn实例
 	private static $_instance = null;
 	//全局配置
-	private $_config = array();
+	private $config_list = array();
 
 	//默认控制器
 	public $controller = '';
@@ -34,7 +34,7 @@ class Autumn
 	{
 		if($config)
 		{
-			$this->_config = $config;
+			$this->config_list = $config;
 			$this->controller = $config['router']['controller'];
 			$this->action = $config['router']['action'];
 			//设置加载类路径
@@ -43,6 +43,10 @@ class Autumn
 				if(is_file($file))
 				{
 					require_once($file);
+				}
+				else
+				{
+					$this->exception($classname . ' 类没有找到，请检查命名空间或确认引入路径是否正确');
 				}
 			});
 		}
@@ -115,7 +119,7 @@ class Autumn
 		}
 		else
 		{
-			Autumn::app()->exception('Controller不存在，请检查URL是否正确');
+			Autumn::app()->exception('404.1 您访问的页面不见了，呜呜～～');
 		}
 	}
 
@@ -181,9 +185,9 @@ class Autumn
 	*/
 	public function config($key, $default = '')
 	{
-		if(isset($this->_config[$key]))
+		if(isset($this->config_list[$key]))
 		{
-			return $this->_config[$key];
+			return $this->config_list[$key];
 		}
 		else
 		{
