@@ -10,12 +10,17 @@ $config = array(
 	'version' => '1',
 	//开启调试模式
 	'debug' => true,
+	//错误等级 1-错误 | 2-警告
+	'debug_level' => 3, 
 	//开启session
 	'session_start' => true,
 	//路由器设置
 	'router' => array(
+		//默认入口脚本文件
 		'index' => '/index.php',
+		//默认控制器
 		'controller' => 'site',
+		//默认控制器执行动作
 		'action' => 'index'
 		),
 	//视图设置
@@ -26,7 +31,7 @@ $config = array(
 		),
 	//数据库配置
 	'database' => array(
-		'driver' => 'Mysql',
+		'driver' => 'Mysqli',
 		'host' => '127.0.0.1',
 		'user' => '',
 		'password' => '',

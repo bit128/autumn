@@ -51,7 +51,7 @@ class Autumn
 			});
 			//内部异常机制
 			set_error_handler(function($level, $message, $file, $line, $context){
-				if($this->config('debug'))
+				if($this->config('debug') && ($this->config('debug_level') & $level))
 				{
 					$content = '<p>异常等级：' . $level . '</p><p style="font-size:18px">'
 						. $message . '</p><p>' . $file . ' (第 ' . $line . ' 行)</p>';

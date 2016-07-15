@@ -163,8 +163,7 @@ class Response
 			}
 			if(is_array($v) || is_object($v))
 			{
-				$xml->addChild($k);
-				$this->addNode($xml->$k, $v);
+				$this->addNode($xml->addChild($k), $v);
 			}
 			else
 			{
