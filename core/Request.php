@@ -9,6 +9,9 @@ namespace core;
 
 class Request
 {
+
+	private $cookie_limit = 7200;
+	
 	//类静态实例
 	private static $_instance;
 
@@ -135,4 +138,107 @@ class Request
 	{
 		return $_SERVER['REQUEST_TIME'];
 	}
+
+	/**
+	* 设置session
+	* ======
+	* @param $key 		键
+	* @param $value 	值
+	* ======
+	* @author 洪波
+	* @version 16.07.15
+	*/
+	public function setSession($key, $value)
+	{
+		$_SESSION[$key] = $value;
+	}
+
+	/**
+	* 获取session
+	* ======
+	* @param $key 		键
+	* @param $default 	默认值
+	* ======
+	* @author 洪波
+	* @version 16.07.15
+	*/
+	public function getSession($key, $default = '')
+	{
+		if(isset($_SESSION[$key]))
+		{
+			return $_SESSION[$key];
+		}
+		else
+		{
+			return $default;
+		}
+	}
+
+	/**
+	* 销毁全部会话
+	* ======
+	* @author 洪波
+	* @version 16.07.15
+	*/
+	public function destorySession()
+	{
+		session_destroy();
+	}
+
+	/**
+	* 设置cookie
+	* ======
+	* @param $key 		键
+	* @param $value 	值
+	* @param $limit 	有效期
+	* ======
+	* @author 洪波
+	* @version 16.07.15
+	*/
+	public function setCookie($key, $value, $limit = 0)
+	{
+		if($limit <= 0)
+		{
+			$limit = $this->cookie_limit;
+		}
+		$value = base64_encode($value);
+		setcookie($key, $value, time() + $limit, '/');
+		$_COOKIE[$key] = $value;
+	}
+
+	/**
+	* 获取cookie
+	* ======
+	* @param $key 		键
+	* @param $default 	默认值
+	* ======
+	* @author 洪波
+	* @version 16.07.15
+	*/
+	public function getCookie($key, $default = '')
+	{
+		if(isset($_COOKIE[$key]))
+		{
+			return base64_decode($_COOKIE[$key]);
+		}
+		else
+		{
+			return $default;
+		}
+	}
+
+	/**
+	* 删除cookie
+	* ======
+	* @param $key 	键
+	* ======
+	* @author 洪波
+	* @version 16.07.15
+	*/
+	public function deleteCookie($key)
+	{
+		setcookie($key, '', 0, '/');
+		$_COOKIE[$key] = '';
+	}
+
 }
