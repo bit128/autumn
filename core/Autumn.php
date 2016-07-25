@@ -57,7 +57,7 @@ class Autumn
 						. $message . '</p><p>' . $file . ' (第 ' . $line . ' 行)</p>';
 					$this->exception($content);
 				}
-			});
+			}, E_ALL | E_STRICT);
 		}
 	}
 
