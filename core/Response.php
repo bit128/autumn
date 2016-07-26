@@ -54,7 +54,7 @@ class Response
 	/**
 	* 设置响应码
 	* ======
-	* @code 	响应码
+	* @param $code 	响应码
 	* ======
 	* @author 洪波
 	* @version 16.07.13
@@ -67,27 +67,37 @@ class Response
 	/**
 	* 设置结果集
 	* ======
-	* @result 	结果集
+	* @param $result 	结果集
+	* @param $code 		响应码
 	* ======
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	public function setResult($result)
+	public function setResult($result, $code = 0)
 	{
 		$this->result = $result;
+		if($code !== 0)
+		{
+			$this->code = $code;
+		}
 	}
 
 	/**
 	* 设置报错信息
 	* ======
-	* @error 	报错信息
+	* @param error 	报错信息
+	* @param $code 		响应码
 	* ======
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	public function setError($error)
+	public function setError($error, $code = 0)
 	{
 		$this->error = $error;
+		if($code !== 0)
+		{
+			$this->code = $code;
+		}
 	}
 
 	/**
