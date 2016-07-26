@@ -25,7 +25,7 @@ index.php  入口文件
 
 在Autumn项目根目录下可以找到index.php文件，源码如下：
 
-define('ROOT', dirname(__FILE__));
+define('ROOT', dirname(__FILE__));\n
 require_once(ROOT . '/config/main.php');
 require_once(ROOT . '/core/Autumn.php');
 core\Autumn::app($config)->run();
