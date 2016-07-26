@@ -18,12 +18,12 @@ Autumn存在的意义就是提供最小可运行、高效率、高性能、松�
 ------
 
 /app  应用目录（开发者）<br/>
-> > > /controllers  控制器目录<br/>
-> > > /models  业务模型目录<br/>
-> > > /views  视图目录<br/>
-> > > /statics  静态资源文件目录(js,css)<br/>
+	/controllers  控制器目录<br/>
+	/models  业务模型目录<br/>
+	/views  视图目录<br/>
+	/statics  静态资源文件目录(js,css)<br/>
 /config  配置文件目录<br/>
-> > > /main.php  主配置文件<br/>
+	/main.php  主配置文件<br/>
 /core  框架核心目录<br/>
 /library  扩展类库目录（非核心，可自由移除）<br/>
 index.php  入口文件<br/>
@@ -39,3 +39,41 @@ require_once(ROOT . '/core/Autumn.php');<br/>
 core\Autumn::app($config)->run();<br/>
 
 Autumn是单一入口的框架，入口文件基本上不需要改动。源码很简单，主要定义了全局变量ROOT，以及定位配置文件和初始化框架工作。
+
+从hello, world开始
+------
+
+我们假设你了解MVC模式，/app/controllers/目录是放置Autumn控制器的地方。我们创建一个HelloController.php的文件，代码如下：
+
+namespace app\controllers;
+use core\Controller;
+
+class HelloController extends Controller
+{
+	public function actionSay()
+	{
+		echo 'hello,world';
+	}
+}
+
+我们构建了一个叫做Hello的控制器，并且写了一个say的action，这样我们就能在浏览器上访问：localhost/index.php/hello/say。不出意外的话，页面会输出：hello,world!
+
+用户的控制器都需要继承core\Controller这个控制器基础类。core/Controller基础类负责执行action、提供参数解析等工作。
+
+一般在index.php入口文件名后面，第一个参数就是控制器名称，第二个参数就是action方法名称。后面的参数需要成对出现，并且会被Autumn解析成为$_GET请求参数。我们通过一个例子来看看：
+
+namespace app\controllers;
+use core\Controller;
+
+class HelloController extends Controller
+{
+	public function actionSay()
+	{
+		$name = $this->getQuery('name');
+		echo 'hello: ' . $name;
+	}
+}
+
+注意：1.2版本后获取GET或POST请求参数，统一使用Request类来实现。例如：\core\Request::inst()->getPost('user_name')
+
+通过访问：localhost/index.php/hello/say/user/bobo这个url后，页面会输出：hongbo。这个就解释了上面所提到的url参数的问题。Autumn默认的url路由是这样的：域名/index.php/控制器名/方法名/参数1/值1/参数2/值2。需要注意的是参数键值要成对出现。对应的，获取post请求参数使用getPost()，获取全部参数使用getParam()。
