@@ -10,8 +10,6 @@ $config = array(
 	'version' => '1',
 	//开启调试模式
 	'debug' => true,
-	//错误等级 1-错误 | 2-警告
-	'debug_level' => 3, 
 	//开启session
 	'session_start' => true,
 	//路由器设置

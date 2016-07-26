@@ -5,3 +5,29 @@
 Autumn框架的出发点是PHP作者的原话：php代码越接近原生，效率越高。php本身就是解释型语言，不合理的逻辑设计、过多的封装都会导致其性能的下降和理解的困难度。而且现有的框架总是会有不同程度的耦合度，总想设计成全能型框架，可惜实际使用的功能很少。
 
 Autumn存在的意义就是提供最小可运行、高效率、高性能、松散零耦合的PHP应用框架。它仅仅只有9个核心类（1.1公测版），但是几乎实现了 Yii中30%的常用功能。基于MVC的分层架构，类Yii的风格实现，可以满足PHP项目对于框架的基础需求。
+
+======
+
+项目目录结构
+
+/app  应用目录（开发者）
+    /controllers  控制器目录
+    /models  业务模型目录
+    /views  视图目录
+    /statics  静态资源文件目录(js,css)
+/config  配置文件目录
+    /main.php  主配置文件
+/core  框架核心目录
+/library  扩展类库目录（非核心，可自由移除）
+index.php  入口文件
+
+======
+
+在Autumn项目根目录下可以找到index.php文件，源码如下：
+
+define('ROOT', dirname(__FILE__));
+require_once(ROOT . '/config/main.php');
+require_once(ROOT . '/core/Autumn.php');
+core\Autumn::app($config)->run();
+
+Autumn是单一入口的框架，入口文件基本上不需要改动。源码很简单，主要定义了全局变量ROOT，以及定位配置文件和初始化框架工作。
