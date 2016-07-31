@@ -282,7 +282,7 @@ class Orm
 
 		$result = $this->_db->queryRow($sql);
 		
-		if($active)
+		if($this->active)
 		{
 			if($result)
 			{
