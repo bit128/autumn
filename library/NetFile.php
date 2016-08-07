@@ -9,6 +9,10 @@ namespace library;
 
 class NetFile
 {
+	const POST_NAME = 'file_name';
+	const IMAGE_PATH = './app/statics/files/images/';
+	const FILE_PATH = './app/statics/files/others/';
+
 	//上传文件错误类型
 	private $errors = array(
 		0 => 'Success',
@@ -74,7 +78,7 @@ class NetFile
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	public function upload($post_name, $save_path)
+	public function upload($post_name)
 	{
 		$result = array(
 			'code' => 0,
@@ -107,9 +111,15 @@ class NetFile
 					}
 					else
 					{
-						$ext_name = substr(strrchr($_FILES[$post_name]['name'], '.'), 1);
+						$ext_name = strtolower(substr(strrchr($_FILES[$post_name]['name'], '.'), 1));
 						$file_name = uniqid() . '.' . $ext_name;
 						//$move_path = '.' . self::PATH_OTHER;
+					}
+					//存储路径
+					$save_path = self::FILE_PATH;
+					if($ext_name == 'jpg' || $ext_name == 'png')
+					{
+						$save_path = self::IMAGE_PATH;
 					}
 					//开始上传
 					if (move_uploaded_file($_FILES[$post_name]['tmp_name'], $save_path . $file_name))
@@ -206,8 +216,8 @@ class NetFile
 		//读原图
 		else
 		{
-			$file_name = $save_path . $image_name;	
-			header('Location: ' . $file_name);
+			$file_name = $save_path . $image_name;
+			header('Location: ' . substr($file_name, 1));
 		}
 	}
 

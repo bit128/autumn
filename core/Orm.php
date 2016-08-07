@@ -402,7 +402,7 @@ class Orm
 				$sql .= ' where ' . $condition;
 			}
 		}
-		$this->flush();
+		//$this->flush();
 		return $this->_db->query($sql);
 	}
 
@@ -452,7 +452,7 @@ class Orm
 				$sql .= ' where ' . $condition;
 			}
 		}
-		$this->flush();
+		//$this->flush();
 		return $this->_db->query($sql);
 	}
 
