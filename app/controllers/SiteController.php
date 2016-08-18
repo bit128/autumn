@@ -22,9 +22,8 @@ class SiteController extends Controller
 	}
 	public function actionTest()
 	{
-		$response = new \core\Response;
-		$response->setResult(\core\Response::RES_FAIL, '', 'haha');
-		$rs = $response->json();
-		print_r($rs);
+		$criteria = new \core\Criteria;
+		$criteria->add('aa', 'vv', '>');
+		echo $criteria->condition;
 	}
 }
