@@ -20,4 +20,11 @@ class SiteController extends Controller
 			Autumn::app()->config('app_name'), ' ',
 			Autumn::FRAMEWORK_VERSION;
 	}
+	public function actionTest()
+	{
+		$response = new \core\Response;
+		$response->setResult(\core\Response::RES_FAIL, '', 'haha');
+		$rs = $response->json();
+		print_r($rs);
+	}
 }

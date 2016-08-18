@@ -17,6 +17,12 @@ class Response
 	protected $result;
 	protected $error;
 
+	public $code_discription = array(
+		self::RES_UNKNOW 	=> '未知状态',
+		self::RES_SUCCESS 	=> '操作成功',
+		self::RES_FAIL 		=> '操作失败'
+		);
+
 	/**
 	* 构造方法，刷新响应结果集
 	* ======
@@ -52,51 +58,38 @@ class Response
 	}
 
 	/**
-	* 设置响应码
-	* ======
-	* @param $code 	响应码
-	* ======
-	* @author 洪波
-	* @version 16.07.13
-	*/
-	public function setCode($code)
-	{
-		$this->code = $code;
-	}
-
-	/**
 	* 设置结果集
 	* ======
+	* @param $code 		响应码
 	* @param $result 	结果集
-	* @param $code 		响应码
+	* @param $error 	保存集
 	* ======
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	public function setResult($result, $code = 0)
+	public function setResult($code = 0, $result = '', $error = '')
 	{
-		$this->result = $result;
-		if($code !== 0)
+		if($code == self::RES_SUCCESS)
 		{
-			$this->code = $code;
+			if($result != '')
+			{
+				$this->result = $result;
+			}
+			else
+			{
+				$this->result = $this->code_discription[self::RES_SUCCESS];
+			}
 		}
-	}
-
-	/**
-	* 设置报错信息
-	* ======
-	* @param error 	报错信息
-	* @param $code 		响应码
-	* ======
-	* @author 洪波
-	* @version 16.07.13
-	*/
-	public function setError($error, $code = 0)
-	{
-		$this->error = $error;
-		if($code !== 0)
+		else
 		{
-			$this->code = $code;
+			if($error != '')
+			{
+				$this->error = $error;
+			}
+			else
+			{
+				$this->error = $this->code_discription[$code];
+			}
 		}
 	}
 
