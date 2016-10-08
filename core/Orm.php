@@ -271,6 +271,8 @@ class Orm
 			if($condition instanceof Criteria)
 			{
 				$sql = "select " . $condition->select . " from " . $this->table_name;
+				if($condition->union)
+					$sql .= ' ' . $condition->union;
 				if($condition->condition)
 					$sql .= ' where ' . $condition->condition;
 			}
@@ -320,6 +322,8 @@ class Orm
 			if($condition instanceof Criteria)
 			{
 				$sql = "select " . $condition->select . " from " . $this->table_name;
+				if($condition->union)
+					$sql .= ' ' . $condition->union;
 				if($condition->condition)
 					$sql .= ' where ' . $condition->condition;
 				if($condition->order)

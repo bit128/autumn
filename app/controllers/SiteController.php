@@ -20,10 +20,4 @@ class SiteController extends Controller
 			Autumn::app()->config('app_name'), ' ',
 			Autumn::FRAMEWORK_VERSION;
 	}
-	public function actionTest()
-	{
-		$criteria = new \core\Criteria;
-		$criteria->add('aa', 'vv', '>');
-		echo $criteria->condition;
-	}
 }

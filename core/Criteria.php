@@ -77,4 +77,20 @@ class Criteria
 			$this->condition = $condition;
 		}
 	}
+
+	/**
+	* 联合表操作
+	* ======
+	* @param $table_name 	联合表名称
+	* @param $foreign 		外键关系
+	* @param $type 			联合方式 - inner | left | right
+	* ======
+	* @author 洪波
+	* @version 16.08.18
+	*/
+	public function union($table_name, $foreign, $type = 'inner')
+	{
+		$this->union = $type . ' join ' . $table_name . ' on ' . $foreign;
+	}
+
 }
