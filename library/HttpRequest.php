@@ -38,8 +38,7 @@ class HttpRequest
 		$this->url = $url;
 		$this->fields = $fields;
 		$this->headers = array(
-			'User-Agent: Mozilla/5.0 Autumn 1.21',
-			'Accept-Encoding: gzip, deflate',
+			'User-Agent: Mozilla/5.0 Autumn 1.21'
 			);
 		$this->headers += $headers;
 	}
