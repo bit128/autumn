@@ -160,13 +160,7 @@ class View
 		//否则开启缓存机制
 		else
 		{
-			//尝试读取缓存
-			$cache = ROOT . $this->config['cache_dir'] . $this->controller . '_' . $view;
-			foreach (array_merge(Autumn::app()->query_params, $_GET) as $k => $v)
-			{
-				$cache .= '_' . $k . '_' . $v;
-			}
-			$cache .= '.html';
+			$cache = $this->getCachePath($view);
 			//判断缓存文件是否存在，是否过期
 			if(is_file($cache)
 				&& time() - filemtime($cache) < $this->config['cache_limit'])
@@ -194,6 +188,48 @@ class View
 				}
 			}
 		}
+	}
+
+	/**
+	* 判断是否有有效缓存
+	* ======
+	* @param $view 	视图名称
+	* ======
+	* @author 洪波
+	* @version 16.11.04
+	*/
+	public function hasCache($view)
+	{
+		$cache = $this->getCachePath($view);
+		if(is_file($cache)
+			&& time() - filemtime($cache) < $this->config['cache_limit'])
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
+	* 获取缓存绝对路径
+	* ======
+	* @param $view 	视图名称
+	* ======
+	* @author 洪波
+	* @version 16.11.04
+	*/
+	private function getCachePath($view)
+	{
+		//尝试读取缓存
+		$cache = ROOT . $this->config['cache_dir'] . $this->controller . '_' . $view;
+		foreach (array_merge(Autumn::app()->query_params, $_GET) as $k => $v)
+		{
+			$cache .= '_' . $k . '_' . $v;
+		}
+		$cache .= '.html';
+		return $cache;
 	}
 
 }
