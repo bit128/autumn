@@ -29,7 +29,7 @@ class View
 	* @author 洪波
 	* @version 16.03.29
 	*/
-	public function __construct($layout_name)
+	public function __construct($layout_name = '')
 	{
 		if($layout_name != '')
 		{

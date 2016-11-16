@@ -40,7 +40,8 @@ class Orm
 		{
 			if(self::$_instance)
 			{
-				self::$_instance->_db == null;
+				self::$_instance->_db->close();
+				self::$_instance->_db = null;
 				self::$_instance = null;
 			}	
 			self::$_instance = new self($table_name, $db_config);

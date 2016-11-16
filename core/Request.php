@@ -15,12 +15,6 @@ class Request
 	//类静态实例
 	private static $_instance;
 
-	//私有化构造方法，保持实例唯一
-	private function __construct(){}
-
-	//私有化克隆方法，保持实例唯一
-	private function __clone(){}
-
 	/**
 	* 静态单例获取缓存实例
 	* ======

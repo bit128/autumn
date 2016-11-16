@@ -11,7 +11,7 @@ namespace core;
 class Mysqli implements Db
 {
 
-	private $connect;
+	private $connect = null;
 
 	/**
 	* 构造方法创建数据库连接
@@ -19,7 +19,7 @@ class Mysqli implements Db
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function __construct($db_config)
+	public function __construct($db_config = 'database')
 	{
 		$config = Autumn::app()->config($db_config);
 		if($this->connect = mysqli_connect($config['host'], $config['user'], $config['password'], $config['dbname']))
@@ -40,30 +40,7 @@ class Mysqli implements Db
 	*/
 	public function __destruct()
 	{
-		if($this->connect != null)
-		{
-			mysqli_close($this->connect);
-			$this->connect = null;
-		}
-	}
-
-	/**
-	* 静态化获取数据库对象实例
-	* ======
-	* @param $b_config 	数据库配置字段
-	* ======
-	* @author 洪波
-	* @version 16.07.15
-	*/
-	public static function inst($db_config)
-	{
-		if(! (self::$_instance instanceof self))
-		{
-			if(self::$_instance)
-				self::$_instance = null;
-			self::$_instance = new self($db_config);
-		}
-		return self::$_instance;
+		$this->close();
 	}
 
 	/**
@@ -186,5 +163,20 @@ class Mysqli implements Db
 	public function rollback()
 	{
 		mysqli_rollback($this->connect);
+	}
+
+	/**
+	* 关闭数据库连接
+	* ======
+	* @author 洪波
+	* @version 16.11.16
+	*/
+	public function close()
+	{
+		if($this->connect != null)
+		{
+			mysqli_close($this->connect);
+			$this->connect = null;
+		}
 	}
 }

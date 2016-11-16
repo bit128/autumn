@@ -19,7 +19,7 @@ class Mysql implements Db
 	* @author 洪波
 	* @version 16.02.25
 	*/
-	public function __construct($db_config)
+	public function __construct($db_config = 'database')
 	{
 		$config = Autumn::app()->config($db_config);
 		if($this->connect = @ mysql_connect($config['host'], $config['user'], $config['password']))
@@ -46,25 +46,6 @@ class Mysql implements Db
 			mysql_close($this->connect);
 			$this->connect = null;
 		}
-	}
-
-	/**
-	* 静态化获取数据库对象实例
-	* ======
-	* @param $b_config 	数据库配置字段
-	* ======
-	* @author 洪波
-	* @version 16.02.25
-	*/
-	public static function inst($db_config)
-	{
-		if(! (self::$_instance instanceof self))
-		{
-			if(self::$_instance)
-				self::$_instance = null;
-			self::$_instance = new self($db_config);
-		}
-		return self::$_instance;
 	}
 
 	/**

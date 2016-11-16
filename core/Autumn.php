@@ -9,19 +9,43 @@ namespace core;
 
 class Autumn
 {
-	const FRAMEWORK_VERSION = 1.26;
+	const FRAMEWORK_VERSION = 1.3;
 
 	//Autumn实例
 	private static $_instance = null;
 	//全局配置
 	private $config_list = array();
-
 	//默认控制器
 	public $controller = '';
 	//默认action
 	public $action = '';
 	//url参数表
 	public $query_params = array();
+	//核心对象实例栈
+	private $core_instance = array();
+
+	/**
+	* [单例]获取Autumn托管的核心对象实例
+	* ======
+	* @author 洪波
+	* @version 16.11.16
+	*/
+	public function __get($core_name)
+	{
+		if(isset($this->core_instance[$core_name]))
+		{
+			return $this->core_instance[$core_name];
+		}
+		else
+		{
+			$class = 'core\\' . ucfirst($core_name);
+			if(class_exists($class))
+			{
+				$this->core_instance[$core_name] = new $class;
+				return $this->core_instance[$core_name];
+			}
+		}
+	}
 
 	/**
 	* Autumn构造方法
@@ -93,8 +117,16 @@ class Autumn
 		}
 		//解析url
 		$this->parseUrl();
-		//启动控制器执行动作
-		$this->start();
+		//路由控制器
+		$class = 'app\controllers\\' . ucfirst($this->controller) . 'Controller';
+		if($this->controller != '' && class_exists($class))
+		{
+			new $class($this->action);
+		}
+		else
+		{
+			Autumn::app()->exception('404.1 您访问的页面不见了，呜呜～～');
+		}
 	}
 
 	/**
@@ -106,30 +138,11 @@ class Autumn
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	public function transfer($controller, $action)
+	public function dispatch($controller, $action)
 	{
 		$this->controller = $controller;
 		$this->action = $action;
 		$this->start();
-	}
-
-	/**
-	* 启动控制器执行动作
-	* ======
-	* @author 洪波
-	* @version 16.07.13
-	*/
-	private function start()
-	{
-		$class = 'app\controllers\\' . ucfirst($this->controller) . 'Controller';
-		if($this->controller != '' && class_exists($class))
-		{
-			new $class($this->action);
-		}
-		else
-		{
-			Autumn::app()->exception('404.1 您访问的页面不见了，呜呜～～');
-		}
 	}
 
 	/**
