@@ -2,6 +2,7 @@
 namespace app\controllers;
 use core\Autumn;
 use core\Controller;
+use core\Orm;
 
 /**
 * 站点控制器示例

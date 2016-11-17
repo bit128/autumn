@@ -29,7 +29,7 @@ $config = array(
 		),
 	//数据库配置
 	'database' => array(
-		'driver' => 'Mysqli',
+		'driver' => 'mysqli',
 		'host' => '127.0.0.1',
 		'user' => '',
 		'password' => '',

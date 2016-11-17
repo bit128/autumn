@@ -38,12 +38,6 @@ class Orm
 	{
 		if(! (self::$_instance instanceof self) || $new)
 		{
-			if(self::$_instance)
-			{
-				self::$_instance->_db->close();
-				self::$_instance->_db = null;
-				self::$_instance = null;
-			}	
 			self::$_instance = new self($table_name, $db_config);
 		}
 		self::$_instance->setTable($table_name);
@@ -64,30 +58,15 @@ class Orm
 		//设置表名称
 		$this->table_name = $table_name;
 		//初始化化数据库驱动
-		$this->initDriver($db_config);
-		//获取表结构
-		$this->struct();
-	}
-
-	/**
-	* 初始化化数据库驱动
-	* ======
-	* @param $db_config 	数据库配置
-	* @param $new 			是否全新加载数据库驱动
-	* ======
-	* @author 洪波
-	* @version 16.07.06
-	*/
-	public function initDriver($db_config)
-	{
-		//加载数据库依赖
 		if(! Autumn::app()->config($db_config))
 		{
 			Autumn::app()->exception('缺少数据库配置文件');
 		}
-		$driver = '\core\\' . Autumn::app()->config($db_config)['driver'];
+		$driver = Autumn::app()->config($db_config)['driver'];
 		//载入数据库驱动（需要实现Db接口）
-		$this->_db = new $driver($db_config);
+		$this->setDb(Autumn::app()->$driver);
+		//获取表结构
+		$this->struct();
 	}
 	
 	/**
@@ -127,8 +106,7 @@ class Orm
 	}
 
 	/**
-	* 获取数据库驱动对象
-	* ======
+	* 获取数据库驱动
 	* ======
 	* @author 洪波
 	* @version 16.04.25
@@ -136,6 +114,19 @@ class Orm
 	public function getDb()
 	{
 		return $this->_db;
+	}
+
+	/**
+	* 设置数据库驱动
+	* ======
+	* @param $driver 	数据库驱动（需要实现Db接口）
+	* ======
+	* @author 洪波
+	* @version 16.04.25
+	*/
+	public function setDb(Db $driver)
+	{
+		return $this->_db = $driver;
 	}
 	
 	/**
