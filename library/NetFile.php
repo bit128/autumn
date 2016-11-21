@@ -158,4 +158,46 @@ class NetFile
 
 		return substr($hash_file, 1);
 	}
+
+	/**
+	* 传输文件
+	* ======
+	* @param $file_data 	文件流
+	* @param $url 			发往地址
+	* @param $post_name 	文件域名
+	* ======
+	* @author 洪波
+	* @version 16.11.21
+	*/
+	public function sendFile($file_data, $url, $post_name)
+	{
+		$boundary = md5(microtime());
+		$data = array();
+		array_push($data, '--' . $boundary);
+		array_push($data, "Content-Disposition: form-data; name=\"" . $post_name . "\"; filename=\"default.jpg\"");
+		array_push($data, "Content-Type: application/octet-stream");
+		array_push($data, '');
+		array_push($data, $file_data);
+		//报文结尾
+		array_push($data, '--' . $boundary . '--');
+		array_push($data, '');
+		//换行拼接报文
+		$body = implode("\r\n", $data);
+		//请求报头
+		$_headers = array('Expect:');
+		array_push($_headers, "Content-Type: multipart/form-data; boundary=".$boundary);
+		//提交请求
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		//curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $_headers);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+		
+		$result = curl_exec($ch);
+		$info = curl_getinfo($ch);
+		curl_close($ch);
+		return $result;
+	}
 }

@@ -69,7 +69,8 @@ class Response
 	*/
 	public function setResult($code = 0, $result = '', $error = '')
 	{
-		if($code == self::RES_SUCCESS)
+		$this->code = $code;
+		if($this->code == self::RES_SUCCESS)
 		{
 			if($result != '')
 			{
