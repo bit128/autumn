@@ -132,7 +132,7 @@ class Pagination
 			//页面总数大于1
 			if($this->all_page > 1)
 			{
-				if($this->all_page < $this->size)
+				if($this->all_page <= $this->size)
 					$start = 1;
 				else
 					$start = $this->now_page - $this->size;
