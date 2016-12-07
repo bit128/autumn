@@ -32,13 +32,13 @@ class Orm
 	* @return object-self
 	* ======
 	* @author 洪波
-	* @version 16.02.25
+	* @version 16.02.25 - 16.12.07
 	*/
 	public static function model($table_name, $new = false, $db_config = 'database')
 	{
 		if(! (self::$_instance instanceof self) || $new)
 		{
-			self::$_instance = new self($table_name, $db_config);
+			self::$_instance = new self($db_config);
 		}
 		self::$_instance->setTable($table_name);
 		return self::$_instance;
@@ -51,12 +51,10 @@ class Orm
 	* @param $db_config 	数据库配置
 	* ======
 	* @author 洪波
-	* @version 16.02.25
+	* @version 16.02.25 - 16.12.07
 	*/
-	private function __construct($table_name, $db_config)
+	private function __construct($db_config)
 	{
-		//设置表名称
-		$this->table_name = $table_name;
 		//初始化化数据库驱动
 		if(! Autumn::app()->config($db_config))
 		{
@@ -65,8 +63,6 @@ class Orm
 		$driver = Autumn::app()->config($db_config)['driver'];
 		//载入数据库驱动（需要实现Db接口）
 		$this->setDb(Autumn::app()->$driver);
-		//获取表结构
-		$this->struct();
 	}
 	
 	/**
@@ -157,7 +153,6 @@ class Orm
 			$this->table_name = $table_name;
 			$this->struct();
 		}
-		
 	}
 
 	/**
@@ -448,7 +443,6 @@ class Orm
 				$sql .= ' where ' . $condition;
 			}
 		}
-		//$this->flush();
 		return $this->_db->query($sql);
 	}
 
