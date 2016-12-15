@@ -393,7 +393,6 @@ class Orm
 				$sql .= ' where ' . $condition;
 			}
 		}
-		//$this->flush();
 		return $this->_db->query($sql);
 	}
 

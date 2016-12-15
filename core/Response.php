@@ -10,7 +10,7 @@ namespace core;
 class Response
 {
 	const RES_UNKNOW	= 0;	//响应码 - 未知
-	const RES_SUCCESS	= 1;	//响应码 - 成功
+	const RES_OK		= 1;	//响应码 - 成功
 	const RES_FAIL		= 2;	//响应码 - 失败
 
 	protected $code;
@@ -19,7 +19,7 @@ class Response
 
 	public $code_discription = array(
 		self::RES_UNKNOW 	=> '未知状态',
-		self::RES_SUCCESS 	=> '操作成功',
+		self::RES_OK 		=> '操作成功',
 		self::RES_FAIL 		=> '操作失败'
 		);
 
@@ -69,28 +69,36 @@ class Response
 	*/
 	public function setResult($code = 0, $result = '', $error = '')
 	{
-		$this->code = $code;
-		if($this->code == self::RES_SUCCESS)
+		if(in_array($code, array_keys($this->code_discription), true))
 		{
-			if($result != '')
+			$this->code = $code;
+			if($this->code == self::RES_OK)
 			{
-				$this->result = $result;
+				if($result != '')
+				{
+					$this->result = $result;
+				}
+				else
+				{
+					$this->result = $this->code_discription[self::RES_OK];
+				}
 			}
 			else
 			{
-				$this->result = $this->code_discription[self::RES_SUCCESS];
+				if($error != '')
+				{
+					$this->error = $error;
+				}
+				else
+				{
+					$this->error = $this->code_discription[$code];
+				}
 			}
 		}
 		else
 		{
-			if($error != '')
-			{
-				$this->error = $error;
-			}
-			else
-			{
-				$this->error = $this->code_discription[$code];
-			}
+			$this->code = self::RES_OK;
+			$this->result = $code;
 		}
 	}
 
