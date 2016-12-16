@@ -118,6 +118,17 @@ class Autumn
 		//解析url
 		$this->parseUrl();
 		//路由控制器
+		$this->start();
+	}
+
+	/**
+	* 执行控制器action
+	* ======
+	* @author 洪波
+	* @version 16.12.16
+	*/
+	private function start()
+	{
 		$class = 'app\controllers\\' . ucfirst($this->controller) . 'Controller';
 		if($this->controller != '' && class_exists($class))
 		{
