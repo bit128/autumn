@@ -101,6 +101,20 @@ class Request
 	}
 
 	/**
+	* 设置请求参数
+	* ======
+	* @param $key 		参数名称
+	* @param $value 	值
+	* ======
+	* @author 洪波
+	* @version 16.12.16
+	*/
+	public function setParam($key, $value)
+	{
+		Autumn::app()->query_params[$key] = $value;
+	}
+
+	/**
 	* 获取客户端名称
 	* ======
 	* @author 洪波
