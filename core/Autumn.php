@@ -229,6 +229,20 @@ class Autumn
 	}
 
 	/**
+	* 扩展用户配置项
+	* ======
+	* @param $key 	配置键
+	* @param $value 配置值
+	* ======
+	* @author 洪波
+	* @version 17.01.01
+	*/
+	public function extendConfig($key, $value)
+	{
+		$this->config_list[$key] = $value;
+	}
+
+	/**
 	* 系统异常处理
 	* ======
 	* @author 洪波
