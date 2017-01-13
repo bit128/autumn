@@ -274,7 +274,7 @@ class Autumn
 	public function exception($content, $interrupt = true)
 	{
 		header("Content-Type:text/html; charset=utf-8");
-		$view = ROOT . '/app/views/exception.php';
+		$view = 'app/views/exception.php';
 		if(is_file($view))
 		{
 			extract(array(

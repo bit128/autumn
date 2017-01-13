@@ -9,9 +9,8 @@ namespace core;
 
 class Request
 {
-
+	//cookie生存时间
 	private $cookie_limit = 7200;
-	
 	//类静态实例
 	private static $_instance;
 

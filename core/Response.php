@@ -13,8 +13,11 @@ class Response
 	const RES_OK		= 1;	//响应码 - 成功
 	const RES_FAIL		= 2;	//响应码 - 失败
 
+	//响应吗
 	protected $code;
+	//结果信息
 	protected $result;
+	//错误信息
 	protected $error;
 
 	public $code_discription = array(

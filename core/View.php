@@ -11,13 +11,10 @@ class View
 {
 	//布局模板
 	private $layout_name = 'layout';
-
 	//视图配置信息
 	private $config;
-
 	//控制器名称
 	private $controller = '';
-
 	//路由
 	public $route = '';
 
@@ -65,7 +62,7 @@ class View
 	*/
 	public function render($view, $data = array(), $output = true)
 	{
-		$layout = ROOT . $this->config['path'] . $this->layout_name . '.php';
+		$layout = $this->config['path'] . $this->layout_name . '.php';
 		if(is_file($layout))
 		{
 			$content = $this->renderPartial($view, $data, false);
@@ -105,7 +102,7 @@ class View
 	public function renderPartial($view, $data = array(), $output = true)
 	{
 		$this->route = $this->controller . DIRECTORY_SEPARATOR . $view;
-		$view = ROOT . $this->config['path'] . $this->route . '.php';
+		$view = $this->config['path'] . $this->route . '.php';
 		if(is_file($view))
 		{
 			//载入用户变量
@@ -223,7 +220,7 @@ class View
 	private function getCachePath($view)
 	{
 		//尝试读取缓存
-		$cache = ROOT . $this->config['cache_dir'] . $this->controller . '_' . $view;
+		$cache = $this->config['cache_dir'] . $this->controller . '_' . $view;
 		foreach (array_merge(Autumn::app()->query_params, $_GET) as $k => $v)
 		{
 			$cache .= '_' . $k . '_' . $v;

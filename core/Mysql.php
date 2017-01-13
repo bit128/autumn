@@ -10,7 +10,7 @@ namespace core;
 
 class Mysql implements Db
 {
-	
+	//连接对象实例
 	private $connect;
 
 	/**

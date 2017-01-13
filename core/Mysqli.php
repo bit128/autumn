@@ -10,7 +10,7 @@ namespace core;
 
 class Mysqli implements Db
 {
-
+	//连接对象实例
 	private $connect = null;
 
 	/**

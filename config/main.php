@@ -28,8 +28,8 @@ $config = array(
 		),
 	//视图设置
 	'view' => array(
-		'path' => '/app/views/',
-		'cache_dir' => '/app/runtime/',
+		'path' => 'app/views/',
+		'cache_dir' => 'app/runtime/',
 		'cache_limit' => 86400
 		),
 	//数据库配置

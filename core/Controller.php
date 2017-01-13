@@ -9,7 +9,6 @@ namespace core;
 
 class Controller
 {
-
 	/**
 	* 构造方法
 	* ======

@@ -9,7 +9,7 @@ namespace core;
 
 abstract class Model
 {
-	//模型属性
+	//模型表名称
 	public $table_name;
 
 	/**

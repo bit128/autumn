@@ -5,7 +5,6 @@
 * @author 洪波
 * @version 16.07.06
 */
-define('ROOT', dirname(__FILE__));
-require_once(ROOT . '/config/main.php');
-require_once(ROOT . '/core/Autumn.php');
+require_once('config/main.php');
+require_once('core/Autumn.php');
 core\Autumn::app($config)->run();
