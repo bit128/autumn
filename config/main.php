@@ -19,7 +19,12 @@ $config = array(
 		//默认控制器
 		'controller' => 'site',
 		//默认控制器执行动作
-		'action' => 'index'
+		'action' => 'index',
+		//自定义路由规则
+		/*
+		'custom_route' => array(
+			'hello' => 'site/test'
+			)//*/
 		),
 	//视图设置
 	'view' => array(

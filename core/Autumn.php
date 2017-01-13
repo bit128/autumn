@@ -9,7 +9,7 @@ namespace core;
 
 class Autumn
 {
-	const FRAMEWORK_VERSION = 1.31;
+	const FRAMEWORK_VERSION = 1.32;
 
 	//Autumn实例
 	private static $_instance = null;
@@ -165,6 +165,9 @@ class Autumn
 	private function parseUrl()
 	{
 		$rc = $this->config('router');
+		//用户路由规则
+		$custom_key = isset($rc['custom_route']) ? array_keys($rc['custom_route']) : null;
+
 		$url = str_replace($rc['index'], '', $_SERVER['REQUEST_URI']);
 		//去除query string
 		if($c = strpos($url, '?'))
@@ -173,7 +176,7 @@ class Autumn
 		}
 		$url_param = explode('/', $url);
 		$parse_count = 2;
-		$query = '';
+		$query = ''; 
 		foreach ($url_param as $v)
 		{
 			if($v == '')
@@ -196,8 +199,28 @@ class Autumn
 			//获取controller名称
 			else if ($parse_count == 2)
 			{
-				$this->controller = $v;
-				-- $parse_count;
+				if ($custom_key && in_array($v, $custom_key))
+				{
+					$dc = explode('/', $rc['custom_route'][$v]);
+					if($dc)
+					{
+						$this->controller = $dc[0];
+						if (count($dc) > 1)
+						{
+							$this->action = $dc[1];
+						}
+						else
+						{
+							$this->action = 'index';
+						}
+						$parse_count = 0;
+					}
+				}
+				else
+				{
+					$this->controller = $v;
+					-- $parse_count;
+				}
 			}
 			//获取action名称
 			else if ($parse_count == 1)
