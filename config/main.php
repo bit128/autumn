@@ -39,5 +39,13 @@ $config = array(
 		'user' => '',
 		'password' => '',
 		'dbname' => 'test'
-		)
+		),
+	/*
+	'cache' => array(
+		'driver' => 'redis',
+		'host' => '127.0.0.1',
+		'port' => 6379,
+		'cache_db' => 0,
+		'cache_limit' => 60
+		)//*/
 	);
