@@ -22,30 +22,25 @@ class SmtpEmail
 
 	public function __construct()
 	{
-		$config = Autumn::app()->config('smtp');
-		if(! $config)
-		{
-			Autumn::app()->exception('请先完成邮件服务配置');
-		}
 		//设置邮箱服务信息
-		$this->host = $config['host'];
-		$this->port = $config['port'];
-		$this->user = base64_encode($config['user']);
-		$this->passwd = base64_encode($config['passwd']);
-		$this->debug = $config['debug'];
+		$this->host = 'smtp.qq.com';
+		$this->port = 25;
+		$this->user = base64_encode('xxxxxx@qq.com');
+		$this->passwd = base64_encode('xxxxxx');
+		$this->debug = true;
 
 		//建立套接字连接
 		$this->socket = fsockopen($this->host, $this->port, $errorno, $errstr, 30);
 		if(! $this->socket)
 		{
-			Autumn::app()->exception('连接邮件服务器出错：'.$errstr);
+			echo '连接邮件服务器出错：',$errstr;
 		}
 		else
 		{
 			$response = fgets($this->socket);
 			if(strstr($response, '220') === false)
 			{
-				Autumn::app()->exception('邮件服务器响应异常');
+				echo '邮件服务器响应异常';
 			}
 			//调试信息
 			$this->debugMessage($response);
