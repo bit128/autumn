@@ -119,7 +119,7 @@ class Request
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	public function getName()
+	public function getAgent()
 	{
 		return isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 	}
