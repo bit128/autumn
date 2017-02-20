@@ -40,6 +40,7 @@ $config = array(
 		'password' => '',
 		'dbname' => 'test'
 		),
+	//缓存服务
 	/*
 	'cache' => array(
 		'driver' => 'redis',
