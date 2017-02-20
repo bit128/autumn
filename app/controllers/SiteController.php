@@ -15,7 +15,7 @@ class SiteController extends Controller
 	{
 		header("Content-Type:text/html;charset=UTF-8");
 		echo 'Welcome to ',
-			Autumn::app()->config('app_name'), ' ',
+			Autumn::app()->config->get('app_name'), ' ',
 			Autumn::FRAMEWORK_VERSION;
 	}
 }

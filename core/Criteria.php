@@ -3,7 +3,7 @@
 * 查询规则类
 * ======
 * @author 洪波
-* @version 15.02.25
+* @version 16.02.25
 */
 namespace core;
 

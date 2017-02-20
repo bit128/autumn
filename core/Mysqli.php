@@ -1,7 +1,6 @@
 <?php
 /**
 * Mysqli数据库操作基础类
-* [推荐使用]
 * ======
 * @author 洪波
 * @version 16.07.15
@@ -21,14 +20,14 @@ class Mysqli implements Db
 	*/
 	public function __construct($db_config = 'database')
 	{
-		$config = Autumn::app()->config($db_config);
+		$config = Autumn::app()->config->get($db_config);
 		if($this->connect = mysqli_connect($config['host'], $config['user'], $config['password'], $config['dbname']))
 		{
 			mysqli_set_charset($this->connect, 'utf8');
 		}
 		else
 		{
-			Autumn::app()->exception('数据库连接错误：' . mysqli_connect_error());
+			Autumn::app()->exception->throws('数据库连接错误：' . mysqli_connect_error());
 		}
 	}
 
@@ -82,7 +81,7 @@ class Mysqli implements Db
 		}
 		else
 		{
-			Autumn::app()->exception('数据库操作异常：' . mysqli_error($this->connect));
+			Autumn::app()->exception->throws('数据库操作异常：' . mysqli_error($this->connect));
 		}
 	}
 
@@ -103,7 +102,7 @@ class Mysqli implements Db
 		}
 		else
 		{
-			Autumn::app()->exception('数据库操作异常：' . mysqli_error($this->connect));
+			Autumn::app()->exception->throws('数据库操作异常：' . mysqli_error($this->connect));
 		}
 	}
 
@@ -128,7 +127,7 @@ class Mysqli implements Db
 		}
 		else
 		{
-			Autumn::app()->exception('数据库操作异常：' . mysqli_error($this->connect));
+			Autumn::app()->exception->throws('数据库操作异常：' . mysqli_error($this->connect));
 		}
 	}
 

@@ -10,16 +10,12 @@ namespace core;
 class View
 {
 	//布局模板
-	private $layout_name = 'layout';
+	private $layout_name = '';
 	//视图配置信息
 	private $config;
-	//控制器名称
-	private $controller = '';
-	//路由
-	public $route = '';
 
 	/**
-	* 构造方法设置控制器名称
+	* 构造方法加载配置
 	* ======
 	* @param $layout_name 控制器名称
 	* ======
@@ -28,14 +24,16 @@ class View
 	*/
 	public function __construct($layout_name = '')
 	{
+		//视图配置
+		$this->config = Autumn::app()->config->get('view');
 		if($layout_name != '')
 		{
 			$this->layout_name = $layout_name;
 		}
-		//视图配置
-		$this->config = Autumn::app()->config('view');
-		//控制器名称
-		$this->controller = Autumn::app()->controller;
+		else
+		{
+			$this->layout_name = $this->config['default_layout'];
+		}
 	}
 
 	/**
@@ -86,7 +84,7 @@ class View
 		}
 		else
 		{
-			Autumn::app()->exception('视图模板未找到，请检查路径');
+			Autumn::app()->exception->throws('视图模板未找到，请检查路径');
 		}
 	}
 
@@ -101,8 +99,8 @@ class View
 	*/
 	public function renderPartial($view, $data = array(), $output = true)
 	{
-		$this->route = $this->controller . DIRECTORY_SEPARATOR . $view;
-		$view = $this->config['path'] . $this->route . '.php';
+		$route = Autumn::app()->route->controller . DIRECTORY_SEPARATOR . $view;
+		$view = $this->config['path'] . $route . '.php';
 		if(is_file($view))
 		{
 			//载入用户变量
@@ -126,7 +124,7 @@ class View
 		}
 		else
 		{
-			Autumn::app()->exception('视图文件未找到，请检查路径');
+			Autumn::app()->exception->throws('视图文件未找到，请检查路径');
 		}
 	}
 
@@ -221,7 +219,7 @@ class View
 	{
 		//尝试读取缓存
 		$cache = $this->config['cache_dir'] . $this->controller . '_' . $view;
-		foreach (array_merge(Autumn::app()->query_params, $_GET) as $k => $v)
+		foreach (array_merge(Autumn::app()->route->query_params, $_GET) as $k => $v)
 		{
 			$cache .= '_' . $k . '_' . $v;
 		}

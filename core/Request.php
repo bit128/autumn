@@ -53,9 +53,9 @@ class Request
 	public function getQuery($key, $default = '')
 	{
 		$value = $default;
-		if (isset(Autumn::app()->query_params[$key]))
+		if (isset(Autumn::app()->route->query_params[$key]))
 		{
-			$value = Autumn::app()->query_params[$key];
+			$value = Autumn::app()->route->query_params[$key];
 		}
 		else if (isset($_GET) && isset($_GET[$key]))
 		{

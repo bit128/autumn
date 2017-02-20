@@ -5,11 +5,9 @@
 * @author 洪波
 * @version 15.02.08
 */
-$config = array(
+$main_config = array(
 	'app_name' => 'Autumn',
-	'version' => '1',
-	//开启调试模式
-	'debug' => true,
+	'version' => '1.5',
 	//开启session
 	'session_start' => true,
 	//路由器设置
@@ -22,12 +20,13 @@ $config = array(
 		'action' => 'index',
 		//自定义路由规则
 		/*
-		'custom_route' => array(
+		'route_alias' => array(
 			'hello' => 'site/test'
 			)//*/
 		),
 	//视图设置
 	'view' => array(
+		'default_layout' => 'layout',
 		'path' => 'app/views/',
 		'cache_dir' => 'app/runtime/',
 		'cache_limit' => 86400
@@ -36,7 +35,7 @@ $config = array(
 	'database' => array(
 		'driver' => 'mysqli',
 		'host' => '127.0.0.1',
-		'user' => '',
+		'user' => 'root',
 		'password' => '',
 		'dbname' => 'test'
 		),

@@ -10,11 +10,11 @@ namespace core;
 class Redis
 {
 
-    protected $_cache = null;		//缓存对象实例
-	protected $cache_host = '';	    //缓存服务器地址
-	protected $cache_prot = 0;		//缓存服务器端口
-	protected $cache_limit = 60;	//缓存时间
-	protected $cache_db = 0;		//正式数据库0 - 测试数据库1
+    protected $_cache       = null;	//缓存对象实例
+	protected $cache_host   = '';	//缓存服务器地址
+	protected $cache_prot   = 0;	//缓存服务器端口
+	protected $cache_limit  = 60;	//缓存时间
+	protected $cache_db     = 0;	//正式数据库0 - 测试数据库1
 
     /**
 	* 构造方法
@@ -24,7 +24,7 @@ class Redis
 	*/
 	public function __construct($cache_config = 'cache')
 	{
-		$config = Autumn::app()->config($cache_config);
+		$config = Autumn::app()->config->get($cache_config);
         if($config)
         {
             if($this->_cache = new \Redis)
@@ -34,12 +34,12 @@ class Redis
             }
             else
             {
-                Autumn::app()->exception('Redis缓存连接错误：没有redis扩展或者服务未启动.');
+                Autumn::app()->exception->throws('Redis缓存连接错误：没有redis扩展或者服务未启动.');
             }
         }
 		else
         {
-            Autumn::app()->exception('没有找到Redis缓存配置项.');
+            Autumn::app()->exception->throws('没有找到Redis缓存配置项.');
         }
 	}
 

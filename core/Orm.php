@@ -55,12 +55,13 @@ class Orm
 	*/
 	private function __construct($db_config)
 	{
+		$config = Autumn::app()->config->get($db_config);
 		//初始化化数据库驱动
-		if(! Autumn::app()->config($db_config))
+		if($config == '')
 		{
-			Autumn::app()->exception('缺少数据库配置文件');
+			Autumn::app()->exception->throws('缺少数据库配置文件');
 		}
-		$driver = Autumn::app()->config($db_config)['driver'];
+		$driver = $config['driver'];
 		//载入数据库驱动（需要实现Db接口）
 		$this->setDb(Autumn::app()->$driver);
 	}
