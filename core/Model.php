@@ -9,132 +9,160 @@ namespace core;
 
 abstract class Model
 {
-	//模型表名称
+
+	//[重写]模型表名称
 	public $table_name;
+	//模型字段值
+	protected $ar = [];
+	//验证字段错误信息
+	private $errors = [];
 
 	/**
-	* 统计行记录数量
+	* 获取字段
 	* ======
-	* @param $criteria 	查询条件对象
+	* @param $key 	键
 	* ======
 	* @author 洪波
-	* @version 16.06.28
+	* @version 17.02.21
 	*/
-	public function count($criteria = null)
+	public function __get($key)
 	{
-		return Orm::model($this->table_name)->count($criteria);
+		if (isset($this->ar[$key]))
+		{
+			return $this->ar[$key];
+		}
 	}
 
 	/**
-	* 自动插入表记录
+	* 设置字段
 	* ======
-	* @param $data 	表字段数据
-	* @param $post 	是否接受post表单数据
+	* @param $key 	键
+	* @param $key 	值
 	* ======
 	* @author 洪波
-	* @version 16.03.30
+	* @version 17.02.21
 	*/
-	public function insert($data = array(), $post = true)
+	public function __set($key, $value)
 	{
-		$orm = Orm::model($this->table_name, true);
+		$this->ar[$key] = htmlspecialchars(addslashes($value));
+	}
 
-		foreach($orm->getAttributes() as $k => $v)
+	/**
+	* [重写]字段验证规则
+	* ======
+	* @author 洪波
+	* @version 17.02.21
+	*/
+	public function rules()
+    {
+        return [];
+    }
+
+	/**
+	* 验证模型字段
+	* ======
+	* @author 洪波
+	* @version 17.02.21
+	*/
+	public function validate()
+	{
+		$flag = true;
+		$this->errors = [];
+		
+		if ($this->rules())
 		{
-			//处理来自POST请求参数
-			if($post && isset($_POST[$k]))
+			foreach ($this->rules() as $field => $rule)
 			{
-				$orm->$k = $_POST[$k];
+				if ($rule[0] && !isset($this->ar[$field]))
+				{
+					$this->errors[] = '字段：' . $field . ' 不能为空';
+					$flag = false;
+					continue;
+				}
+				if (isset($this->ar[$field]))
+				{
+					$value = $this->ar[$field];
+					$len = strlen((string) $value);
+					//正则类型
+					if (isset($rule[1]))
+					{
+						switch ($rule[1]) {
+							case 'email':
+								if (! preg_match("/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/", $value))
+								{
+									$this->errors[] = '字段：' . $field . ' 必须是有效的Email地址';
+									$flag = false;
+								}
+								break;
+							case 'number':
+								if (! preg_match("/\d/", $value))
+								{
+									$this->errors[] = '字段：' . $field . ' 必须是数字';
+									$flag = false;
+								}
+								break;
+							case 'word':
+								if (! preg_match("/\w/", $value))
+								{
+									$this->errors[] = '字段：' . $field . ' 不支持中文或特殊字符';
+									$flag = false;
+								}
+							case 'text':
+								preg_match_all("/[\x01-\x7f]|[\xc2-\xdf][\x80-\xbf]|[\xe0-\xef][\x80-\xbf]{2}|[\xf0-\xff][\x80-\xbf]{3}/",
+									$value, $match);
+								$len = count($match[0]);
+								break;
+						}	
+					}
+					//长度测量-有最小值和最大值
+					if (isset($rule[3]))
+					{
+						if ($len < $rule[2])
+						{
+							$this->errors[] = '字段：' . $field . ' 长度不能小于' . $rule[2];
+							$flag = false;
+						}
+						if ($len > $rule[3])
+						{
+							$this->errors[] = '字段：' . $field . ' 长度不能大于' . $rule[3];
+							$flag = false;
+						}
+					}
+					//长度测量-仅有最大值
+					else if (isset($rule[2]))
+					{
+						if ($len > $rule[2])
+						{
+							$this->errors[] = '字段：' . $field . ' 长度不能大于' . $rule[2];
+							$flag = false;
+						}
+					}
+				}
 			}
-			//处理data数据
-			if($data && isset($data[$k]))
-			{
-				$orm->$k = $data[$k];
-			}
 		}
-		if($orm->save())
-		{
-			$pk = $orm->pk;
-			return $orm->$pk;
-		}
-		else
-		{
-			return 0;
-		}
+		return $flag;
 	}
 
 	/**
-	* （通过主键）获取单行记录
-	* ======
-	* @param $pk_id 	主键id
+	* 获取验证失败信息
 	* ======
 	* @author 洪波
-	* @version 16.03.30
+	* @version 17.02.21
 	*/
-	public function get($pk_id)
+	public function getErrors()
 	{
-		$orm = Orm::model($this->table_name);
-		$pk = $orm->pk;
-		return $orm->find($pk . "='" . $pk_id . "'");
+		return $this->errors;
 	}
 
 	/**
-	* 获取记录列表
-	* ======
-	* @param $offset 	游标位置
-	* @param $limit 	偏移量
-	* @param $criteria 	查询条件对象
+	* 以数组形式返回模型字段
 	* ======
 	* @author 洪波
-	* @version 16.03.30
+	* @version 17.02.21
 	*/
-	public function getList($offset, $limit, $criteria = null)
+	public function toArray()
 	{
-		//统计数量
-		$count = $this->count($criteria);
-		//分页
-		if(!($criteria instanceof Criteria))
-		{
-			$criteria = new Criteria;
-		}
-		$criteria->offset = $offset;
-		$criteria->limit = $limit;
-		//获取列表
-		$list = Orm::model($this->table_name)->findAll($criteria);
-		//返回结果
-		return array(
-			'count' => $count,
-			'result' => $list
-			);
-	}
-
-	/**
-	* （通过主键）更新记录
-	* ======
-	* @param $pk_id 	主键id
-	* ======
-	* @author 洪波
-	* @version 16.03.30
-	*/
-	public function update($pk_id, $data)
-	{
-		$orm = Orm::model($this->table_name);
-		$pk = $orm->pk;
-		return $orm->UpdateAll($data, $pk . "='" . $pk_id . "'");
-	}
-
-	/**
-	* （通过主键）删除记录
-	* ======
-	* @param $pk_id 	主键id
-	* ======
-	* @author 洪波
-	* @version 16.03.30
-	*/
-	public function delete($pk_id)
-	{
-		$orm = Orm::model($this->table_name);
-		$pk = $orm->pk;
-		return $orm->deleteAll($pk . "='" . $pk_id . "'");
+		return $this->ar;
 	}
 
 }

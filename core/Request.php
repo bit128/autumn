@@ -248,4 +248,36 @@ class Request
 		$_COOKIE[$key] = '';
 	}
 
+	/**
+	* 生成表单令牌
+	* ======
+	* @author 洪波
+	* @version 17.02.21
+	*/
+	public function createToken()
+	{
+		$str = md5($this->getIp() . $this->getTime() . rand(1000, 9999));
+		$this->setCookie('csrf_token', $str, 3600);
+		echo '<input type="hidden" value="', $str, '" name="csrf_token" />';
+	}
+
+	/**
+	* 验证表单令牌
+	* ======
+	* @author 洪波
+	* @version 17.02.21
+	*/
+	public function checkToken()
+	{
+		$flag = false;
+		$form_token = $this->getPost('csrf_token');
+		$csrf_token = $this->getCookie('csrf_token');
+		if ($csrf_token != '' && $csrf_token == $form_token)
+		{
+			$flag = true;
+		}
+		$this->deleteCookie('csrf_token');
+		return $flag;
+	}
+
 }

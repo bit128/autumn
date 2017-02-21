@@ -18,4 +18,24 @@ class SiteController extends Controller
 			Autumn::app()->config->get('app_name'), ' ',
 			Autumn::FRAMEWORK_VERSION;
 	}
+
+	public function actionTest()
+	{
+		if (Autumn::app()->request->isPostRequest())
+		{
+			$m_user = new \app\models\M_user;
+			$m_user->load($_POST);
+			//$m_user->save();
+			//print_r($m_user->toArray());
+			if (Autumn::app()->request->checkToken())
+			{
+				echo 'success';
+			}
+			else
+			{
+				echo 'fail';
+			}
+		}
+		\core\View::layout()->render('page');
+	}
 }

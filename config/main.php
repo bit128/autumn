@@ -37,7 +37,7 @@ $main_config = array(
 		'host' => '127.0.0.1',
 		'user' => 'root',
 		'password' => '',
-		'dbname' => 'test'
+		'dbname' => ''
 		),
 	//缓存服务
 	/*
