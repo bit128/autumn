@@ -18,9 +18,9 @@ class Mysqli implements Db
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function __construct($db_config = 'database')
+	public function __construct($config)
 	{
-		$config = Autumn::app()->config->get($db_config);
+		//$config = Autumn::app()->config->get($db_config);
 		if($this->connect = mysqli_connect($config['host'], $config['user'], $config['password'], $config['dbname']))
 		{
 			mysqli_set_charset($this->connect, 'utf8');

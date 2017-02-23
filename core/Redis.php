@@ -22,9 +22,8 @@ class Redis
 	* @author 洪波
 	* @version 15.01.15
 	*/
-	public function __construct($cache_config = 'cache')
+	public function __construct($config)
 	{
-		$config = Autumn::app()->config->get($cache_config);
         if($config)
         {
             if($this->_cache = new \Redis)

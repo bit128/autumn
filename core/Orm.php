@@ -60,7 +60,7 @@ class Orm extends Model
     */
     public function getDb()
     {
-        return Autumn::app()->mysqli;
+        return Autumn::app()->database;
     }
 
     /**

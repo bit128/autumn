@@ -9,8 +9,6 @@ namespace core;
 
 class View
 {
-	//布局模板
-	private $layout_name = '';
 	//视图配置信息
 	private $config;
 
@@ -20,20 +18,12 @@ class View
 	* @param $layout_name 控制器名称
 	* ======
 	* @author 洪波
-	* @version 16.03.29
+	* @version 17.02.23
 	*/
-	public function __construct($layout_name = '')
+	public function __construct($config)
 	{
 		//视图配置
-		$this->config = Autumn::app()->config->get('view');
-		if($layout_name != '')
-		{
-			$this->layout_name = $layout_name;
-		}
-		else
-		{
-			$this->layout_name = $this->config['default_layout'];
-		}
+		$this->config = $config;
 	}
 
 	/**
@@ -42,11 +32,16 @@ class View
 	* @param $layout_name 	布局名称
 	* ======
 	* @author 洪波
-	* @version 16.03.29
+	* @version 17.02.23
 	*/
 	public static function layout($layout_name = '')
 	{
-		return new self($layout_name);
+		$c = Autumn::app()->config->get('module.view');
+		if ($layout_name != '')
+		{
+			$c['layout'] = $layout_name;
+		}
+		return new self($c);
 	}
 
 	/**
@@ -60,7 +55,7 @@ class View
 	*/
 	public function render($view, $data = array(), $output = true)
 	{
-		$layout = $this->config['path'] . $this->layout_name . '.php';
+		$layout = $this->config['path'] . $this->config['layout'] . '.php';
 		if(is_file($layout))
 		{
 			$content = $this->renderPartial($view, $data, false);

@@ -9,7 +9,7 @@ namespace core;
 
 class Autumn
 {
-	const FRAMEWORK_VERSION = 1.6;
+	const FRAMEWORK_VERSION = '1.6.1';
 
 	//Autumn实例
 	private static $_instance = null;
@@ -23,19 +23,27 @@ class Autumn
 	* @author 洪波
 	* @version 16.11.16
 	*/
-	public function __get($core_name)
+	public function __get($module_name)
 	{
-		if(isset($this->core_instance[$core_name]))
+		if(isset($this->core_instance[$module_name]))
 		{
-			return $this->core_instance[$core_name];
+			return $this->core_instance[$module_name];
 		}
 		else
 		{
-			$class = 'core\\' . ucfirst($core_name);
-			if(class_exists($class))
+			if ($module_name != 'config' && $c = Autumn::app()->config->get('module.' . $module_name))
 			{
-				$this->core_instance[$core_name] = new $class;
-				return $this->core_instance[$core_name];
+				$this->core_instance[$module_name] = new $c['driver']($c);
+				return $this->core_instance[$module_name];
+			}
+			else
+			{
+				$class = 'core\\' . ucfirst($module_name);
+				if(class_exists($class))
+				{
+					$this->core_instance[$module_name] = new $class;
+					return $this->core_instance[$module_name];
+				}
 			}
 		}
 	}

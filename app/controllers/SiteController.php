@@ -21,21 +21,12 @@ class SiteController extends Controller
 
 	public function actionTest()
 	{
-		if (Autumn::app()->request->isPostRequest())
-		{
-			$m_user = new \app\models\M_user;
-			$m_user->load($_POST);
-			//$m_user->save();
-			//print_r($m_user->toArray());
-			if (Autumn::app()->request->checkToken())
-			{
-				echo 'success';
-			}
-			else
-			{
-				echo 'fail';
-			}
-		}
-		\core\View::layout()->render('page');
+		//echo \core\Orm::model('t_user')->find()->user_name;
+		//Autumn::app()->view->render('page');
+		//\core\View::layout('layout2')->render('page');
+		//Autumn::app()->cache->set('user_name', 'baba');
+		//echo Autumn::app()->cache->get('user_name');
+		//Autumn::app()->route->start('site', 'test');
+		echo Autumn::app()->request->getQuery('name');
 	}
 }

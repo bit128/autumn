@@ -15,6 +15,8 @@ class Route
 	public $action = '';
 	//url参数表
 	public $query_params = array();
+	//配置项
+	private $config;
 
     /**
     * 构造方法加载配置
@@ -22,10 +24,11 @@ class Route
     * @author 洪波
     * @version 17.02.20
     */
-    public function __construct()
+    public function __construct($config)
     {
-        $this->controller = Autumn::app()->config->get('router.controller');
-        $this->action = Autumn::app()->config->get('router.action');
+        $this->controller = $config['controller'];
+        $this->action = $config['action'];
+		$this->config = $config;
     }
 
     /**
@@ -40,12 +43,17 @@ class Route
         {
             $this->parseUrl();
         }
+		else if ($this->controller == $controller && $this->action == $action)
+		{
+			Autumn::app()->exception->throws('不能转发请求到相同的controller/action.');
+		}
         else
         {
             $this->controller = $controller;
+			$this->action = $action;
         }
         //载入控制器类
-		$class = 'app\controllers\\' . ucfirst($this->controller) . 'Controller';
+		$class = str_replace('/', '\\', $this->config['path']) . ucfirst($this->controller) . 'Controller';
 		if($this->controller != '' && class_exists($class))
 		{
 			new $class($this->action);
@@ -64,11 +72,11 @@ class Route
 	*/
 	private function parseUrl()
 	{
-		$rc = Autumn::app()->config->get('router');
+		//$rc = Autumn::app()->config->get('router');
 		//用户路由规则
-		$custom_key = isset($rc['route_alias']) ? array_keys($rc['route_alias']) : null;
+		$custom_key = isset($this->config['route_alias']) ? array_keys($this->config['route_alias']) : null;
 
-		$url = str_replace($rc['index'], '', $_SERVER['REQUEST_URI']);
+		$url = str_replace($this->config['index'], '', $_SERVER['REQUEST_URI']);
 		//去除query string
 		if($c = strpos($url, '?'))
 		{
@@ -101,7 +109,7 @@ class Route
 			{
 				if ($custom_key && in_array($v, $custom_key))
 				{
-					$dc = explode('/', $rc['route_alias'][$v]);
+					$dc = explode('/', $this->config['route_alias'][$v]);
 					if($dc)
 					{
 						$this->controller = $dc[0];
