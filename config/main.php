@@ -3,9 +3,9 @@
 * autumn主配置文件
 * ======
 * @author 洪波
-* @version 15.02.08
+* @version 17.02.24
 */
-$main_config = [
+return [
 	'app_name' => 'Autumn',
 	'version' => '1',
 	//开启session

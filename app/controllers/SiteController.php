@@ -18,15 +18,4 @@ class SiteController extends Controller
 			Autumn::app()->config->get('app_name'), ' ',
 			Autumn::FRAMEWORK_VERSION;
 	}
-
-	public function actionTest()
-	{
-		//echo \core\Orm::model('t_user')->find()->user_name;
-		//Autumn::app()->view->render('page');
-		//\core\View::layout('layout2')->render('page');
-		//Autumn::app()->cache->set('user_name', 'baba');
-		//echo Autumn::app()->cache->get('user_name');
-		//Autumn::app()->route->start('site', 'test');
-		echo Autumn::app()->request->getQuery('name');
-	}
 }

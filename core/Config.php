@@ -21,10 +21,9 @@ class Config
     * @author 洪波
     * @version 17.02.20
     */
-    public function set($config_uri, $config_name = 'main_config')
+    public function set($config_uri)
     {
-        require_once($config_uri);
-        $this->config_list[$config_name] = $$config_name;
+        $this->config_list = require_once($config_uri);
     }
 
     /**
@@ -37,7 +36,7 @@ class Config
     * @author 洪波
     * @version 17.02.20
     */
-    public function get($key, $default = '', $config_name = 'main_config')
+    public function get($key, $default = '')
     {
         $dir = explode('.', $key);
         $temp = '';
@@ -60,9 +59,9 @@ class Config
                     break;
                 }
             }
-            else if (isset($this->config_list[$config_name][$d]))
+            else if (isset($this->config_list[$d]))
             {
-                $temp = $this->config_list[$config_name][$d];
+                $temp = $this->config_list[$d];
             }
             else
             {
@@ -84,8 +83,8 @@ class Config
     * @author 洪波
     * @version 17.02.20
     */
-    public function add($key, $value, $config_name = 'main_config')
+    public function add($key, $value)
     {
-        $this->config_list[$config_name][$key] = $value;
+        $this->config_list[$key] = $value;
     }
 }
