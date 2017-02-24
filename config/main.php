@@ -13,7 +13,7 @@ return [
 	'module' => [
 		//路由器设置
 		'route' => [
-			'driver' => 'core\Route',
+			'class' => 'core\web\Route',
 			'path' => 'app/controllers/',
 			//默认入口脚本文件
 			'index' => '/index.php',
@@ -28,7 +28,7 @@ return [
 		],
 		//视图设置
 		'view' => [
-			'driver' => 'core\View',
+			'class' => 'core\web\View',
 			'layout' => 'layout',
 			'path' => 'app/views/',
 			'cache_dir' => 'app/runtime/',
@@ -36,19 +36,23 @@ return [
 		],
 		//数据库配置
 		'database' => [
-			'driver' => 'core\Mysqli',
+			'class' => 'core\db\Mysqli',
 			'host' => '127.0.0.1',
 			'user' => 'root',
 			'password' => '',
 			'dbname' => ''
 		],
+		//http请求响应模块
+		'request' => ['class'=>'core\http\Request'],
+		'response' => ['class'=>'core\http\Response'],
+		/*
 		//缓存配置
 		'cache' => [
-			'driver' => 'core\Redis',
+			'class' => 'library\Redis',
 			'host' => '127.0.0.1',
 			'port' => 6379,
 			'cache_db' => 0,
 			'cache_limit' => 60
-		]
+		],//*/
 	]
 ];

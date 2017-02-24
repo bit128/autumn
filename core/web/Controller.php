@@ -5,7 +5,8 @@
 * @author 洪波
 * @version 16.02.25
 */
-namespace core;
+namespace core\web;
+use core\Autumn;
 
 class Controller
 {

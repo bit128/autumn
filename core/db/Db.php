@@ -5,7 +5,7 @@
 * @author 洪波
 * @version 16.03.02
 */
-namespace core;
+namespace core\db;
 
 interface Db
 {

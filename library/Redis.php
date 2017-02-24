@@ -5,7 +5,7 @@
 * @author 洪波
 * @version 17.02.10
 */
-namespace core;
+namespace library;
 
 class Redis
 {

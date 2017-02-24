@@ -5,7 +5,8 @@
 * @author 洪波
 * @version 16.07.13
 */
-namespace core;
+namespace core\http;
+use core\Autumn;
 
 class Request
 {

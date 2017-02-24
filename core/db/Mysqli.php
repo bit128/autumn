@@ -5,7 +5,8 @@
 * @author 洪波
 * @version 16.07.15
 */
-namespace core;
+namespace core\db;
+use core\Autumn;
 
 class Mysqli implements Db
 {

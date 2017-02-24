@@ -1,7 +1,6 @@
 <?php
 namespace app\controllers;
 use core\Autumn;
-use core\Controller;
 
 /**
 * 站点控制器示例
@@ -9,7 +8,7 @@ use core\Controller;
 * @author 洪波
 * @version 16.07.06
 */
-class SiteController extends Controller
+class SiteController extends \core\web\Controller
 {
 	public function actionIndex()
 	{

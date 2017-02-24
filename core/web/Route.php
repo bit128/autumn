@@ -5,7 +5,8 @@
 * @author 洪波
 * @version 17.02.20
 */
-namespace core;
+namespace core\web;
+use core\Autumn;
 
 class Route
 {

@@ -5,9 +5,10 @@
 * @author 洪波
 * @version 16.07.06
 */
-namespace core;
+namespace core\db;
+use core\Autumn;
 
-class Orm extends Model
+class Orm extends \core\web\Model
 {
     //静态化实例
 	private static $_instance;

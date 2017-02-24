@@ -5,7 +5,8 @@
 * @author 洪波
 * @version 16.03.29
 */
-namespace core;
+namespace core\web;
+use core\Autumn;
 
 class View
 {

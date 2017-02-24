@@ -33,7 +33,7 @@ class Autumn
 		{
 			if ($module_name != 'config' && $c = Autumn::app()->config->get('module.' . $module_name))
 			{
-				$this->core_instance[$module_name] = new $c['driver']($c);
+				$this->core_instance[$module_name] = new $c['class']($c);
 				return $this->core_instance[$module_name];
 			}
 			else

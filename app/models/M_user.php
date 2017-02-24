@@ -1,6 +1,6 @@
 <?php
 namespace app\models;
-use core\Orm;
+use core\db\Orm;
 
 class M_user extends Orm
 {
