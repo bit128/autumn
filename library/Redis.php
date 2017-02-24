@@ -6,6 +6,7 @@
 * @version 17.02.10
 */
 namespace library;
+use core\Autumn;
 
 class Redis
 {

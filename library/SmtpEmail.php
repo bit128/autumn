@@ -7,7 +7,6 @@
 * @version 16.05.08
 */
 namespace library;
-
 use core\Autumn;
 
 class SmtpEmail
@@ -20,27 +19,27 @@ class SmtpEmail
 	private $types = 'text/html';
 	private $debug;
 
-	public function __construct()
+	public function __construct($config)
 	{
 		//设置邮箱服务信息
-		$this->host = 'smtp.qq.com';
-		$this->port = 25;
-		$this->user = base64_encode('xxxxxx@qq.com');
-		$this->passwd = base64_encode('xxxxxx');
-		$this->debug = true;
+		$this->host = $config['host'];
+		$this->port = $config['port'];
+		$this->user = base64_encode($config['user']);
+		$this->passwd = base64_encode($config['passwd']);
+		$this->debug = $config['debug'];
 
 		//建立套接字连接
 		$this->socket = fsockopen($this->host, $this->port, $errorno, $errstr, 30);
 		if(! $this->socket)
 		{
-			echo '连接邮件服务器出错：',$errstr;
+			Autumn::app()->exception->throws('连接邮件服务器出错：',$errstr);
 		}
 		else
 		{
 			$response = fgets($this->socket);
 			if(strstr($response, '220') === false)
 			{
-				echo '邮件服务器响应异常';
+				Autumn::app()->exception->throws('邮件服务器响应异常');
 			}
 			//调试信息
 			$this->debugMessage($response);
