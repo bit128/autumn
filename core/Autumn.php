@@ -20,6 +20,7 @@ class Autumn
 	//核心对象驱动
 	private $core_class = [
 		'config' => 'core\Config',
+		'exception' => 'core\Exception',
 		'request' => 'core\http\Request',
 		'response' => 'core\http\Response'
 	];
