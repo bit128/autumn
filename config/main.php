@@ -42,9 +42,6 @@ return [
 			'password' => '',
 			'dbname' => ''
 		],
-		//http请求响应模块
-		'request' => ['class'=>'core\http\Request'],
-		'response' => ['class'=>'core\http\Response'],
 		/*
 		//缓存配置
 		'cache' => [

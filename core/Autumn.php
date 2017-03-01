@@ -9,13 +9,20 @@ namespace core;
 
 class Autumn
 {
-	const FRAMEWORK_VERSION = '1.6.2';
+	const FRAMEWORK_VERSION = '1.6.3';
 
 	//Autumn实例
 	private static $_instance = null;
 	
 	//核心对象实例栈
 	private $core_instance = array();
+
+	//核心对象驱动
+	private $core_class = [
+		'config' => 'core\Config',
+		'request' => 'core\http\Request',
+		'response' => 'core\http\Response'
+	];
 
 	/**
 	* [单例]获取Autumn托管的核心对象实例
@@ -38,10 +45,9 @@ class Autumn
 			}
 			else
 			{
-				$class = 'core\\' . ucfirst($module_name);
-				if(class_exists($class))
+				if(isset($this->core_class[$module_name]) && class_exists($this->core_class[$module_name]))
 				{
-					$this->core_instance[$module_name] = new $class;
+					$this->core_instance[$module_name] = new $this->core_class[$module_name];
 					return $this->core_instance[$module_name];
 				}
 			}
