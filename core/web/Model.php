@@ -9,42 +9,94 @@ namespace core\web;
 
 abstract class Model
 {
-
+	//数据对象实例
+	protected $orm;
 	//[重写]模型表名称
 	public $table_name;
-	//模型字段值
-	protected $ar = [];
 	//验证字段错误信息
 	private $errors = [];
 
-	/**
-	* 获取字段
-	* ======
-	* @param $key 	键
-	* ======
-	* @author 洪波
-	* @version 17.02.21
-	*/
-	public function __get($key)
+	public function __construct()
 	{
-		if (isset($this->ar[$key]))
-		{
-			return $this->ar[$key];
-		}
+		$this->init();
+		$this->orm = new \core\db\Orm($this->table_name);
 	}
 
 	/**
-	* 设置字段
-	* ======
-	* @param $key 	键
-	* @param $key 	值
+	* 子模型初始化方法
 	* ======
 	* @author 洪波
-	* @version 17.02.21
+	* @versin 17.03.02
 	*/
-	public function __set($key, $value)
+	public function init(){}
+
+	/**
+	* 获取表对象orm实例
+	* ======
+	* @author 洪波
+	* @version 17.03.02
+	*/
+	public function getOrm()
 	{
-		$this->ar[$key] = htmlspecialchars(addslashes($value));
+		return $this->orm;
+	}
+
+	/**
+	* 保存对象数据
+	* ======
+	* @author 洪波
+	* @version 17.03.02
+	*/
+	public function save()
+	{
+		return $this->orm->save();
+	}
+
+	/**
+	* 获取对象数据
+	* =======
+	* @author 洪波
+	* @version 17.03.02
+	*/
+	public function get($id)
+	{
+		return $this->orm->find($this->orm->pk . "='{$id}'");
+	}
+
+	/**
+	* 获取对象列表
+	* ======
+	* @author 洪波
+	* @version 17.03.02
+	*/
+	public function getList($criteria = '')
+	{
+		return [
+			'count' => $this->orm->count($criteria),
+			'result' => $this->orm->findAll($criteria)
+		];
+	}
+
+	/**
+	* 更新对象数据
+	* =======
+	* @author 洪波
+	* @version 17.03.02
+	*/
+	public function update($id, Array $data)
+	{
+		return $this->orm->updateAll($data, $this->orm->pk . "='{$id}'");
+	}
+
+	/**
+	* 删除对象数据
+	* =======
+	* @author 洪波
+	* @version 17.03.02
+	*/
+	public function delete($id)
+	{
+		return $this->orm->deleteAll($this->orm->pk . "='{$id}'");
 	}
 
 	/**
@@ -56,7 +108,49 @@ abstract class Model
 	public function rules()
     {
         return [];
+		/*
+		return [
+			//'field' => ['必须存在','类型','最少位数','最多位数']
+			'user_email' => [true, 'email', 10, 60],
+			'user_name' => [true, 'word', 6, 12],
+			'user_age' => [true, 'number', 2],
+			'user_note' => [false, 'text', 20]
+		];*/
     }
+
+	/**
+	* 加载数据到模型中
+	* ======
+	* @param $data 	数据
+	* @param $post 	是否从post表单中映射
+	* ======
+	* @author 洪波
+	* @version 17.03.02
+	*/
+	public function load($data = [], $post = false)
+	{
+
+		if ($post)
+		{
+			foreach ($_POST as $k => $v)
+			{
+				if (isset ($this->orm->ar[$k]))
+				{
+					$this->orm->ar[$k] = $v;
+				}
+			}
+		}
+		if ($data)
+		{
+			foreach ($data as $k => $v)
+			{
+				if (isset ($this->orm->ar[$k]))
+				{
+					$this->orm->ar[$k] = $v;
+				}
+			}
+		}
+	}
 
 	/**
 	* 验证模型字段
@@ -73,15 +167,15 @@ abstract class Model
 		{
 			foreach ($this->rules() as $field => $rule)
 			{
-				if ($rule[0] && !isset($this->ar[$field]))
+				if ($rule[0] && !isset($this->orm->ar[$field]))
 				{
 					$this->errors[] = '字段：' . $field . ' 不能为空';
 					$flag = false;
 					continue;
 				}
-				if (isset($this->ar[$field]))
+				if (isset($this->orm->ar[$field]))
 				{
-					$value = $this->ar[$field];
+					$value = $this->orm->ar[$field];
 					$len = strlen((string) $value);
 					//正则类型
 					if (isset($rule[1]))
@@ -152,17 +246,6 @@ abstract class Model
 	public function getErrors()
 	{
 		return $this->errors;
-	}
-
-	/**
-	* 以数组形式返回模型字段
-	* ======
-	* @author 洪波
-	* @version 17.02.21
-	*/
-	public function toArray()
-	{
-		return $this->ar;
 	}
 
 }

@@ -8,49 +8,59 @@
 namespace core\db;
 use core\Autumn;
 
-class Orm extends \core\web\Model
+class Orm
 {
-    //静态化实例
-	private static $_instance;
+	//模型表名称
+	public $table_name;
     //表主键
-    protected $pk = '';
+    public $pk = '';
+	//模型字段值
+	public $ar = [];
     //是否有动态记录
     protected $has_record = false;
 
-    public function __construct()
-    {
-        if ($this->table_name != '')
-        {
-            $this->struct();
-        }
-    }
-
-    /**
-	* 静态获取实例对象
+	/**
+	* 构造方法 - 获取表结构
 	* ======
-	* @param $table_name	操作表名称
-	* @param $new 			是否全新创建
-	* @param $db_config 	数据库配置
-	* ======
-	* @return object-self
+	* @param $table_name 表名称
 	* ======
 	* @author 洪波
-	* @version 16.02.25 - 16.12.07
+	* @version 17.03.02
 	*/
-	public static function model($table_name = '')
+    public function __construct($table_name)
 	{
-		if ($table_name != '')
-        {
-            self::$_instance = new self;
-            self::$_instance->table_name = $table_name;
-            self::$_instance->struct();
-        }
-        else
-        {
-            $sub_class = get_called_class();
-            self::$_instance = new $sub_class;
-        }
-        return self::$_instance;
+		$this->table_name = $table_name;
+		$this->struct();
+	}
+
+	/**
+	* 获取字段
+	* ======
+	* @param $key 	键
+	* ======
+	* @author 洪波
+	* @version 17.02.21
+	*/
+	public function __get($key)
+	{
+		if (isset($this->ar[$key]))
+		{
+			return $this->ar[$key];
+		}
+	}
+
+	/**
+	* 设置字段
+	* ======
+	* @param $key 	键
+	* @param $key 	值
+	* ======
+	* @author 洪波
+	* @version 17.02.21
+	*/
+	public function __set($key, $value)
+	{
+		$this->ar[$key] = htmlspecialchars(addslashes($value));
 	}
 
     /**
@@ -102,25 +112,6 @@ class Orm extends \core\web\Model
 			unset($st);
 		}
     }
-
-	/**
-	* 从数组加载键值到模型中
-	* ======
-	* @param $data 键值
-	* ======
-	* @author 洪波
-	* @version 17.02.21
-	*/
-	public function load($data)
-	{
-		foreach ($this->ar as $key => $value)
-		{
-			if (isset($data[$key]))
-			{
-				$this->ar[$key] = $data[$key];
-			}
-		}
-	}
 
     /**
 	* 统计表记录行数
@@ -178,14 +169,13 @@ class Orm extends \core\web\Model
 				$sql .= ' where ' . $condition;
 			}
 		}
-
 		$result = $this->getDb()->queryRow($sql);
-		
+
 		if($result)
         {
             $this->has_record = true;
             $this->ar = (array) $result;
-            return self::$_instance;
+            return $this;
         }
         else
         {
@@ -345,6 +335,17 @@ class Orm extends \core\web\Model
 			}
 		}
 		return $this->getDb()->query($sql);
+	}
+
+	/**
+	* 以数组形式返回模型字段
+	* ======
+	* @author 洪波
+	* @version 17.02.21
+	*/
+	public function toArray()
+	{
+		return $this->ar;
 	}
 
 }
