@@ -53,13 +53,13 @@ class Route
             $this->controller = $controller;
 			$this->action = $action;
         }
-        //载入控制器类
-		$class = str_replace('/', '\\', $this->config['path']) . ucfirst($this->controller) . 'Controller';
-		if($this->controller != '' && class_exists($class))
+        //加载控制器
+		$controller_path = $this->config['path'] . ucfirst($this->controller) . 'Controller';
+		if(is_file('./' . $controller_path . '.php'))
 		{
 			$action_name = 'action' . ucfirst($this->action);
 			//反射控制器
-			$controller_ref = new \ReflectionClass($class);
+			$controller_ref = new \ReflectionClass(str_replace('/', '\\', $controller_path));
 			if ($controller_ref->hasMethod($action_name))
 			{
 				//反射action
