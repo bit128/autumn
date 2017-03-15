@@ -73,13 +73,31 @@ class Request
 	*/
 	public function getPost($key, $default = '')
 	{
-		if(isset($_POST) && isset($_POST[$key]))
+		if(isset($_POST))
 		{
-			return $_POST[$key];
-		}
-		else
-		{
-			return $default;
+			if (! is_array($key))
+			{
+				if (isset($_POST[$key]))
+				{
+					return $_POST[$key];
+				}
+				else
+				{
+					return $default;
+				}
+			}
+			else
+			{
+				$params = [];
+				foreach ($key as $k)
+				{
+					if (isset($_POST[$k]))
+					{
+						$params[$k] = $_POST[$k];
+					}
+				}
+				return $params;
+			}
 		}
 	}
 
