@@ -57,7 +57,29 @@ class Route
 		$class = str_replace('/', '\\', $this->config['path']) . ucfirst($this->controller) . 'Controller';
 		if($this->controller != '' && class_exists($class))
 		{
-			new $class($this->action);
+			$action_name = 'action' . ucfirst($this->action);
+			//反射控制器
+			$controller_ref = new \ReflectionClass($class);
+			if ($controller_ref->hasMethod($action_name))
+			{
+				//反射action
+				$action_ref = $controller_ref->getMethod($action_name);
+				//反射参数列表，并绑定参数
+				$param_list = [];
+				foreach ($action_ref->getParameters() as $p)
+				{
+					$d = $p->isDefaultValueAvailable() ? $p->getDefaultValue() : '';
+					$v = Autumn::app()->request->getQuery($p->getName(), $d);
+					$param_list[] = $v;
+				}
+				$action_ref->invokeArgs($controller_ref->newInstance(), $param_list);
+				unset($controller_ref);
+				unset($action_ref);
+			}
+			else
+			{
+				Autumn::app()->exception->throws('404.2 您访问的页面不见了，呜呜～～');
+			}
 		}
 		else
 		{

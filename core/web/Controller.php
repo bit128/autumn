@@ -18,20 +18,10 @@ class Controller
 	* @author 洪波
 	* @version 16.03.09
 	*/
-	public function __construct($action_name)
+	public function __construct()
 	{
 		//初始化控制器
 		$this->init();
-		//执行动作
-		$action = 'action' . ucfirst($action_name);
-		if(method_exists($this, $action))
-		{
-			$this->$action();
-		}
-		else
-		{
-			Autumn::app()->exception->throws('404.2 您访问的页面不见了，呜呜～～');
-		}
 	}
 
 	/**
