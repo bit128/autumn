@@ -10,16 +10,19 @@ namespace core\web;
 abstract class Model
 {
 	//数据对象实例
-	protected $orm;
+	protected $orm = null;
 	//[重写]模型表名称
-	public $table_name;
+	public $table_name = '';
 	//验证字段错误信息
 	private $errors = [];
 
 	public function __construct()
 	{
 		$this->init();
-		$this->orm = new \core\db\Orm($this->table_name);
+		if ($table_name != '')
+		{
+			$this->orm = new \core\db\Orm($this->table_name);
+		}
 	}
 
 	/**
@@ -49,7 +52,10 @@ abstract class Model
 	*/
 	public function save()
 	{
-		return $this->orm->save();
+		if ($this->orm != null)
+		{
+			return $this->orm->save();
+		}
 	}
 
 	/**
@@ -60,7 +66,10 @@ abstract class Model
 	*/
 	public function get($id)
 	{
-		return $this->orm->find($this->orm->pk . "='{$id}'");
+		if ($this->orm != null)
+		{
+			return $this->orm->find($this->orm->pk . "='{$id}'");
+		}
 	}
 
 	/**
@@ -71,10 +80,13 @@ abstract class Model
 	*/
 	public function getList($criteria = '')
 	{
-		return [
-			'count' => $this->orm->count($criteria),
-			'result' => $this->orm->findAll($criteria)
-		];
+		if ($this->orm != null)
+		{
+			return [
+				'count' => $this->orm->count($criteria),
+				'result' => $this->orm->findAll($criteria)
+			];
+		}
 	}
 
 	/**
@@ -85,7 +97,10 @@ abstract class Model
 	*/
 	public function update($id, Array $data)
 	{
-		return $this->orm->updateAll($data, $this->orm->pk . "='{$id}'");
+		if ($this->orm != null)
+		{
+			return $this->orm->updateAll($data, $this->orm->pk . "='{$id}'");
+		}
 	}
 
 	/**
@@ -96,7 +111,10 @@ abstract class Model
 	*/
 	public function delete($id)
 	{
-		return $this->orm->deleteAll($this->orm->pk . "='{$id}'");
+		if ($this->orm != null)
+		{
+			return $this->orm->deleteAll($this->orm->pk . "='{$id}'");
+		}
 	}
 
 	/**
