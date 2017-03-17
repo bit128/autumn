@@ -19,10 +19,7 @@ abstract class Model
 	public function __construct()
 	{
 		$this->init();
-		if ($table_name != '')
-		{
-			$this->orm = new \core\db\Orm($this->table_name);
-		}
+		$this->orm = new \core\db\Orm($this->table_name);
 	}
 
 	/**
@@ -52,10 +49,7 @@ abstract class Model
 	*/
 	public function save()
 	{
-		if ($this->orm != null)
-		{
-			return $this->orm->save();
-		}
+		return $this->orm->save();
 	}
 
 	/**
@@ -66,10 +60,7 @@ abstract class Model
 	*/
 	public function get($id)
 	{
-		if ($this->orm != null)
-		{
-			return $this->orm->find($this->orm->pk . "='{$id}'");
-		}
+		return $this->orm->find($this->orm->pk . "='{$id}'");
 	}
 
 	/**
@@ -80,13 +71,10 @@ abstract class Model
 	*/
 	public function getList($criteria = '')
 	{
-		if ($this->orm != null)
-		{
-			return [
-				'count' => $this->orm->count($criteria),
-				'result' => $this->orm->findAll($criteria)
-			];
-		}
+		return [
+			'count' => $this->orm->count($criteria),
+			'result' => $this->orm->findAll($criteria)
+		];
 	}
 
 	/**
@@ -97,10 +85,7 @@ abstract class Model
 	*/
 	public function update($id, Array $data)
 	{
-		if ($this->orm != null)
-		{
-			return $this->orm->updateAll($data, $this->orm->pk . "='{$id}'");
-		}
+		return $this->orm->updateAll($data, $this->orm->pk . "='{$id}'");
 	}
 
 	/**
@@ -111,10 +96,7 @@ abstract class Model
 	*/
 	public function delete($id)
 	{
-		if ($this->orm != null)
-		{
-			return $this->orm->deleteAll($this->orm->pk . "='{$id}'");
-		}
+		return $this->orm->deleteAll($this->orm->pk . "='{$id}'");
 	}
 
 	/**
