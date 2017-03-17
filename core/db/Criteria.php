@@ -50,7 +50,7 @@ class Criteria
 	* @author 洪波
 	* @version 16.02.25
 	*/
-	public function addIn($column, $valuses, $operator = 'AND')
+	public function addIn($column, Array $valuses, $operator = 'AND')
 	{
 		$condition = $column . " IN ('" . implode("','", $valuses) . "')";
 		$this->addCondition($condition, $operator);
