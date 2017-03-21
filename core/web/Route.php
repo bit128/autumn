@@ -95,10 +95,8 @@ class Route
 	*/
 	private function parseUrl()
 	{
-		//$rc = Autumn::app()->config->get('router');
 		//用户路由规则
 		$custom_key = isset($this->config['route_alias']) ? array_keys($this->config['route_alias']) : null;
-
 		$url = str_replace($this->config['index'], '', $_SERVER['REQUEST_URI']);
 		//去除query string
 		if($c = strpos($url, '?'))
