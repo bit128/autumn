@@ -63,7 +63,7 @@ class Request
 		}
 		else if (isset($_GET) && isset($_GET[$key]))
 		{
-			$value = $_GET[$key];
+			$value = htmlspecialchars($_GET[$key]);
 		}
 		return $value;
 	}
