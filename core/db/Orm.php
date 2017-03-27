@@ -71,7 +71,7 @@ class Orm
     */
     public function getDb()
     {
-        return Autumn::app()->database;
+        return Autumn::app()->db;
     }
 
     /**

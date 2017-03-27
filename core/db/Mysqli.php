@@ -159,7 +159,7 @@ class Mysqli implements Db
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function rollback()
+	public function rollBack()
 	{
 		mysqli_rollback($this->connect);
 	}

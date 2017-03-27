@@ -35,13 +35,21 @@ return [
 			'cache_limit' => 86400
 		],
 		//数据库配置
-		'database' => [
+		//*
+		'db' => [
 			'class' => 'core\db\Mysqli',
 			'host' => '127.0.0.1',
 			'user' => 'root',
 			'password' => '',
-			'dbname' => ''
-		],
+			'dbname' => 'test'
+		],//*/
+		/*
+		'db' => [
+			'class' => 'core\db\Pdo',
+			'link' => 'mysql:host=127.0.0.1;dbname=test',
+			'user' => 'root',
+			'password' => ''
+		],//*/
 		/*
 		//缓存配置
 		'cache' => [
