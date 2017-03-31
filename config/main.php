@@ -53,11 +53,11 @@ return [
 		/*
 		//缓存配置
 		'cache' => [
-			'class' => 'library\Redis',
+			'class' => 'core\cache\Redis',
 			'host' => '127.0.0.1',
 			'port' => 6379,
-			'cache_db' => 0,
-			'cache_limit' => 60
+			'dbname' => 0,
+			'exp' => 60
 		],//*/
 	]
 ];
