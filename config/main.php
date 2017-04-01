@@ -59,7 +59,7 @@ return [
 		/*
 		//缓存配置
 		'cache' => [
-			'class' => 'core\cache\Redis',
+			'class' => 'core\cache\RedisExpress',
 			'host' => '127.0.0.1',
 			'port' => 6379,
 			'dbname' => 0,

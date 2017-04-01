@@ -5,7 +5,7 @@
 * @author 洪波
 * @version 17.02.15
 */
-namespace library;
+namespace core\tools;
 
 class MbString
 {

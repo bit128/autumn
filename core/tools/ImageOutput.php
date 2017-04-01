@@ -5,7 +5,7 @@
 * @author 洪波
 * @version 16.11.10
 */
-namespace library;
+namespace core\tools;
 
 class ImageOutput
 {

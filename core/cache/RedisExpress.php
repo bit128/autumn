@@ -1,6 +1,6 @@
 <?php
 /**
-* Redis缓存封装类
+* Redis缓存封装快捷类
 * ======
 * @author 洪波
 * @version 17.03.31
@@ -8,7 +8,7 @@
 namespace core\cache;
 use core\Autumn;
 
-class Redis implements Cache
+class RedisExpress implements Cache
 {
 
     protected $_cache   = null;	//缓存对象实例

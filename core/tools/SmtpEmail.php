@@ -6,7 +6,7 @@
 * @author 洪波
 * @version 16.05.08
 */
-namespace library;
+namespace core\tools;
 use core\Autumn;
 
 class SmtpEmail

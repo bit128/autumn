@@ -5,7 +5,7 @@
 * @author 洪波
 * @version 16.02.29
 */
-namespace library;
+namespace core\tools;
 
 class ValidateCode
 {

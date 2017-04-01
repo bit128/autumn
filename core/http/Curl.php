@@ -1,13 +1,13 @@
 <?php
 /**
-* HTTP请求类
+* Curl请求类
 * ======
 * @author 洪波
 * @version 16.02.29
 */
-namespace library;
+namespace core\http;
 
-class HttpRequest
+class Curl
 {
 	//请求地址
 	private $url = '';
@@ -98,7 +98,7 @@ class HttpRequest
 		}
 		//设置请求方法为GET
 		$this->method = self::METHOD_GET;
-		return $this->curl();
+		return $this->exec();
 	}
 
 	/**
@@ -127,7 +127,7 @@ class HttpRequest
 		}
 		//设置请求方法为POST
 		$this->method = self::METHOD_POST;
-		return $this->curl();
+		return $this->exec();
 	}
 
 	/**
@@ -136,7 +136,7 @@ class HttpRequest
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	private function curl()
+	private function exec()
 	{
 		if($this->url == '')
 		{
