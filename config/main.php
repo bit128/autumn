@@ -11,6 +11,12 @@ return [
 	//开启session
 	'session_start' => true,
 	'module' => [
+		/*
+		//系统日志
+		'log' => [
+			'class' => 'core\Log',
+			'path' => './app/logs/' . date('Ymd')
+		],//*/
 		//路由器设置
 		'route' => [
 			'class' => 'core\web\Route',
