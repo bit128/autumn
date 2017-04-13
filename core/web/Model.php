@@ -83,7 +83,7 @@ abstract class Model
 	* @author 洪波
 	* @version 17.03.02
 	*/
-	public function update($id, Array $data)
+	public function update($id, $data)
 	{
 		return $this->orm->updateAll($data, $this->orm->pk . "='{$id}'");
 	}

@@ -10,6 +10,9 @@ return [
 	'version' => '1',
 	//开启session
 	'session_start' => true,
+	//业务模型载入路径
+	'service_path' => 'app/models/',
+	//模块配置
 	'module' => [
 		/*
 		//系统日志
@@ -46,8 +49,8 @@ return [
 			'class' => 'core\db\Mysqli',
 			'host' => '127.0.0.1',
 			'user' => 'root',
-			'password' => '',
-			'dbname' => 'test'
+			'password' => 'hong_1987',
+			'dbname' => 'pandora'
 		],//*/
 		/*
 		'db' => [

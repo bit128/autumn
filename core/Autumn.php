@@ -9,13 +9,13 @@ namespace core;
 
 class Autumn
 {
-	const FRAMEWORK_VERSION = '1.7.2';
+	const FRAMEWORK_VERSION = '1.7.3';
 
 	//Autumn实例
 	private static $_instance = null;
 	
 	//核心对象实例栈
-	private $core_instance = array();
+	private $core_instance = [];
 
 	//核心对象驱动
 	private $core_class = [
