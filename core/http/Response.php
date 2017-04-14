@@ -13,12 +13,8 @@ class Response
 	const RES_OK		= 1;	//响应码 - 成功
 	const RES_FAIL		= 2;	//响应码 - 失败
 
-	//响应吗
-	protected $code;
 	//结果信息
 	protected $result;
-	//错误信息
-	protected $error;
 
 	public $code_discription = array(
 		self::RES_UNKNOW 	=> '未知状态',
@@ -35,17 +31,7 @@ class Response
 	public function __construct()
 	{
 		$this->flush();
-		$this->init();
 	}
-
-	/**
-	* 控制器初始化方法
-	* 子类重写用来替代构造方法
-	* ======
-	* @author 洪波
-	* @version 16.03.09
-	*/
-	public function init(){}
 
 	/**
 	* 刷新响应结果
@@ -55,9 +41,10 @@ class Response
 	*/
 	public function flush()
 	{
-		$this->code = self::RES_UNKNOW;
-		$this->result = '';
-		$this->error = '';
+		$this->result = [];
+		$this->result['code'] = self::RES_UNKNOW;
+		$this->result['result'] = '';
+		$this->result['error'] = '';
 	}
 
 	/**
@@ -74,35 +61,49 @@ class Response
 	{
 		if(in_array($code, array_keys($this->code_discription), true))
 		{
-			$this->code = $code;
-			if($this->code == self::RES_OK)
+			$this->result['code'] = $code;
+			if($this->result['code'] == self::RES_OK)
 			{
 				if($result != '')
 				{
-					$this->result = $result;
+					$this->result['result'] = $result;
 				}
 				else
 				{
-					$this->result = $this->code_discription[self::RES_OK];
+					$this->result['result'] = $this->code_discription[self::RES_OK];
 				}
 			}
 			else
 			{
 				if($error != '')
 				{
-					$this->error = $error;
+					$this->result['error'] = $error;
 				}
 				else
 				{
-					$this->error = $this->code_discription[$code];
+					$this->result['error'] = $this->code_discription[$code];
 				}
 			}
 		}
 		else
 		{
-			$this->code = self::RES_OK;
-			$this->result = $code;
+			$this->result['code'] = self::RES_OK;
+			$this->result['result'] = $code;
 		}
+	}
+
+	/**
+	* 设置额外结果集
+	* ======
+	* @param $key 	键
+	* @param $value 值
+	* ======
+	* @author 洪波
+	* @version 17.04.14
+	*/
+	public function setExtra($key, $value)
+	{
+		$this->result[$key] = $value;
 	}
 
 	/**
@@ -113,22 +114,17 @@ class Response
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	public function json($output = false)
+	public function json($output = true)
 	{
-		$rs = array(
-			'code' => $this->code,
-			'result' => $this->result,
-			'error' => $this->error,
-			'date' => date('Y-m-d H:i:s')
-			);
+		$this->result['date'] = date('Y-m-d H:i:s');
 		if($output)
 		{
 			header("Content-Type:application/json; charset=utf-8");
-			echo json_encode($rs);
+			echo json_encode($this->result);
 		}
 		else
 		{
-			return $rs;
+			return $this->result;
 		}
 	}
 
@@ -140,14 +136,10 @@ class Response
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	public function xml($output = false)
+	public function xml($output = true)
 	{
 		$rs = simplexml_load_string('<?xml version="1.0" encoding="utf-8" ?><ResponseRoot />');
-		$rs->addChild('code', $this->code);
-		$rs->addChild('result');
-		$this->addNode($rs->result, $this->result);
-		$rs->addChild('error', $this->error);
-		$rs->addChild('date', date('Y-m-d H:i:s'));
+		$this->addNode($rs, $this->result);
 		if($output)
 		{
 			header("Content-Type:text/xml; charset=utf-8");
