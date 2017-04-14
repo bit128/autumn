@@ -17,10 +17,13 @@ class Log
 
     //日志存储路径
     private $save_path;
+    //日志文件前缀
+    private $prefix = 'log';
 
     public function __construct($config)
     {
         $this->save_path = $config['path'];
+        $this->prefix = $config['prefix'];
     }
 
     /**
@@ -40,7 +43,7 @@ class Log
         {
             $data .= ' - '.$_SERVER['REMOTE_ADDR'];
         }
-        $file_name = $this->save_path . '_' . $type . '.log';
+        $file_name = $this->save_path . $this->prefix . '_' . $type . '.log';
         return file_put_contents($file_name, $data."\r\n", FILE_APPEND);
     }
 
@@ -63,7 +66,7 @@ class Log
             $match = '/^\d+\_[a-z]+\.log$/';
         }
         $file_list = [];
-        foreach (scandir(Logs::$base_path) as $file)
+        foreach (scandir($this->save_path) as $file)
         {
             if (preg_match($match, $file))
             {

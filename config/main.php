@@ -18,7 +18,8 @@ return [
 		//系统日志
 		'log' => [
 			'class' => 'core\Log',
-			'path' => './app/logs/' . date('Ymd')
+			'path' => './app/logs/',
+			'prefix' => date('Ymd')
 		],//*/
 		//路由器设置
 		'route' => [

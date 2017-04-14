@@ -65,7 +65,7 @@ class Request
 		{
 			$value = htmlspecialchars($_GET[$key]);
 		}
-		return $value;
+		return urldecode($value);
 	}
 
 	/**
