@@ -50,8 +50,8 @@ return [
 			'class' => 'core\db\Mysqli',
 			'host' => '127.0.0.1',
 			'user' => 'root',
-			'password' => 'hong_1987',
-			'dbname' => 'pandora'
+			'password' => '',
+			'dbname' => 'test'
 		],//*/
 		/*
 		'db' => [
