@@ -34,15 +34,26 @@ class Request
 	* 判断是否是post请求
 	* ======
 	* @author 洪波
-	* @version 16.07.06
+	* @version 17.04.18
 	*/
-	public function isPostRequest()
+	public function isPost()
 	{
 		if(isset($_SERVER['REQUEST_METHOD']))
 		{
 			return strtoupper($_SERVER['REQUEST_METHOD']) == 'POST' ? true : false;
 		}
 		return false;
+	}
+
+	/**
+	* [兼容Yii]判断是否是post请求
+	* ======
+	* @author 洪波
+	* @version 16.07.06
+	*/
+	public function isPostRequest()
+	{
+		return $this->isPost();
 	}
 
 	/**
