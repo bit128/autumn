@@ -205,6 +205,8 @@ class Orm
 					$sql .= ' ' . $condition->union;
 				if($condition->condition)
 					$sql .= ' where ' . $condition->condition;
+				if($condition->group)
+					$sql .= ' group by ' . $condition->group;
 				if($condition->order)
 					$sql .= ' order by ' . $condition->order;
 				if($condition->offset != -1)
