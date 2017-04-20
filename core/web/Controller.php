@@ -66,6 +66,17 @@ class Controller
 	public function init(){}
 
 	/**
+	* 默认404页面action
+	* ======
+	* @author 洪波
+	* @version 17.04.20
+	*/
+	public function actionNotFound()
+	{
+		Autumn::app()->exception->throws('404 NotFound. 您访问的页面不见了，呜呜～～');
+	}
+
+	/**
 	* 页面重定向
 	* ======
 	* @param $path 	定向路径

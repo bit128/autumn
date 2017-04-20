@@ -146,7 +146,7 @@ class Request
 	*/
 	public function setParam($key, $value)
 	{
-		Autumn::app()->query_params[$key] = $value;
+		Autumn::app()->route->query_params[$key] = $value;
 	}
 
 	/**

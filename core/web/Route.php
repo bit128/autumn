@@ -78,12 +78,12 @@ class Route
 			}
 			else
 			{
-				Autumn::app()->exception->throws('404.2 您访问的页面不见了，呜呜～～');
+				$this->start($this->controller, 'notFound');
 			}
 		}
 		else
 		{
-			Autumn::app()->exception->throws('404.1 您访问的页面不见了，呜呜～～');
+			$this->start($this->config['controller'], 'notFound');
 		}
 	}
 
