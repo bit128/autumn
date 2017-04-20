@@ -236,7 +236,7 @@ class Orm
 		if($this->has_record)
 		{
             $pk_val = $this->ar[$this->pk];
-			unset($this->ar[$this->pk]);
+			//unset($this->ar[$this->pk]);
 			return $this->updateAll($this->ar, "{$this->pk} = '{$pk_val}'");
 		}
 		//否则全新插入

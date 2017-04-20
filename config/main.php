@@ -18,7 +18,7 @@ return [
 		//系统日志
 		'log' => [
 			'class' => 'core\Log',
-			'path' => './app/logs/',
+			'path' => './app/runtime/logs/',
 			'prefix' => date('Ymd')
 		],//*/
 		//路由器设置
@@ -41,7 +41,7 @@ return [
 			'class' => 'core\web\View',
 			'layout' => 'layout',
 			'path' => 'app/views/',
-			'cache_dir' => 'app/runtime/',
+			'cache_dir' => 'app/runtime/pages/',
 			'cache_limit' => 86400
 		],
 		//数据库配置
