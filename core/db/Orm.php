@@ -174,7 +174,7 @@ class Orm
 		if($result)
         {
             $this->has_record = true;
-            $this->ar = (array) $result;
+            $this->ar = $result;
             return $this;
         }
         else

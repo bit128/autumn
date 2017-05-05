@@ -96,7 +96,7 @@ class Mysqli implements Db
 		$result = mysqli_query($this->connect, $sql);
 		if($result)
 		{
-			$row = mysqli_fetch_object($result);
+			$row = mysqli_fetch_array($result);
 			mysqli_free_result($result);
 			return $row;
 		}
@@ -117,7 +117,7 @@ class Mysqli implements Db
 		$result = mysqli_query($this->connect, $sql);
 		if($result)
 		{
-			$set = array();
+			$set = [];
 			while ($item = mysqli_fetch_object($result))
 			{
 				$set[] = $item;

@@ -43,8 +43,8 @@ class Response
 	{
 		$this->result = [];
 		$this->result['code'] = self::RES_UNKNOW;
-		$this->result['result'] = '';
-		$this->result['error'] = '';
+		$this->result['result'] = null;
+		$this->result['error'] = null;
 	}
 
 	/**
