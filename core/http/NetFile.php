@@ -51,39 +51,31 @@ class NetFile
 		{
 			$type = $_FILES[$post_name]['type'];
 			$size = $_FILES[$post_name]['size'];
-			//大小检测
-			if($size < 2000000)
+			if (is_uploaded_file($_FILES[$post_name]['tmp_name']))
 			{
-				if (is_uploaded_file($_FILES[$post_name]['tmp_name']))
+				//获取扩展名
+				$ext_name = strtolower(substr(strrchr($_FILES[$post_name]['name'], '.'), 1));
+				//新文件名称
+				$file_name = uniqid() . '.' . $ext_name;
+				//散射存储地址
+				$hash_file = $this->hashFolder($save_path, $file_name, $hash_type);
+				//开始上传
+				if (move_uploaded_file($_FILES[$post_name]['tmp_name'], $hash_file))
 				{
-					//获取扩展名
-					$ext_name = strtolower(substr(strrchr($_FILES[$post_name]['name'], '.'), 1));
-					//新文件名称
-					$file_name = uniqid() . '.' . $ext_name;
-					//散射存储地址
-					$hash_file = $this->hashFolder($save_path, $file_name, $hash_type);
-					//开始上传
-					if (move_uploaded_file($_FILES[$post_name]['tmp_name'], $hash_file))
-					{
-						//返回结果
-						$result['code'] = 1;
-						$result['uri'] = substr($hash_file, 1);
-						$result['size'] = $size;
-						$result['type'] = $ext_name;
-					}
-					else
-					{
-						$result['error'] = $this->errors[7];
-					}
+					//返回结果
+					$result['code'] = 1;
+					$result['uri'] = substr($hash_file, 1);
+					$result['size'] = $size;
+					$result['type'] = $ext_name;
 				}
 				else
 				{
-					$result['error'] = $this->errors[6];
+					$result['error'] = $this->errors[7];
 				}
 			}
 			else
 			{
-				$result['error'] = $this->errors[1];
+				$result['error'] = $this->errors[6];
 			}
 		}
 		else
