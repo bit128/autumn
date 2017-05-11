@@ -214,7 +214,7 @@ class View
 	private function getCachePath($view)
 	{
 		//尝试读取缓存
-		$cache = $this->config['cache_dir'] . $this->controller . '_' . $view;
+		$cache = $this->config['cache_dir'] . Autumn::app()->route->controller . '_' . $view;
 		foreach (array_merge(Autumn::app()->route->query_params, $_GET) as $k => $v)
 		{
 			$cache .= '_' . $k . '_' . $v;
