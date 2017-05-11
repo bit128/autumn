@@ -96,7 +96,7 @@ class Mysqli implements Db
 		$result = mysqli_query($this->connect, $sql);
 		if($result)
 		{
-			$row = mysqli_fetch_array($result);
+			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 			mysqli_free_result($result);
 			return $row;
 		}

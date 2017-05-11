@@ -86,7 +86,7 @@ class Request
 	* @param $default 	默认值
 	* ======
 	* @author 洪波
-	* @version 16.02.25
+	* @version 16.05.11
 	*/
 	public function getPost($key, $default = '')
 	{
@@ -94,7 +94,7 @@ class Request
 		{
 			if (! is_array($key))
 			{
-				if (isset($_POST[$key]))
+				if (isset($_POST[$key]) && $_POST[$key] != '')
 				{
 					return $_POST[$key];
 				}
