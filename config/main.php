@@ -45,10 +45,11 @@ return [
 			'cache_limit' => 86400
 		],
 		//数据库配置
+		/*
 		'db' => [
 			'class' => 'core\db\Sqlite',
 			'source' => 'app/runtimes/test.db'
-		],
+		],//*/
 		/*
 		'db' => [
 			'class' => 'core\db\Mysqli',

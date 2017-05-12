@@ -94,7 +94,7 @@ class Pdo implements Db
 	{
 		$stmt =$this->connect->prepare($sql);
 		$stmt->execute($params);
-		$result = $stmt->fetch(\PDO::FETCH_OBJ);
+		$result = $stmt->fetch(\PDO::FETCH_ASSOC);
 		$stmt->closeCursor();
 		return $result;
 	}
