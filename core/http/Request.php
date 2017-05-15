@@ -168,7 +168,7 @@ class Request
 	*/
 	public function getIp()
 	{
-		return $_SERVER['REMOTE_ADDR'];
+		return isset($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER["HTTP_X_REAL_IP"] : $_SERVER['REMOTE_ADDR'];
 	}
 
 	/**

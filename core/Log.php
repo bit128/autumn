@@ -34,15 +34,15 @@ class Log
     * @param $by_id     业务id
     * ======
     * @author 洪波
-    * @version 17.03.14
+    * @version 17.05.15
     */
-    public function write($content, $type = self::TYPE_NORMAL, $by_id = '0')
+    public function write($content, $type = self::TYPE_NORMAL, $by_id = '0', $flag = '0')
     {
-        $data = '['.date('H:i:s').'] '.$content.' - '.$by_id;
-        if ($type != self::TYPE_CLIENT)
-        {
-            $data .= ' - '.$_SERVER['REMOTE_ADDR'];
-        }
+        $data = '['.date('H:i:s').']'
+            . ' - ' . $flag
+            . ' - ' . Autumn::app()->request->getIp()
+            . ' - ' . $by_id
+            . ' - ' . $content;
         $file_name = $this->save_path . $this->prefix . '_' . $type . '.log';
         return file_put_contents($file_name, $data."\r\n", FILE_APPEND);
     }
