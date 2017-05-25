@@ -12,9 +12,9 @@ class Curl
 	//请求地址
 	private $url = '';
 	//请求数据
-	private $fields = array();
+	private $fields = [];
 	//请求消息头
-	private $headers = array();
+	private $headers = [];
 	//请求方法
 	private $method;
 	//响应结果
@@ -33,14 +33,14 @@ class Curl
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	public function __construct($url = '', $fields = array(), $headers = array())
+	public function __construct($url = '', $fields = [], $headers = [])
 	{	
 		$this->url = $url;
 		$this->fields = $fields;
-		$this->headers = array(
+		$this->headers = [
 			'User-Agent: Mozilla/5.0 Autumn 1.21'
-			);
-		$this->headers += $headers;
+		];
+		$this->headers = array_merge($this->headers, $headers);
 	}
 
 	/**
@@ -111,7 +111,7 @@ class Curl
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	public function post($url = '', $fields = array(), $headers = array())
+	public function post($url = '', $fields = [], $headers = [])
 	{
 		if($url != '')
 		{
@@ -123,7 +123,7 @@ class Curl
 		}
 		if($headers)
 		{
-			$this->headers += $headers;
+			$this->headers = array_merge($this->headers, $headers);
 		}
 		//设置请求方法为POST
 		$this->method = self::METHOD_POST;
