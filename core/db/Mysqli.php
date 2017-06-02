@@ -1,6 +1,6 @@
 <?php
 /**
-* Mysqli数据库操作基础类
+* Mysql数据库驱动实现类
 * ======
 * @author 洪波
 * @version 16.07.15
