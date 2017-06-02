@@ -34,9 +34,9 @@ class Exception
 			}
 			else
 			{
-				echo '<div style="text-align:center;padding:10px;border:1px dashed #ccc;color:#ff4e00;background:#eee;">',
+				echo '<div style="text-align:center;padding:10px;border:1px dotted #ccc;color:#ff4e00;background:#eee;border-radius:10px;">',
 					'<p style="color:#666;"><strong style="font-size:20px;">警告：系统异常</strong></p>',
-					'<div style="border-top:1px dashed #ccc; padding:20px;">',$content,'</div>',
+					'<div style="border-top:3px solid #ddd; padding:20px;">',$content,'</div>',
 					'<p style="color:#999;"><small>Autumn版本：',Autumn::FRAMEWORK_VERSION,'</small></p></div>';
 			}
 			if($interrupt)
