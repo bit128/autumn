@@ -141,6 +141,39 @@ class Orm
 		return $this->getDb()->queryScalar($sql);
 	}
 
+	/**
+	* 构建查询条件
+	* ======
+	* @param $condition 查询条件 string | Criteria
+	* @param $sql 		sql语句
+	* ======
+	* @author 洪波
+	* @version 17.06.02
+	*/
+	private function buildCondition($condition, &$sql)
+	{
+		if($condition instanceof Criteria)
+		{
+			$sql = "select " . $condition->select . " from " . $this->table_name;
+			if($condition->union)
+				$sql .= ' ' . $condition->union;
+			if($condition->condition)
+				$sql .= ' where ' . $condition->condition;
+			if($condition->group)
+				$sql .= ' group by ' . $condition->group;
+			if($condition->order)
+				$sql .= ' order by ' . $condition->order;
+			if($condition->offset != -1)
+				$sql .= ' limit ' . $condition->offset;
+			if($condition->limit != -1)
+				$sql .= ',' . $condition->limit;
+		}
+		else
+		{
+			$sql .= ' where ' . $condition;
+		}
+	}
+
     /**
 	* 查找单行记录
 	* ======
@@ -156,22 +189,9 @@ class Orm
 		$sql = "select * from " . $this->table_name;
 		if($condition)
 		{
-			if($condition instanceof Criteria)
-			{
-				$sql = "select " . $condition->select . " from " . $this->table_name;
-				if($condition->union)
-					$sql .= ' ' . $condition->union;
-				if($condition->condition)
-					$sql .= ' where ' . $condition->condition;
-			}
-			else
-			{
-				$sql .= ' where ' . $condition;
-			}
+			$this->buildCondition($condition, $sql);
 		}
-		$result = $this->getDb()->queryRow($sql);
-
-		if($result)
+		if($result = $this->getDb()->queryRow($sql))
         {
             $this->has_record = true;
             $this->ar = $result;
@@ -198,26 +218,7 @@ class Orm
 		$sql = "select * from " . $this->table_name;
 		if($condition)
 		{
-			if($condition instanceof Criteria)
-			{
-				$sql = "select " . $condition->select . " from " . $this->table_name;
-				if($condition->union)
-					$sql .= ' ' . $condition->union;
-				if($condition->condition)
-					$sql .= ' where ' . $condition->condition;
-				if($condition->group)
-					$sql .= ' group by ' . $condition->group;
-				if($condition->order)
-					$sql .= ' order by ' . $condition->order;
-				if($condition->offset != -1)
-					$sql .= ' limit ' . $condition->offset;
-				if($condition->limit != -1)
-					$sql .= ',' . $condition->limit;
-			}
-			else
-			{
-				$sql .= ' where ' . $condition;
-			}
+			$this->buildCondition($condition, $sql);
 		}
 		return $this->getDb()->queryAll($sql);
 	}
