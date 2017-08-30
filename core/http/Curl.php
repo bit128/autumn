@@ -38,7 +38,7 @@ class Curl
 		$this->url = $url;
 		$this->fields = $fields;
 		$this->headers = [
-			'User-Agent: Mozilla/5.0 Autumn 1.21'
+			'User-Agent: Mozilla/5.0 Autumn 1.8.2'
 		];
 		$this->headers = array_merge($this->headers, $headers);
 	}
