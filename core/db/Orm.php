@@ -63,6 +63,20 @@ class Orm
 		$this->ar[$key] = htmlspecialchars(addslashes($value));
 	}
 
+	/**
+	* （非格式化处理）设置字段
+	* ======
+	* @param $key 	键
+	* @param $key 	值
+	* ======
+	* @author 洪波
+	* @version 17.09.05
+	*/
+	public function setAttribute($key, $value)
+	{
+		$this->ar[$key] = $value;
+	}
+
     /**
     * 获取数据库连接对象
     * ======
@@ -100,7 +114,7 @@ class Orm
 				if($v->Key == 'PRI')
 				{
 					$this->pk = $v->Field;
-					#设置char(13)主键默认值为uniqid()
+					//设置char(13)主键默认值为uniqid()
 					if($v->Type == 'char(13)')
 					{
 						$d = uniqid();

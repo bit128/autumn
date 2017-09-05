@@ -57,7 +57,7 @@ class ValidateCode
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	private function getCode($count)
+	public function getCode($count)
 	{
 		if($count < self::LENGTH_MIN)
 		{
@@ -118,7 +118,7 @@ class ValidateCode
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	public function show($width = 60, $height = 30, $length = 4, $line = 10, $point = 50)
+	public function show($text, $width = 60, $height = 30, $line = 10, $point = 50)
 	{
 		$this->width = $width;
 		$this->height = $height;
@@ -131,7 +131,7 @@ class ValidateCode
 		//绘制雪花
 		$this->renderPoint($point);
 		//绘制验证码
-		imagestring($this->image, 5, rand(6,12), rand(4,8), $this->getCode($length), $this->randColor());
+		imagestring($this->image, 5, rand(6,12), rand(4,8), $text, $this->randColor());
 		//生成图片
 		header("Content-type: image/png");
 		imagepng($this->image);

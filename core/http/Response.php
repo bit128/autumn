@@ -16,6 +16,7 @@ class Response
 	const RES_TOKENF	= 4;	//响应码 - 令牌错误
 	const RES_REFUSE	= 5;	//响应码 - 拒绝操作
 	const RES_NOTHAS	= 6;	//响应码 - 不存在
+	const RES_NOCHAN	= 7;	//响应码 - 无变更
 
 	//结果信息
 	protected $result = [];
@@ -27,7 +28,8 @@ class Response
 		self::RES_PARAMF	=> '操作失败：参数类型错误，或者缺失',
 		self::RES_TOKENF	=> '操作失败：身份验证失败，或者权限不足',
 		self::RES_REFUSE	=> '操作失败：因安全策略，系统拒绝操作',
-		self::RES_NOTHAS	=> '操作失败：要操作的数据或者目标不存在'
+		self::RES_NOTHAS	=> '操作失败：要操作的数据或者目标不存在',
+		self::RES_NOCHAN	=> '操作结果无变化'
 		);
 
 	/**

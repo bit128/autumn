@@ -136,7 +136,7 @@ abstract class Model
 			{
 				if (isset ($this->orm->ar[$k]))
 				{
-					$this->orm->ar[$k] = $v;
+					$this->orm->ar[$k] = htmlspecialchars(addslashes($v));
 				}
 			}
 		}
@@ -146,7 +146,7 @@ abstract class Model
 			{
 				if (isset ($this->orm->ar[$k]))
 				{
-					$this->orm->ar[$k] = $v;
+					$this->orm->ar[$k] = htmlspecialchars(addslashes($v));
 				}
 			}
 		}
