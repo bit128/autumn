@@ -74,7 +74,7 @@ class Orm
 	*/
 	public function setAttribute($key, $value)
 	{
-		$this->ar[$key] = $value;
+		$this->ar[$key] = addslashes($value);
 	}
 
     /**

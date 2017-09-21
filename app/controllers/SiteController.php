@@ -17,9 +17,4 @@ class SiteController extends \core\web\Controller
 			Autumn::app()->config->get('app_name'), ' ',
 			Autumn::FRAMEWORK_VERSION;
 	}
-
-	public function actionTest()
-	{
-		Autumn::app()->view->render('form');
-	}
 }
