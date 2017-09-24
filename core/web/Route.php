@@ -15,7 +15,7 @@ class Route
 	//默认action
 	public $action = '';
 	//url参数表
-	public $query_params = array();
+	public $query_params = [];
 	//配置项
 	private $config;
 
@@ -158,5 +158,31 @@ class Route
 				-- $parse_count;
 			}
 		}
+	}
+
+	/**
+	* 返回替换过键值的url
+	* ======
+	* @param $key 	要替换的键
+	* @param $value	要替换的值
+	* ======
+	* @author 洪波
+	* @version 17.09.24
+	*/
+	public function replaceUrl($key, $value)
+	{
+		$url = '/' . $this->controller . '/' . $this->action;
+		foreach ($this->query_params + $_GET as $k => $v)
+		{
+			if ($k != $key)
+			{
+				$url .= '/' . $k . '/' . $v;
+			}
+			else
+			{
+				$url .= '/' . $key . '/' . $value;
+			}
+		}
+		return $url;
 	}
 }
