@@ -175,7 +175,7 @@ class Route
 		{
 			if (array_key_exists($k, $kvpair))
 			{
-				if ($kvpair[$k] !== NULL)
+				if ($kvpair[$k] !== NULL && $kvpair[$k] !== '')
 				{
 					$url .= '/' . $k . '/' . $kvpair[$k];
 				}
@@ -183,12 +183,14 @@ class Route
 			}
 			else
 			{
-				$url .= '/' . $k . '/' . $v;
+				if ($v != '')
+					$url .= '/' . $k . '/' . $v;
 			}
 		}
 		foreach ($kvpair as $k => $v)
 		{
-			$url .= '/' . $k . '/' . $v;
+			if ($v !== NULL && $v !== '')
+				$url .= '/' . $k . '/' . $v;
 		}
 		return $url;
 	}
