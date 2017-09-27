@@ -163,25 +163,32 @@ class Route
 	/**
 	* 返回替换过键值的url
 	* ======
-	* @param $key 	要替换的键
-	* @param $value	要替换的值
+	* @param $kvpair 键值对（如果值为null，表示移除对应的键值）
 	* ======
 	* @author 洪波
-	* @version 17.09.24
+	* @version 17.09.25
 	*/
-	public function replaceUrl($key, $value)
+	public function reUrl(array $kvpair)
 	{
 		$url = '/' . $this->controller . '/' . $this->action;
 		foreach ($this->query_params + $_GET as $k => $v)
 		{
-			if ($k != $key)
+			if (array_key_exists($k, $kvpair))
 			{
-				$url .= '/' . $k . '/' . $v;
+				if ($kvpair[$k] !== NULL)
+				{
+					$url .= '/' . $k . '/' . $kvpair[$k];
+				}
+				unset($kvpair[$k]);
 			}
 			else
 			{
-				$url .= '/' . $key . '/' . $value;
+				$url .= '/' . $k . '/' . $v;
 			}
+		}
+		foreach ($kvpair as $k => $v)
+		{
+			$url .= '/' . $k . '/' . $v;
 		}
 		return $url;
 	}
