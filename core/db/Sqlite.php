@@ -8,13 +8,11 @@
 namespace core\db;
 use core\Autumn;
 
-class Sqlite implements Db
-{
+class Sqlite implements Db {
     //连接对象实例
 	private $connect = null;
 
-    public function __construct($config)
-    {
+    public function __construct($config) {
 		$this->connect = new \SQLite3($config['source']);
     }
 
@@ -24,8 +22,7 @@ class Sqlite implements Db
 	* @author 洪波
 	* @version 15.05.05
 	*/
-	public function query($sql)
-    {
+	public function query($sql) {
 		return $this->connect->exec($sql);
 	}
 
@@ -35,8 +32,7 @@ class Sqlite implements Db
 	* @author 洪波
 	* @version 16.05.05
 	*/
-	public function queryScalar($sql)
-    {
+	public function queryScalar($sql) {
 		return $this->connect->querySingle($sql);
 	}
 
@@ -46,8 +42,7 @@ class Sqlite implements Db
 	* @author 洪波
 	* @version 16.05.05
 	*/
-	public function queryRow($sql)
-    {
+	public function queryRow($sql) {
 		return $this->connect->querySingle($sql, true);
 	}
 
@@ -57,21 +52,16 @@ class Sqlite implements Db
 	* @author 洪波
 	* @version 16.05.05
 	*/
-	public function queryAll($sql)
-    {
+	public function queryAll($sql) {
 		$result = $this->connect->query($sql);
-		if ($result)
-		{
+		if ($result) {
 			$set = [];
-			while ($item = $result->fetchArray(SQLITE3_ASSOC))
-			{
+			while ($item = $result->fetchArray(SQLITE3_ASSOC)) {
 				$set[] = (object) $item;
 			}
 			unset($result);
 			return $set;
-		}
-		else
-		{
+		} else {
 			Autumn::app()->exception->throws('数据库操作异常：'.$sql);
 		}
 	}

@@ -8,8 +8,7 @@
 namespace core\db;
 use core\Autumn;
 
-class Mysqli implements Db
-{
+class Mysqli implements Db {
 	//连接对象实例
 	private $connect = null;
 
@@ -19,14 +18,10 @@ class Mysqli implements Db
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function __construct($config)
-	{
-		if($this->connect = mysqli_connect($config['host'], $config['user'], $config['password'], $config['dbname']))
-		{
+	public function __construct($config) {
+		if($this->connect = mysqli_connect($config['host'], $config['user'], $config['password'], $config['dbname'])) {
 			mysqli_set_charset($this->connect, 'utf8');
-		}
-		else
-		{
+		} else {
 			Autumn::app()->exception->throws('数据库连接错误：' . mysqli_connect_error());
 		}
 	}
@@ -37,8 +32,7 @@ class Mysqli implements Db
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function __destruct()
-	{
+	public function __destruct() {
 		$this->close();
 	}
 
@@ -48,8 +42,7 @@ class Mysqli implements Db
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function insertId()
-	{
+	public function insertId() {
 		return mysqli_insert_id($this->connect);
 	}
 
@@ -59,8 +52,7 @@ class Mysqli implements Db
 	* @author 洪波
 	* @version 15.07.15
 	*/
-	public function query($sql)
-	{
+	public function query($sql) {
 		return mysqli_query($this->connect, $sql);
 	}
 
@@ -70,17 +62,13 @@ class Mysqli implements Db
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function queryScalar($sql)
-	{
+	public function queryScalar($sql) {
 		$result = mysqli_query($this->connect, $sql);
-		if($result)
-		{
+		if($result) {
 			$set = mysqli_fetch_array($result);
 			mysqli_free_result($result);
 			return $set[0];
-		}
-		else
-		{
+		} else {
 			Autumn::app()->exception->throws('数据库操作异常：' . mysqli_error($this->connect));
 		}
 	}
@@ -91,17 +79,13 @@ class Mysqli implements Db
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function queryRow($sql)
-	{
+	public function queryRow($sql) {
 		$result = mysqli_query($this->connect, $sql);
-		if($result)
-		{
+		if($result) {
 			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 			mysqli_free_result($result);
 			return $row;
-		}
-		else
-		{
+		} else {
 			Autumn::app()->exception->throws('数据库操作异常：' . mysqli_error($this->connect));
 		}
 	}
@@ -112,21 +96,16 @@ class Mysqli implements Db
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function queryAll($sql)
-	{
+	public function queryAll($sql) {
 		$result = mysqli_query($this->connect, $sql);
-		if($result)
-		{
+		if($result) {
 			$set = [];
-			while ($item = mysqli_fetch_object($result))
-			{
+			while ($item = mysqli_fetch_object($result)) {
 				$set[] = $item;
 			}
 			mysqli_free_result($result);
 			return $set;
-		}
-		else
-		{
+		} else {
 			Autumn::app()->exception->throws('数据库操作异常：' . mysqli_error($this->connect));
 		}
 	}
@@ -137,8 +116,7 @@ class Mysqli implements Db
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function beginTransaction()
-	{
+	public function beginTransaction() {
 		mysqli_autocommit($this->connect, false);
 	}
 
@@ -148,8 +126,7 @@ class Mysqli implements Db
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function commit()
-	{
+	public function commit() {
 		mysqli_commit($this->connect);
 	}
 
@@ -159,8 +136,7 @@ class Mysqli implements Db
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function rollBack()
-	{
+	public function rollBack() {
 		mysqli_rollback($this->connect);
 	}
 
@@ -170,10 +146,8 @@ class Mysqli implements Db
 	* @author 洪波
 	* @version 16.11.16
 	*/
-	public function close()
-	{
-		if($this->connect != null)
-		{
+	public function close() {
+		if($this->connect != null) {
 			mysqli_close($this->connect);
 			$this->connect = null;
 		}

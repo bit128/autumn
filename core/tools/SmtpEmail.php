@@ -9,8 +9,7 @@
 namespace core\tools;
 use core\Autumn;
 
-class SmtpEmail
-{
+class SmtpEmail {
 	private $host;
 	private $port;
 	private $user;
@@ -19,8 +18,7 @@ class SmtpEmail
 	private $types = 'text/html';
 	private $debug;
 
-	public function __construct($config)
-	{
+	public function __construct($config) {
 		//设置邮箱服务信息
 		$this->host = $config['host'];
 		$this->port = $config['port'];
@@ -30,15 +28,11 @@ class SmtpEmail
 
 		//建立套接字连接
 		$this->socket = fsockopen($this->host, $this->port, $errorno, $errstr, 30);
-		if(! $this->socket)
-		{
+		if(! $this->socket) {
 			Autumn::app()->exception->throws('连接邮件服务器出错：',$errstr);
-		}
-		else
-		{
+		} else {
 			$response = fgets($this->socket);
-			if(strstr($response, '220') === false)
-			{
+			if(strstr($response, '220') === false) {
 				Autumn::app()->exception->throws('邮件服务器响应异常');
 			}
 			//调试信息
@@ -54,15 +48,11 @@ class SmtpEmail
 	* @author 洪波
 	* @version 16.05.08
 	*/
-	public static function checkEmailAddr($email)
-	{
+	public static function checkEmailAddr($email) {
 		$pattern = "/^[^_][\w]*@[\w.]+[\w]*[^_]$/";
-		if(preg_match($pattern, $email, $mathces))
-		{
+		if(preg_match($pattern, $email, $mathces)) {
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
@@ -76,8 +66,7 @@ class SmtpEmail
 	* @author 洪波
 	* @version 16.05.08
 	*/
-	private function sendCommand($command, $code)
-	{
+	private function sendCommand($command, $code) {
 
 		fwrite($this->socket, $command);
 		$response = fgets($this->socket);
@@ -94,10 +83,8 @@ class SmtpEmail
 	* @author 洪波
 	* @version 16.05.08
 	*/
-	private function debugMessage($message)
-	{
-		if($this->debug)
-		{
+	private function debugMessage($message) {
+		if($this->debug) {
 			echo $message, '<br>';
 		}
 	}
@@ -113,10 +100,8 @@ class SmtpEmail
 	* @author 洪波
 	* @version 16.05.08
 	*/
-	public function sendEmail($from, $to, $subject, $body)
-	{
-		if(self::checkEmailAddr($from) && self::checkEmailAddr($to))
-		{
+	public function sendEmail($from, $to, $subject, $body) {
+		if(self::checkEmailAddr($from) && self::checkEmailAddr($to)) {
 			//组合请求报文
 			$content = "From:" . $from . "\r\n";
 			$content .= "To:" . $to . "\r\n";
@@ -140,9 +125,7 @@ class SmtpEmail
 			$this->sendCommand("QUIT\r\n", 221);
 
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}

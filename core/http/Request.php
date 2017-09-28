@@ -8,8 +8,7 @@
 namespace core\http;
 use core\Autumn;
 
-class Request
-{
+class Request {
 	//cookie生存时间
 	private $cookie_limit = 7200;
 	//类静态实例
@@ -21,10 +20,8 @@ class Request
 	* @author 洪波
 	* @version 16.03.01
 	*/
-	public static function inst()
-	{
-		if(! (self::$_instance instanceof self))
-		{
+	public static function inst() {
+		if(! (self::$_instance instanceof self)) {
 			self::$_instance = new self();
 		}
 		return self::$_instance;
@@ -36,10 +33,8 @@ class Request
 	* @author 洪波
 	* @version 17.04.18
 	*/
-	public function isPost()
-	{
-		if(isset($_SERVER['REQUEST_METHOD']))
-		{
+	public function isPost() {
+		if(isset($_SERVER['REQUEST_METHOD'])) {
 			return strtoupper($_SERVER['REQUEST_METHOD']) == 'POST' ? true : false;
 		}
 		return false;
@@ -51,8 +46,7 @@ class Request
 	* @author 洪波
 	* @version 16.07.06
 	*/
-	public function isPostRequest()
-	{
+	public function isPostRequest() {
 		return $this->isPost();
 	}
 
@@ -65,15 +59,11 @@ class Request
 	* @author 洪波
 	* @version 16.02.25
 	*/
-	public function getQuery($key, $default = '')
-	{
+	public function getQuery($key, $default = '') {
 		$value = $default;
-		if (isset(Autumn::app()->route->query_params[$key]))
-		{
+		if (isset(Autumn::app()->route->query_params[$key])) {
 			$value = Autumn::app()->route->query_params[$key];
-		}
-		else if (isset($_GET) && isset($_GET[$key]))
-		{
+		} else if (isset($_GET) && isset($_GET[$key])) {
 			$value = htmlspecialchars($_GET[$key]);
 		}
 		return urldecode($value);
@@ -88,28 +78,18 @@ class Request
 	* @author 洪波
 	* @version 16.05.11
 	*/
-	public function getPost($key, $default = '')
-	{
-		if(isset($_POST))
-		{
-			if (! is_array($key))
-			{
-				if (isset($_POST[$key]) && $_POST[$key] != '')
-				{
+	public function getPost($key, $default = '') {
+		if(isset($_POST)) {
+			if (! is_array($key)) {
+				if (isset($_POST[$key]) && $_POST[$key] != '') {
 					return $_POST[$key];
-				}
-				else
-				{
+				} else {
 					return $default;
 				}
-			}
-			else
-			{
+			} else {
 				$params = [];
-				foreach ($key as $k)
-				{
-					if (isset($_POST[$k]))
-					{
+				foreach ($key as $k) {
+					if (isset($_POST[$k])) {
 						$params[$k] = $_POST[$k];
 					}
 				}
@@ -124,14 +104,11 @@ class Request
 	* @author 洪波
 	* @version 16.02.25
 	*/
-	public function getParam($key, $default = '')
-	{
+	public function getParam($key, $default = '') {
 		$value = $this->getQuery($key);
-		if($value == '')
-		{
+		if($value == '') {
 			$value = $this->getPost($key);
 		}
-
 		return $value != '' ? $value : $default;
 	}
 
@@ -144,8 +121,7 @@ class Request
 	* @author 洪波
 	* @version 16.12.16
 	*/
-	public function setParam($key, $value)
-	{
+	public function setParam($key, $value) {
 		Autumn::app()->route->query_params[$key] = $value;
 	}
 
@@ -155,8 +131,7 @@ class Request
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	public function getAgent()
-	{
+	public function getAgent() {
 		return isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 	}
 
@@ -166,8 +141,7 @@ class Request
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	public function getIp()
-	{
+	public function getIp() {
 		return isset($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER["HTTP_X_REAL_IP"] : $_SERVER['REMOTE_ADDR'];
 	}
 
@@ -177,8 +151,7 @@ class Request
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	public function getTime()
-	{
+	public function getTime() {
 		return $_SERVER['REQUEST_TIME'];
 	}
 
@@ -191,8 +164,7 @@ class Request
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function setSession($key, $value)
-	{
+	public function setSession($key, $value) {
 		$_SESSION[$key] = $value;
 	}
 
@@ -205,14 +177,10 @@ class Request
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function getSession($key, $default = '')
-	{
-		if(isset($_SESSION[$key]))
-		{
+	public function getSession($key, $default = '') {
+		if(isset($_SESSION[$key])) {
 			return $_SESSION[$key];
-		}
-		else
-		{
+		} else {
 			return $default;
 		}
 	}
@@ -223,8 +191,7 @@ class Request
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function destorySession()
-	{
+	public function destorySession() {
 		session_destroy();
 	}
 
@@ -238,10 +205,8 @@ class Request
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function setCookie($key, $value, $limit = 0)
-	{
-		if($limit <= 0)
-		{
+	public function setCookie($key, $value, $limit = 0) {
+		if($limit <= 0) {
 			$limit = $this->cookie_limit;
 		}
 		$value = base64_encode($value);
@@ -258,14 +223,10 @@ class Request
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function getCookie($key, $default = '')
-	{
-		if(isset($_COOKIE[$key]))
-		{
+	public function getCookie($key, $default = '') {
+		if(isset($_COOKIE[$key])) {
 			return base64_decode($_COOKIE[$key]);
-		}
-		else
-		{
+		} else {
 			return $default;
 		}
 	}
@@ -278,8 +239,7 @@ class Request
 	* @author 洪波
 	* @version 16.07.15
 	*/
-	public function deleteCookie($key)
-	{
+	public function deleteCookie($key) {
 		setcookie($key, '', 0, '/');
 		$_COOKIE[$key] = '';
 	}
@@ -290,8 +250,7 @@ class Request
 	* @author 洪波
 	* @version 17.02.21
 	*/
-	public function createToken()
-	{
+	public function createToken() {
 		$str = md5($this->getIp() . $this->getTime() . rand(1000, 9999));
 		$this->setCookie('csrf_token', $str, 3600);
 		echo '<input type="hidden" value="', $str, '" name="csrf_token" />';
@@ -303,13 +262,11 @@ class Request
 	* @author 洪波
 	* @version 17.02.21
 	*/
-	public function checkToken()
-	{
+	public function checkToken() {
 		$flag = false;
 		$form_token = $this->getPost('csrf_token');
 		$csrf_token = $this->getCookie('csrf_token');
-		if ($csrf_token != '' && $csrf_token == $form_token)
-		{
+		if ($csrf_token != '' && $csrf_token == $form_token) {
 			$flag = true;
 		}
 		$this->deleteCookie('csrf_token');

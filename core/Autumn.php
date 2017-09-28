@@ -7,9 +7,8 @@
 */
 namespace core;
 
-class Autumn
-{
-	const FRAMEWORK_VERSION = '1.8.5';
+class Autumn {
+	const FRAMEWORK_VERSION = '1.8.6';
 
 	//Autumn实例
 	private static $_instance = null;
@@ -31,23 +30,15 @@ class Autumn
 	* @author 洪波
 	* @version 16.11.16
 	*/
-	public function __get($module_name)
-	{
-		if(isset($this->core_instance[$module_name]))
-		{
+	public function __get($module_name) {
+		if(isset($this->core_instance[$module_name])) {
 			return $this->core_instance[$module_name];
-		}
-		else
-		{
-			if ($module_name != 'config' && $c = Autumn::app()->config->get('module.' . $module_name))
-			{
+		} else {
+			if ($module_name != 'config' && $c = Autumn::app()->config->get('module.' . $module_name)) {
 				$this->core_instance[$module_name] = new $c['class']($c);
 				return $this->core_instance[$module_name];
-			}
-			else
-			{
-				if(isset($this->core_class[$module_name]) && class_exists($this->core_class[$module_name]))
-				{
+			} else {
+				if(isset($this->core_class[$module_name]) && class_exists($this->core_class[$module_name])) {
 					$this->core_instance[$module_name] = new $this->core_class[$module_name];
 					return $this->core_instance[$module_name];
 				}
@@ -61,16 +52,12 @@ class Autumn
 	* @author 洪波
 	* @version 16.02.26
 	*/
-	public function __construct()
-	{
-		spl_autoload_register(function($classname){
+	public function __construct() {
+		spl_autoload_register(function($classname) {
 			$file = str_replace('\\', '/', $classname) . '.php';
-			if(is_file($file))
-			{
+			if(is_file($file)) {
 				require_once($file);
-			}
-			else
-			{
+			} else {
 				Autumn::app()->exception->throws($classname . ' 类没有找到，请检查命名空间或确认引入路径是否正确');
 			}
 		});
@@ -90,11 +77,9 @@ class Autumn
 	* @author 洪波
 	* @version 16.02.26
 	*/
-	public static function app()
-	{
+	public static function app() {
 		//如果实例不存在，则全新实例化
-		if(! (self::$_instance instanceof self))
-		{
+		if(! (self::$_instance instanceof self)) {
 			self::$_instance = new self;
 		}
 		return self::$_instance;
@@ -106,10 +91,8 @@ class Autumn
 	* @author 洪波
 	* @version 16.03.31
 	*/
-	public function run()
-	{
-		if(Autumn::app()->config->get('session_start'))
-		{
+	public function run() {
+		if(Autumn::app()->config->get('session_start')) {
 			session_start();
 		}
 		Autumn::app()->route->start();

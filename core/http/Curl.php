@@ -7,8 +7,7 @@
 */
 namespace core\http;
 
-class Curl
-{
+class Curl {
 	//请求地址
 	private $url = '';
 	//请求数据
@@ -33,8 +32,7 @@ class Curl
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	public function __construct($url = '', $fields = [], $headers = [])
-	{	
+	public function __construct($url = '', $fields = [], $headers = []) {	
 		$this->url = $url;
 		$this->fields = $fields;
 		$this->headers = [
@@ -51,8 +49,7 @@ class Curl
 	* @author 洪波
 	* @version 14.05.14
 	*/
-	public function setUrl($url)
-	{
+	public function setUrl($url) {
 		$this->url = $url;
 	}
 
@@ -64,8 +61,7 @@ class Curl
 	* @author 洪波
 	* @version 14.05.14
 	*/
-	public function setHeaders($headers)
-	{
+	public function setHeaders($headers) {
 		$this->headers = $headers;
 	}
 
@@ -77,8 +73,7 @@ class Curl
 	* @author 洪波
 	* @version 14.05.14
 	*/
-	public function setFields($fields)
-	{
+	public function setFields($fields) {
 		$this->fields = $fields;
 	}
 
@@ -90,10 +85,8 @@ class Curl
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	public function get($url = '')
-	{
-		if($url != '')
-		{
+	public function get($url = '') {
+		if($url != '') {
 			$this->url = $url;
 		}
 		//设置请求方法为GET
@@ -111,18 +104,14 @@ class Curl
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	public function post($url = '', $fields = [], $headers = [])
-	{
-		if($url != '')
-		{
+	public function post($url = '', $fields = [], $headers = []) {
+		if($url != '') {
 			$this->url = $url;
 		}
-		if($fields)
-		{
+		if($fields) {
 			$this->fields = $fields;
 		}
-		if($headers)
-		{
+		if($headers) {
 			$this->headers = array_merge($this->headers, $headers);
 		}
 		//设置请求方法为POST
@@ -136,22 +125,18 @@ class Curl
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	private function exec()
-	{
-		if($this->url == '')
-		{
+	private function exec() {
+		if($this->url == '') {
 			die('the url is null!');
 		}	
 		$ch = curl_init($this->url);
 		//设置消息头
-		if($this->headers)
-		{
+		if($this->headers) {
 			//print_r($this->headers);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
 		}
 		//设置请求方法
-		if($this->method == self::METHOD_POST)
-		{
+		if($this->method == self::METHOD_POST) {
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $this->fields);
 		}

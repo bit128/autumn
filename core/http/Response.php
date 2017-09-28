@@ -7,8 +7,7 @@
 */
 namespace core\http;
 
-class Response
-{
+class Response {
 	const RES_UNKNOW	= 0;	//响应码 - 未知
 	const RES_OK		= 1;	//响应码 - 成功
 	const RES_FAIL		= 2;	//响应码 - 失败
@@ -38,8 +37,7 @@ class Response
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	public function __construct()
-	{
+	public function __construct() {
 		$this->flush();
 	}
 
@@ -49,8 +47,7 @@ class Response
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	public function flush()
-	{
+	public function flush() {
 		$this->result = [];
 		$this->result['code'] = self::RES_UNKNOW;
 		$this->result['result'] = null;
@@ -67,36 +64,23 @@ class Response
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	public function setResult($code = 0, $result = '', $error = '')
-	{
-		if(in_array($code, array_keys($this->code_discription), true))
-		{
+	public function setResult($code = 0, $result = '', $error = '') {
+		if(in_array($code, array_keys($this->code_discription), true)) {
 			$this->result['code'] = $code;
-			if($this->result['code'] == self::RES_OK)
-			{
-				if($result != '')
-				{
+			if($this->result['code'] == self::RES_OK) {
+				if($result != '') {
 					$this->result['result'] = $result;
-				}
-				else
-				{
+				} else {
 					$this->result['result'] = $this->code_discription[self::RES_OK];
 				}
-			}
-			else
-			{
-				if($error != '')
-				{
+			} else {
+				if($error != '') {
 					$this->result['error'] = $error;
-				}
-				else
-				{
+				} else {
 					$this->result['error'] = $this->code_discription[$code];
 				}
 			}
-		}
-		else
-		{
+		} else {
 			$this->result['code'] = self::RES_OK;
 			$this->result['result'] = $code;
 		}
@@ -113,8 +97,7 @@ class Response
 	* @author 洪波
 	* @version 17.08.30
 	*/
-	public function set($code = 0, $result = '', $error = '')
-	{
+	public function set($code = 0, $result = '', $error = '') {
 		$this->result['code'] = $code;
 		$this->result['result'] = $result;
 		$this->result['error'] = $error;
@@ -130,8 +113,7 @@ class Response
 	* @author 洪波
 	* @version 17.04.14
 	*/
-	public function setExtra($key, $value)
-	{
+	public function setExtra($key, $value) {
 		$this->result[$key] = $value;
 		return $this;
 	}
@@ -144,16 +126,12 @@ class Response
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	public function json($output = true)
-	{
+	public function json($output = true) {
 		$this->result['date'] = date('Y-m-d H:i:s');
-		if($output)
-		{
+		if($output) {
 			header("Content-Type:application/json; charset=utf-8");
 			echo json_encode($this->result);
-		}
-		else
-		{
+		} else {
 			return $this->result;
 		}
 	}
@@ -166,17 +144,13 @@ class Response
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	public function xml($output = true)
-	{
+	public function xml($output = true) {
 		$rs = simplexml_load_string('<?xml version="1.0" encoding="utf-8" ?><ResponseRoot />');
 		$this->addNode($rs, $this->result);
-		if($output)
-		{
+		if($output) {
 			header("Content-Type:text/xml; charset=utf-8");
 			echo $rs->asXML();
-		}
-		else
-		{
+		} else {
 			return $rs;
 		}
 	}
@@ -190,20 +164,14 @@ class Response
 	* @author 洪波
 	* @version 16.07.13
 	*/
-	private function addNode($xml, $data)
-	{
-		foreach ($data as $k => $v)
-		{
-			if(is_numeric($k))
-			{
+	private function addNode($xml, $data) {
+		foreach ($data as $k => $v) {
+			if(is_numeric($k)) {
 				$k = 'item';
 			}
-			if(is_array($v) || is_object($v))
-			{
+			if(is_array($v) || is_object($v)) {
 				$this->addNode($xml->addChild($k), $v);
-			}
-			else
-			{
+			} else {
 				$xml->addChild($k, $v);
 			}
 		}

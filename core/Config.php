@@ -7,8 +7,7 @@
 */
 namespace core;
 
-class Config
-{
+class Config {
     //配置列表组
     protected $config_list = [];
 
@@ -21,8 +20,7 @@ class Config
     * @author 洪波
     * @version 17.02.20
     */
-    public function set($config_uri)
-    {
+    public function set($config_uri) {
         $this->config_list = require_once($config_uri);
     }
 
@@ -36,36 +34,24 @@ class Config
     * @author 洪波
     * @version 17.02.20
     */
-    public function get($key, $default = '')
-    {
+    public function get($key, $default = '') {
         $dir = explode('.', $key);
         $temp = '';
 
-        foreach ($dir as $d)
-        {
-            if ($d == '')
-            {
+        foreach ($dir as $d) {
+            if ($d == '') {
                 break;
             }
-            if (is_array($temp))
-            {
-                if (isset($temp[$d]))
-                {
+            if (is_array($temp)) {
+                if (isset($temp[$d])) {
                     $temp = $temp[$d];
-                }
-                else
-                {
+                } else {
                     $temp = $default;
                     break;
                 }
-            }
-            else if (isset($this->config_list[$d]))
-            {
+            } else if (isset($this->config_list[$d])) {
                 $temp = $this->config_list[$d];
-            }
-            else
-            {
-                
+            } else {
                 $temp = $default;
                 break;
             }
@@ -83,8 +69,7 @@ class Config
     * @author 洪波
     * @version 17.02.20
     */
-    public function add($key, $value)
-    {
+    public function add($key, $value) {
         $this->config_list[$key] = $value;
     }
 }

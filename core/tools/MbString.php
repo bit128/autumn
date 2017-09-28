@@ -7,8 +7,7 @@
 */
 namespace core\tools;
 
-class MbString
-{
+class MbString {
     const TYPE_UTF8     = "/[\x01-\x7f]|[\xc2-\xdf][\x80-\xbf]|[\xe0-\xef][\x80-\xbf]{2}|[\xf0-\xff][\x80-\xbf]{3}/";
     const TYPE_GB2312   = "/[\x01-\x7f]|[\xb0-\xf7][\xa0-\xfe]/";
     const TYPE_GBK      = "/[\x01-\x7f]|[\x81-\xfe][\x40-\xfe]/";
@@ -25,11 +24,9 @@ class MbString
     * @author 洪波
     * @version 17.02.15
     */
-    public static function substr($string, $start, $length = 0, $charset = self::TYPE_UTF8)
-    {
+    public static function substr($string, $start, $length = 0, $charset = self::TYPE_UTF8) {
         preg_match_all($charset, $string, $matches);
-        if ($length == 0)
-        {
+        if ($length == 0) {
             $length = count($matches[0]) - $start;
         }
         return implode("", array_slice($matches[0], $start, $length));

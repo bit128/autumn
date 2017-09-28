@@ -7,8 +7,7 @@
 */
 namespace core\web;
 
-abstract class Model
-{
+abstract class Model {
 	//数据对象实例
 	protected $orm = null;
 	//[重写]模型表名称
@@ -16,8 +15,7 @@ abstract class Model
 	//验证字段错误信息
 	private $errors = [];
 
-	public function __construct()
-	{
+	public function __construct() {
 		$this->init();
 		$this->orm = new \core\db\Orm($this->table_name);
 	}
@@ -36,8 +34,7 @@ abstract class Model
 	* @author 洪波
 	* @version 17.03.02
 	*/
-	public function getOrm()
-	{
+	public function getOrm() {
 		return $this->orm;
 	}
 
@@ -47,8 +44,7 @@ abstract class Model
 	* @author 洪波
 	* @version 17.03.02
 	*/
-	public function save()
-	{
+	public function save() {
 		return $this->orm->save();
 	}
 
@@ -58,8 +54,7 @@ abstract class Model
 	* @author 洪波
 	* @version 17.03.02
 	*/
-	public function get($id)
-	{
+	public function get($id) {
 		return $this->orm->find($this->orm->pk . "='{$id}'");
 	}
 
@@ -69,8 +64,7 @@ abstract class Model
 	* @author 洪波
 	* @version 17.03.02
 	*/
-	public function getList($criteria = '')
-	{
+	public function getList($criteria = '') {
 		return [
 			'count' => $this->orm->count($criteria),
 			'result' => $this->orm->findAll($criteria)
@@ -83,8 +77,7 @@ abstract class Model
 	* @author 洪波
 	* @version 17.03.02
 	*/
-	public function update($id, $data)
-	{
+	public function update($id, $data) {
 		return $this->orm->updateAll($data, $this->orm->pk . "='{$id}'");
 	}
 
@@ -94,8 +87,7 @@ abstract class Model
 	* @author 洪波
 	* @version 17.03.02
 	*/
-	public function delete($id)
-	{
+	public function delete($id) {
 		return $this->orm->deleteAll($this->orm->pk . "='{$id}'");
 	}
 
@@ -105,8 +97,7 @@ abstract class Model
 	* @author 洪波
 	* @version 17.02.21
 	*/
-	public function rules()
-    {
+	public function rules() {
         return [];
 		/*
 		return [
@@ -127,25 +118,17 @@ abstract class Model
 	* @author 洪波
 	* @version 17.03.02
 	*/
-	public function load($data = [], $post = false)
-	{
-
-		if ($post)
-		{
-			foreach ($_POST as $k => $v)
-			{
-				if (isset ($this->orm->ar[$k]))
-				{
+	public function load($data = [], $post = false) {
+		if ($post) {
+			foreach ($_POST as $k => $v) {
+				if (isset ($this->orm->ar[$k])) {
 					$this->orm->ar[$k] = htmlspecialchars(addslashes($v));
 				}
 			}
 		}
-		if ($data)
-		{
-			foreach ($data as $k => $v)
-			{
-				if (isset ($this->orm->ar[$k]))
-				{
+		if ($data) {
+			foreach ($data as $k => $v) {
+				if (isset ($this->orm->ar[$k])) {
 					$this->orm->ar[$k] = htmlspecialchars(addslashes($v));
 				}
 			}
@@ -158,46 +141,37 @@ abstract class Model
 	* @author 洪波
 	* @version 17.02.21
 	*/
-	public function validate()
-	{
+	public function validate() {
 		$flag = true;
 		$this->errors = [];
 		
-		if ($this->rules())
-		{
-			foreach ($this->rules() as $field => $rule)
-			{
-				if ($rule[0] && !isset($this->orm->ar[$field]))
-				{
+		if ($this->rules()) {
+			foreach ($this->rules() as $field => $rule) {
+				if ($rule[0] && !isset($this->orm->ar[$field])) {
 					$this->errors[] = '字段：' . $field . ' 不能为空';
 					$flag = false;
 					continue;
 				}
-				if (isset($this->orm->ar[$field]))
-				{
+				if (isset($this->orm->ar[$field])) {
 					$value = $this->orm->ar[$field];
 					$len = strlen((string) $value);
 					//正则类型
-					if (isset($rule[1]))
-					{
+					if (isset($rule[1])) {
 						switch ($rule[1]) {
 							case 'email':
-								if (! preg_match("/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/", $value))
-								{
+								if (! preg_match("/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/", $value)) {
 									$this->errors[] = '字段：' . $field . ' 必须是有效的Email地址';
 									$flag = false;
 								}
 								break;
 							case 'number':
-								if (! preg_match("/\d/", $value))
-								{
+								if (! preg_match("/\d/", $value)) {
 									$this->errors[] = '字段：' . $field . ' 必须是数字';
 									$flag = false;
 								}
 								break;
 							case 'word':
-								if (! preg_match("/\w/", $value))
-								{
+								if (! preg_match("/\w/", $value)) {
 									$this->errors[] = '字段：' . $field . ' 不支持中文或特殊字符';
 									$flag = false;
 								}
@@ -208,25 +182,19 @@ abstract class Model
 								break;
 						}	
 					}
-					//长度测量-有最小值和最大值
-					if (isset($rule[3]))
-					{
-						if ($len < $rule[2])
-						{
+					if (isset($rule[3])) {
+						//长度测量-有最小值和最大值
+						if ($len < $rule[2]) {
 							$this->errors[] = '字段：' . $field . ' 长度不能小于' . $rule[2];
 							$flag = false;
 						}
-						if ($len > $rule[3])
-						{
+						if ($len > $rule[3]) {
 							$this->errors[] = '字段：' . $field . ' 长度不能大于' . $rule[3];
 							$flag = false;
 						}
-					}
-					//长度测量-仅有最大值
-					else if (isset($rule[2]))
-					{
-						if ($len > $rule[2])
-						{
+					} else if (isset($rule[2])) {
+						//长度测量-仅有最大值
+						if ($len > $rule[2]) {
 							$this->errors[] = '字段：' . $field . ' 长度不能大于' . $rule[2];
 							$flag = false;
 						}
@@ -243,8 +211,7 @@ abstract class Model
 	* @author 洪波
 	* @version 17.02.21
 	*/
-	public function getErrors()
-	{
+	public function getErrors() {
 		return $this->errors;
 	}
 

@@ -7,8 +7,7 @@
 */
 namespace core;
 
-class Log
-{
+class Log {
     const TYPE_NORMAL   = 'normal';  //类型 - 通用
     const TYPE_USER     = 'user';    //类型 - 用户
     const TYPE_CLIENT   = 'client';  //类型 - 终端
@@ -20,8 +19,7 @@ class Log
     //日志文件前缀
     private $prefix = 'log';
 
-    public function __construct($config)
-    {
+    public function __construct($config) {
         $this->save_path = $config['path'];
         $this->prefix = $config['prefix'];
     }
@@ -36,8 +34,7 @@ class Log
     * @author 洪波
     * @version 17.05.15
     */
-    public function write($content, $type = self::TYPE_NORMAL, $by_id = '0', $flag = '0')
-    {
+    public function write($content, $type = self::TYPE_NORMAL, $by_id = '0', $flag = '0') {
         $data = '['.date('H:i:s').']'
             . ' - ' . $flag
             . ' - ' . Autumn::app()->request->getIp()
@@ -55,21 +52,15 @@ class Log
     * @author 洪波
     * @version 17.03.14
     */
-    public function getFileList($type = '')
-    {
-        if ($type != '')
-        {
+    public function getFileList($type = '') {
+        if ($type != '') {
             $match = '/^\d+\_' . $type . '\.log$/';
-        }
-        else
-        {
+        } else {
             $match = '/^\d+\_[a-z]+\.log$/';
         }
         $file_list = [];
-        foreach (scandir($this->save_path) as $file)
-        {
-            if (preg_match($match, $file))
-            {
+        foreach (scandir($this->save_path) as $file) {
+            if (preg_match($match, $file)) {
                 $file_list[] = $file;
             }
         }
@@ -85,8 +76,7 @@ class Log
     * @author 洪波
     * @version 17.03.14
     */
-    public function getContent($file_name)
-    {
+    public function getContent($file_name) {
         return file_get_contents(Logs::$base_path . $file_name);
     }
 }

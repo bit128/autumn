@@ -7,8 +7,7 @@
 */
 namespace core\http;
 
-class NetFile
-{
+class NetFile {
 
 	//以日期形式散射文件夹 例如：/16/11/10/file_name.xxx
 	const HASH_DATE = 1;
@@ -37,8 +36,7 @@ class NetFile
 	* @author 洪波
 	* @version 16.02.29 - 16.11.10
 	*/
-	public function upload($save_path = './', $post_name = 'file_name', $hash_type = 0)
-	{
+	public function upload($save_path = './', $post_name = 'file_name', $hash_type = 0) {
 		$result = array(
 			'code' => 0,
 			'error' => '',
@@ -47,12 +45,10 @@ class NetFile
 			'type' => ''
 			);
 		//纠错
-		if ($_FILES[$post_name]['error'] == 0)
-		{
+		if ($_FILES[$post_name]['error'] == 0) {
 			$type = $_FILES[$post_name]['type'];
 			$size = $_FILES[$post_name]['size'];
-			if (is_uploaded_file($_FILES[$post_name]['tmp_name']))
-			{
+			if (is_uploaded_file($_FILES[$post_name]['tmp_name'])) {
 				//获取扩展名
 				$ext_name = strtolower(substr(strrchr($_FILES[$post_name]['name'], '.'), 1));
 				//新文件名称
@@ -60,30 +56,22 @@ class NetFile
 				//散射存储地址
 				$hash_file = $this->hashFolder($save_path, $file_name, $hash_type);
 				//开始上传
-				if (move_uploaded_file($_FILES[$post_name]['tmp_name'], $hash_file))
-				{
+				if (move_uploaded_file($_FILES[$post_name]['tmp_name'], $hash_file)) {
 					//返回结果
 					$result['code'] = 1;
 					$result['uri'] = substr($hash_file, 1);
 					$result['size'] = $size;
 					$result['type'] = $ext_name;
-				}
-				else
-				{
+				} else {
 					$result['error'] = $this->errors[7];
 				}
-			}
-			else
-			{
+			} else {
 				$result['error'] = $this->errors[6];
 			}
-		}
-		else
-		{
+		} else {
 			$error_id = $_FILES[$post_name]['error'];
 			$result['error'] = $this->errors[$error_id];
 		}
-
 		return $result;
 	}
 
@@ -96,19 +84,14 @@ class NetFile
 	* @author 洪波
 	* @version 16.11.10
 	*/
-	private function hashFolder($save_path, $file_name, $hash_type)
-	{
-		if ($hash_type == self::HASH_DATE)
-		{
+	private function hashFolder($save_path, $file_name, $hash_type) {
+		if ($hash_type == self::HASH_DATE) {
 			$save_path .= date('y/m/d/');
-		}
-		else if ($hash_type == self::HASH_NAME)
-		{
+		} else if ($hash_type == self::HASH_NAME) {
 			$save_path .= substr($file_name, 11, 2) . '/';
 		}
 		//判断文件夹是否存在并创建
-		if(! file_exists($save_path))
-		{
+		if(! file_exists($save_path)) {
 			mkdir($save_path, 0777, true);
 		}
 		return $save_path . $file_name;
@@ -122,10 +105,8 @@ class NetFile
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	public static function deleteFile($src)
-	{
-		if(is_file($src))
-		{
+	public static function deleteFile($src) {
+		if(is_file($src)) {
 			@unlink($src);
 		}
 	}
@@ -139,8 +120,7 @@ class NetFile
 	* @author 洪波
 	* @version 16.07.14
 	*/
-	public function download($src, $save_path, $hash_type = 0)
-	{
+	public function download($src, $save_path, $hash_type = 0) {
 		$ext_name = strtolower(strrchr($src, '.'));
 		//文件路径
 		$file_name = uniqid() . $ext_name;
@@ -161,8 +141,7 @@ class NetFile
 	* @author 洪波
 	* @version 16.11.21
 	*/
-	public function sendFile($file_data, $url, $post_name)
-	{
+	public function sendFile($file_data, $url, $post_name) {
 		$boundary = md5(microtime());
 		$data = array();
 		array_push($data, '--' . $boundary);

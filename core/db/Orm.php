@@ -8,8 +8,7 @@
 namespace core\db;
 use core\Autumn;
 
-class Orm
-{
+class Orm {
 	//模型表名称
 	public $table_name;
     //表主键
@@ -27,8 +26,7 @@ class Orm
 	* @author 洪波
 	* @version 17.03.02
 	*/
-    public function __construct($table_name)
-	{
+    public function __construct($table_name) {
 		$this->table_name = $table_name;
 		$this->struct();
 	}
@@ -41,10 +39,8 @@ class Orm
 	* @author 洪波
 	* @version 17.02.21
 	*/
-	public function __get($key)
-	{
-		if (isset($this->ar[$key]))
-		{
+	public function __get($key) {
+		if (isset($this->ar[$key])) {
 			return $this->ar[$key];
 		}
 	}
@@ -58,8 +54,7 @@ class Orm
 	* @author 洪波
 	* @version 17.02.21
 	*/
-	public function __set($key, $value)
-	{
+	public function __set($key, $value) {
 		$this->ar[$key] = htmlspecialchars(addslashes($value));
 	}
 
@@ -72,8 +67,7 @@ class Orm
 	* @author 洪波
 	* @version 17.09.05
 	*/
-	public function setAttribute($key, $value)
-	{
+	public function setAttribute($key, $value) {
 		$this->ar[$key] = addslashes($value);
 	}
 
@@ -83,8 +77,7 @@ class Orm
     * @author 洪波
     * @version 17.02.21
     */
-    public function getDb()
-    {
+    public function getDb() {
         return Autumn::app()->db;
     }
 
@@ -94,29 +87,23 @@ class Orm
     * @author 洪波
     * @version 17.02.21
     */
-    public function struct()
-    {
+    public function struct() {
         //获取表结构
 		$st = $this->getDb()->queryAll('desc ' . $this->table_name);
-		if($st)
-		{
+		if($st) {
 			$number = array('int', 'tinyint', 'smallint', 'mediumint', 'bigint', 'float', 'double', 'decimal');
-			foreach ($st as $v)
-			{
+			foreach ($st as $v) {
 				//判定字段类型
 				$d = '';
 				$t = explode('(', $v->Type)[0];
-				if(in_array($t, $number))
-				{
+				if(in_array($t, $number)) {
 					$d = 0;
 				}
 				//判定主键
-				if($v->Key == 'PRI')
-				{
+				if($v->Key == 'PRI') {
 					$this->pk = $v->Field;
 					//设置char(13)主键默认值为uniqid()
-					if($v->Type == 'char(13)')
-					{
+					if($v->Type == 'char(13)') {
 						$d = uniqid();
 					}
 				}
@@ -137,18 +124,13 @@ class Orm
 	* @author 洪波
 	* @version 16.02.25
 	*/
-	public function count($condition = null)
-	{
+	public function count($condition = null) {
 		$sql = 'select count(*) from ' . $this->table_name;
-		if($condition)
-		{
-			if($condition instanceof Criteria)
-			{
+		if($condition) {
+			if($condition instanceof Criteria) {
 				if($condition->condition)
 					$sql .= ' where ' . $condition->condition;
-			}
-			else
-			{
+			} else {
 				$sql .= ' where ' . $condition;
 			}
 		}
@@ -164,10 +146,8 @@ class Orm
 	* @author 洪波
 	* @version 17.06.02
 	*/
-	private function buildCondition($condition, &$sql)
-	{
-		if($condition instanceof Criteria)
-		{
+	private function buildCondition($condition, &$sql) {
+		if($condition instanceof Criteria) {
 			$sql = "select " . $condition->select . " from " . $this->table_name;
 			if($condition->union)
 				$sql .= ' ' . $condition->union;
@@ -181,9 +161,7 @@ class Orm
 				$sql .= ' limit ' . $condition->offset;
 			if($condition->limit != -1)
 				$sql .= ',' . $condition->limit;
-		}
-		else
-		{
+		} else {
 			$sql .= ' where ' . $condition;
 		}
 	}
@@ -198,21 +176,16 @@ class Orm
 	* @author 洪波
 	* @version 16.02.26
 	*/
-	public function find($condition = null)
-	{
+	public function find($condition = null) {
 		$sql = "select * from " . $this->table_name;
-		if($condition)
-		{
+		if($condition) {
 			$this->buildCondition($condition, $sql);
 		}
-		if($result = $this->getDb()->queryRow($sql))
-        {
+		if($result = $this->getDb()->queryRow($sql))  {
             $this->has_record = true;
             $this->ar = $result;
             return $this;
-        }
-        else
-        {
+        }  else {
             return false;
         }
 	}
@@ -227,11 +200,9 @@ class Orm
 	* @author 洪波
 	* @version 16.02.26
 	*/
-	public function findAll($condition = null)
-	{
+	public function findAll($condition = null) {
 		$sql = "select * from " . $this->table_name;
-		if($condition)
-		{
+		if($condition) {
 			$this->buildCondition($condition, $sql);
 		}
 		return $this->getDb()->queryAll($sql);
@@ -245,27 +216,21 @@ class Orm
 	* @author 洪波
 	* @version 16.02.26
 	*/
-	public function save()
-	{
-		//如果有动态记录，则更新
-		if($this->has_record)
-		{
+	public function save() {
+		if($this->has_record) {
+			//如果有动态记录，则更新
             $pk_val = $this->ar[$this->pk];
 			//unset($this->ar[$this->pk]);
 			return $this->updateAll($this->ar, "{$this->pk} = '{$pk_val}'");
-		}
-		//否则全新插入
-		else
-		{
+		} else {
+			//否则全新插入
 			$field = '';
 			$value = '';
-			foreach ($this->ar as $k => $v)
-			{
+			foreach ($this->ar as $k => $v) {
 				$field .= ',' . $k;
 				$value .= ",'" . $v . "'";
 			}
 			$sql = "insert into " . $this->table_name . " (" . substr($field, 1) . ") values (" . substr($value, 1) . ")";
-
 			return $this->getDb()->query($sql);
 		}
 	}
@@ -281,24 +246,18 @@ class Orm
 	* @author 洪波
 	* @version 16.02.26
 	*/
-	public function updateAll($data, $condition)
-	{	
+	public function updateAll($data, $condition) {	
 		$sql = "update " . $this->table_name . " set ";
 		$set = "";
-		foreach ($data as $k => $v)
-		{
+		foreach ($data as $k => $v) {
 			$set .= "," . $k . "='" . addslashes($v) . "'";
 		}
 		$sql .= substr($set, 1);
-		if($condition)
-		{
-			if($condition instanceof Criteria)
-			{
+		if($condition) {
+			if($condition instanceof Criteria) {
 				if($condition->condition)
 					$sql .= ' where ' . $condition->condition;
-			}
-			else
-			{
+			} else {
 				$sql .= ' where ' . $condition;
 			}
 		}
@@ -313,15 +272,11 @@ class Orm
 	* @author 洪波
 	* @version 16.02.26
 	*/
-	public function delete()
-	{
-		if($this->has_record)
-		{
+	public function delete() {
+		if($this->has_record) {
 			$pk_val = $this->ar[$this->pk];
 			return $this->deleteAll("{$this->pk} = '{$pk_val}'");
-		}
-		else
-		{
+		} else {
 			return 0;
 		}
 	}
@@ -336,18 +291,13 @@ class Orm
 	* @author 洪波
 	* @version 16.02.26
 	*/
-	public function deleteAll($condition)
-	{
+	public function deleteAll($condition) {
 		$sql = "delete from " . $this->table_name;
-		if($condition)
-		{
-			if($condition instanceof Criteria)
-			{
+		if($condition) {
+			if($condition instanceof Criteria) {
 				if($condition->condition)
 					$sql .= ' where ' . $condition->condition;
-			}
-			else
-			{
+			} else {
 				$sql .= ' where ' . $condition;
 			}
 		}
@@ -360,8 +310,7 @@ class Orm
 	* @author 洪波
 	* @version 17.02.21
 	*/
-	public function toArray()
-	{
+	public function toArray() {
 		return $this->ar;
 	}
 

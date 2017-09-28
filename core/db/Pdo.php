@@ -8,8 +8,7 @@
 namespace core\db;
 use core\Autumn;
 
-class Pdo implements Db
-{
+class Pdo implements Db {
 	//连接对象实例
 	private $connect = null;
 
@@ -19,15 +18,11 @@ class Pdo implements Db
 	* @author 洪波
 	* @version 17.03.27
 	*/
-	public function __construct($config)
-	{
-		try
-		{
+	public function __construct($config) {
+		try {
             $this->connect = new \PDO($config['link'], $config['user'], $config['password']);
 			$this->connect->exec('set names utf8');
-		}
-        catch (PDOException $e)
-        {
+		} catch (PDOException $e) {
             Autumn::app()->exception->throws('数据库连接错误：' . $e->getMessage());
         }
 	}
@@ -38,8 +33,7 @@ class Pdo implements Db
 	* @author 洪波
 	* @version 17.03.27
 	*/
-	public function __destruct()
-	{
+	public function __destruct() {
 		$this->close();
 	}
 
@@ -49,8 +43,7 @@ class Pdo implements Db
 	* @author 洪波
 	* @version 17.03.27
 	*/
-	public function insertId()
-	{
+	public function insertId() {
 		return $this->connect->lastInsertId();
 	}
 
@@ -60,8 +53,7 @@ class Pdo implements Db
 	* @author 洪波
 	* @version 15.07.15
 	*/
-	public function query($sql, $params = [])
-	{
+	public function query($sql, $params = []) {
 		$stmt =$this->connect->prepare($sql);
 		$stmt->execute($params);
 		$result = $stmt->rowCount();
@@ -75,8 +67,7 @@ class Pdo implements Db
 	* @author 洪波
 	* @version 17.03.27
 	*/
-	public function queryScalar($sql, $params = [])
-	{
+	public function queryScalar($sql, $params = []) {
 		$stmt =$this->connect->prepare($sql);
 		$stmt->execute($params);
 		$result = $stmt->fetchColumn();
@@ -90,8 +81,7 @@ class Pdo implements Db
 	* @author 洪波
 	* @version 17.03.27
 	*/
-	public function queryRow($sql, $params = [])
-	{
+	public function queryRow($sql, $params = []) {
 		$stmt =$this->connect->prepare($sql);
 		$stmt->execute($params);
 		$result = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -105,8 +95,7 @@ class Pdo implements Db
 	* @author 洪波
 	* @version 17.03.27
 	*/
-	public function queryAll($sql, $params = [])
-	{
+	public function queryAll($sql, $params = []) {
         $stmt =$this->connect->prepare($sql);
 		$stmt->execute($params);
 		$result = $stmt->fetchAll(\PDO::FETCH_OBJ);
@@ -120,8 +109,7 @@ class Pdo implements Db
 	* @author 洪波
 	* @version 17.03.27
 	*/
-	public function beginTransaction()
-	{
+	public function beginTransaction() {
 		return $this->connect->beginTransaction();
 	}
 
@@ -131,8 +119,7 @@ class Pdo implements Db
 	* @author 洪波
 	* @version 17.03.27
 	*/
-	public function commit()
-	{
+	public function commit() {
 		return $this->connect->commit();
 	}
 
@@ -142,8 +129,7 @@ class Pdo implements Db
 	* @author 洪波
 	* @version 17.03.27
 	*/
-	public function rollBack()
-	{
+	public function rollBack() {
 		return $this->connect->rollBack();
 	}
 
@@ -153,10 +139,8 @@ class Pdo implements Db
 	* @author 洪波
 	* @version 16.11.16
 	*/
-	public function close()
-	{
-		if($this->connect != null)
-		{
+	public function close() {
+		if($this->connect != null) {
 			$this->connect = null;
 		}
 	}

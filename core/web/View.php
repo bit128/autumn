@@ -8,8 +8,7 @@
 namespace core\web;
 use core\Autumn;
 
-class View
-{
+class View {
 	//视图配置信息
 	private $config;
 
@@ -21,8 +20,7 @@ class View
 	* @author 洪波
 	* @version 17.02.23
 	*/
-	public function __construct($config)
-	{
+	public function __construct($config) {
 		//视图配置
 		$this->config = $config;
 	}
@@ -35,11 +33,9 @@ class View
 	* @author 洪波
 	* @version 17.02.23
 	*/
-	public static function layout($layout_name = '')
-	{
+	public static function layout($layout_name = '') {
 		$c = Autumn::app()->config->get('module.view');
-		if ($layout_name != '')
-		{
+		if ($layout_name != '') {
 			$c['layout'] = $layout_name;
 		}
 		return new self($c);
@@ -54,32 +50,24 @@ class View
 	* @author 洪波
 	* @version 15.02.25
 	*/
-	public function render($view, $data = array(), $output = true)
-	{
+	public function render($view, $data = array(), $output = true) {
 		$layout = $this->config['path'] . $this->config['layout'] . '.php';
-		if(is_file($layout))
-		{
+		if(is_file($layout)) {
 			$content = $this->renderPartial($view, $data, false);
 			//layout加载用户变量
-			if(is_array($data))
-			{
+			if(is_array($data)) {
 				extract($data, EXTR_PREFIX_SAME, 'data');
 			}
 			//加载layout视图
 			ob_start();
 			ob_implicit_flush(false);
 			include($layout);
-			if($output)
-			{
+			if($output) {
 				echo ob_get_clean();
-			}
-			else
-			{
+			} else {
 				return ob_get_clean();
 			}
-		}
-		else
-		{
+		} else {
 			Autumn::app()->exception->throws('视图模板未找到，请检查路径');
 		}
 	}
@@ -93,15 +81,12 @@ class View
 	* @author 洪波
 	* @version 16.02.25
 	*/
-	public function renderPartial($view, $data = array(), $output = true)
-	{
+	public function renderPartial($view, $data = array(), $output = true) {
 		$route = Autumn::app()->route->controller . DIRECTORY_SEPARATOR . $view;
 		$view = $this->config['path'] . $route . '.php';
-		if(is_file($view))
-		{
+		if(is_file($view)) {
 			//载入用户变量
-			if(is_array($data))
-			{
+			if(is_array($data)) {
 				extract($data, EXTR_PREFIX_SAME, 'data');
 			}
 			//渲染视图内容
@@ -109,17 +94,12 @@ class View
 			ob_start();
 			ob_implicit_flush(false);
 			require($view);
-			if($output)
-			{
+			if($output) {
 				echo ob_get_clean();
-			}
-			else
-			{
+			} else {
 				return ob_get_clean();
 			}
-		}
-		else
-		{
+		} else {
 			Autumn::app()->exception->throws('视图文件未找到，请检查路径');
 		}
 	}
@@ -134,44 +114,30 @@ class View
 	* @author 洪波
 	* @version 16.03.29
 	*/
-	public function renderCache($view, $data = array(), $partial = false)
-	{
-		//如果视图通过post请求，则不使用缓存策略
-		if(isset($_POST) && $_POST)
-		{
-			if($partial)
-			{
+	public function renderCache($view, $data = array(), $partial = false) {
+		//如果视图通过post请求，则不使用缓存策略 | 否则开启缓存机制
+		if(isset($_POST) && $_POST) {
+			
+			if($partial) {
 				$this->renderPartial($view, $data);
-			}
-			else
-			{
+			} else {
 				$this->render($view, $data);
 			}
-		}
-		//否则开启缓存机制
-		else
-		{
+		} else {
 			$cache = $this->getCachePath($view);
 			//判断缓存文件是否存在，是否过期
 			if(is_file($cache)
-				&& time() - filemtime($cache) < $this->config['cache_limit'])
-			{
+				&& time() - filemtime($cache) < $this->config['cache_limit']) {
 				header("Content-Type:text/html; charset=UTF-8");
 				echo file_get_contents($cache);
-			}
-			else
-			{
+			} else {
 				$content = '';
-				if($partial)
-				{
+				if($partial) {
 					$content = $this->renderPartial($view, $data, false);
-				}
-				else
-				{
+				} else {
 					$content = $this->render($view, $data, false);
 				}
-				if($content)
-				{
+				if($content) {
 					//缓存视图文件
 					file_put_contents($cache, $content);
 					//输出视图
@@ -189,16 +155,12 @@ class View
 	* @author 洪波
 	* @version 16.11.04
 	*/
-	public function hasCache($view)
-	{
+	public function hasCache($view) {
 		$cache = $this->getCachePath($view);
 		if(is_file($cache)
-			&& time() - filemtime($cache) < $this->config['cache_limit'])
-		{
+			&& time() - filemtime($cache) < $this->config['cache_limit']) {
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
@@ -211,16 +173,13 @@ class View
 	* @author 洪波
 	* @version 16.11.04
 	*/
-	private function getCachePath($view)
-	{
+	private function getCachePath($view) {
 		//尝试读取缓存
 		$cache = $this->config['cache_dir'] . Autumn::app()->route->controller . '_' . $view;
-		foreach (array_merge(Autumn::app()->route->query_params, $_GET) as $k => $v)
-		{
+		foreach (array_merge(Autumn::app()->route->query_params, $_GET) as $k => $v) {
 			$cache .= '_' . $k . '_' . $v;
 		}
 		$cache .= '.html';
 		return $cache;
 	}
-
 }

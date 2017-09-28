@@ -7,8 +7,7 @@
 */
 namespace core\tools;
 
-class Pagination
-{
+class Pagination {
 
 	//总页数
 	private $all_page;
@@ -41,8 +40,7 @@ class Pagination
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	public function __construct($all_count, $limit, $now_page, $redirect)
-	{
+	public function __construct($all_count, $limit, $now_page, $redirect) {
 		$this->all_page = ceil($all_count / $limit);
 		$this->now_page = (int)$now_page;
 		$this->redirect = $redirect;
@@ -66,8 +64,7 @@ class Pagination
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	public function setStyle($outside_start, $outside_end, $item_start, $item_end, $item_checked)
-	{
+	public function setStyle($outside_start, $outside_end, $item_start, $item_end, $item_checked) {
 		$this->outside_start = $outside_start;
 		$this->outside_end = $outside_end;
 		$this->item_start = $item_start;
@@ -83,19 +80,15 @@ class Pagination
 	* @author 洪波
 	* @version 13.11.05
 	*/
-	public function setParams($param)
-	{
-		if(is_array($param))
-		{
+	public function setParams($param) {
+		if(is_array($param)) {
 			$p = '';
 			foreach ($param as $k => $v)
 			{
 				$p .= '/' . $k . '/' . $v;
 			}
 			$this->redirect .= $p;
-		}
-		else
-		{
+		} else {
 			$this->redirect .= $param;
 		}
 	}
@@ -106,17 +99,15 @@ class Pagination
 	* @author 洪波
 	* @version 13.11.05
 	*/
-	public function build()
-	{
+	public function build() {
 		//首页
 		$html = $this->outside_start.$this->item_start.'<a href="'.$this->redirect.'/page/1">首页</a>'.$this->item_end;
-		//第一页
-		if($this->now_page == 1)
-		{
+		
+		if($this->now_page == 1) {
+			//第一页
 			$html .= $this->item_checked.'<a href="'.$this->redirect.'/page/1">1</a>'.$this->item_end;
 			//页总数大于1
-			if($this->all_page > 1)
-			{
+			if($this->all_page > 1) {
 				if($this->all_page < $this->size)
 					$end = $this->all_page + 1;
 				else
@@ -124,14 +115,11 @@ class Pagination
 
 				$html .= $this->buildSide(2, $end);
 			}
-		}
-		//最后一页
-		else if($this->now_page == $this->all_page)
-		{
+		} else if($this->now_page == $this->all_page) {
+			//最后一页
 			$tail = $this->item_checked.'<a href="'.$this->redirect.'/page/'.$this->now_page.'">'.$this->now_page.'</a>'.$this->item_end;
 			//页面总数大于1
-			if($this->all_page > 1)
-			{
+			if($this->all_page > 1) {
 				if($this->all_page <= $this->size)
 					$start = 1;
 				else
@@ -139,10 +127,8 @@ class Pagination
 
 				$html .= $this->buildSide($start, $this->now_page).$tail;
 			}
-		}
-		//在中间位置
-		else
-		{
+		} else {
+			//在中间位置
 			//当前页左边
 			$start = $this->now_page - $this->size;
 			if($start < 1)
@@ -172,11 +158,9 @@ class Pagination
 	* @author 洪波
 	* @version 13.11.05
 	*/
-	private function buildSide($start, $end)
-	{
+	private function buildSide($start, $end) {
 		$struct = '';
-		for ($i = $start; $i < $end; ++$i)
-		{
+		for ($i = $start; $i < $end; ++$i) {
 			$struct .= $this->item_start.'<a href="'.$this->redirect.'/page/'.$i.'">'.$i.'</a>'.$this->item_end;
 		}
 		return $struct;

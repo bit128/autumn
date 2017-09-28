@@ -7,8 +7,7 @@
 */
 namespace core\cache;
 
-interface Cache
-{
+interface Cache {
     /**
     * 判断缓存是否存在
     * ======

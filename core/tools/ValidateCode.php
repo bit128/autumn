@@ -7,8 +7,7 @@
 */
 namespace core\tools;
 
-class ValidateCode
-{
+class ValidateCode {
 	const CHARS 		= '2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,J,K,L,M,N,P,Q,R,T,U,V,W,X,Y,Z';
 	const LENGTH_MIN 	= 4;
 	const LENGTH_MAX	= 6;
@@ -29,8 +28,7 @@ class ValidateCode
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	public function setSize($width, $height)
-	{
+	public function setSize($width, $height) {
 		$this->width = $width;
 		$this->height = $height;
 	}
@@ -44,8 +42,7 @@ class ValidateCode
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	private function randColor($offset = 0, $limit = 100)
-	{
+	private function randColor($offset = 0, $limit = 100) {
 		return imagecolorallocate($this->image, rand($offset, $limit), rand($offset, $limit), rand($offset, $limit));
 	}
 
@@ -57,21 +54,17 @@ class ValidateCode
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	public function getCode($count)
-	{
-		if($count < self::LENGTH_MIN)
-		{
+	public function getCode($count) {
+		if($count < self::LENGTH_MIN) {
 			$count = self::LENGTH_MIN;
 		}
-		if($count > self::LENGTH_MAX)
-		{
+		if($count > self::LENGTH_MAX) {
 			$count = self::LENGTH_MAX;
 		}
 		$source = explode(',', self::CHARS);
 		$source_length = count($source) - 1;
 		$code = '';
-		for($i=0; $i<$count; $i++)
-		{
+		for($i=0; $i<$count; $i++) {
 			$code .= $source[rand(0, $source_length)];
 		}
 		return $code;
@@ -83,10 +76,8 @@ class ValidateCode
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	private function renderLine($line)
-	{
-		for ($i=0; $i<$line; $i++)
-		{
+	private function renderLine($line) {
+		for ($i=0; $i<$line; $i++) {
 			imageline($this->image, rand(0, $this->width), rand(0, $this->height), rand(0, $this->width),
 				rand(0, $this->height), $this->randColor(100, 200));
 		}
@@ -98,10 +89,8 @@ class ValidateCode
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	private function renderPoint($point)
-	{
-		for ($i=0; $i<$point; $i++)
-		{
+	private function renderPoint($point) {
+		for ($i=0; $i<$point; $i++) {
 			imagestring($this->image, 1, rand(0, $this->width), rand(0, $this->height), '*', $this->randColor(120, 200));
 		}
 	}
@@ -118,8 +107,7 @@ class ValidateCode
 	* @author 洪波
 	* @version 16.02.29
 	*/
-	public function show($text, $width = 60, $height = 30, $line = 10, $point = 50)
-	{
+	public function show($text, $width = 60, $height = 30, $line = 10, $point = 50) {
 		$this->width = $width;
 		$this->height = $height;
 		//创建画布

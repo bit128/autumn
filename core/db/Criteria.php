@@ -7,8 +7,7 @@
 */
 namespace core\db;
 
-class Criteria
-{
+class Criteria {
 	//查询字段
 	public $select = '*';
 	//联合
@@ -35,8 +34,7 @@ class Criteria
 	* @author 洪波
 	* @version 16.04.12
 	*/
-	public function add($key, $value, $symbol = '=', $operator = 'AND')
-	{
+	public function add($key, $value, $symbol = '=', $operator = 'AND') {
 		$this->addCondition($key . $symbol . "'" . addslashes($value) . "'", $operator);
 	}
 
@@ -50,8 +48,7 @@ class Criteria
 	* @author 洪波
 	* @version 16.02.25
 	*/
-	public function addIn($column, Array $valuses, $operator = 'AND')
-	{
+	public function addIn($column, Array $valuses, $operator = 'AND') {
 		$condition = $column . " IN ('" . implode("','", $valuses) . "')";
 		$this->addCondition($condition, $operator);
 	}
@@ -65,15 +62,11 @@ class Criteria
 	* @author 洪波
 	* @version 16.02.25
 	*/
-	public function addCondition($condition, $operator = 'AND')
-	{
-		if($this->condition != '')
-		{
+	public function addCondition($condition, $operator = 'AND') {
+		if($this->condition != '') {
 
 			$this->condition = '(' . $this->condition . ') ' . $operator . ' (' . $condition . ')';
-		}
-		else
-		{
+		} else {
 			$this->condition = $condition;
 		}
 	}
@@ -88,8 +81,7 @@ class Criteria
 	* @author 洪波
 	* @version 16.08.18
 	*/
-	public function union($table_name, $foreign, $type = 'inner')
-	{
+	public function union($table_name, $foreign, $type = 'inner') {
 		$this->union = $type . ' join ' . $table_name . ' on ' . $foreign;
 	}
 

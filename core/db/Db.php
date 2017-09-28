@@ -7,8 +7,7 @@
 */
 namespace core\db;
 
-interface Db
-{
+interface Db {
 	/**
 	* 执行sql指令
 	* ======

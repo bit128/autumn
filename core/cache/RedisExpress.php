@@ -8,8 +8,7 @@
 namespace core\cache;
 use core\Autumn;
 
-class RedisExpress implements Cache
-{
+class RedisExpress implements Cache {
 
     protected $_cache   = null;	//缓存对象实例
 	protected $exp      = 60;	//缓存时间
@@ -20,23 +19,16 @@ class RedisExpress implements Cache
 	* @author 洪波
 	* @version 15.01.15
 	*/
-	public function __construct($config)
-	{
-        if($config)
-        {
-            if($this->_cache = new \Redis)
-            {
+	public function __construct($config) {
+        if($config) {
+            if($this->_cache = new \Redis) {
                 $this->_cache->connect($config['host'], $config['port']);
                 $this->_cache->select($config['dbname']);
                 $this->exp = $config['exp'];
-            }
-            else
-            {
+            } else {
                 Autumn::app()->exception->throws('Redis缓存连接错误：没有redis扩展或者服务未启动.');
             }
-        }
-		else
-        {
+        } else {
             Autumn::app()->exception->throws('没有找到Redis缓存配置项.');
         }
 	}
@@ -47,8 +39,7 @@ class RedisExpress implements Cache
 	* @author 洪波
 	* @version 15.01.15
 	*/
-	public function __destruct()
-	{
+	public function __destruct() {
 		@ $this->_cache->close();
 	}
 
@@ -60,8 +51,7 @@ class RedisExpress implements Cache
     * @author 洪波
     * @version 17.03.31
     */
-    public function exist($key)
-    {
+    public function exist($key) {
         return $this->_cache->exists($key);
     }
 
@@ -75,24 +65,18 @@ class RedisExpress implements Cache
     * @author 洪波
     * @version 17.03.31
     */
-    public function set($key, $value, $exp = 0)
-    {
-        if ($exp == 0)
-        {
+    public function set($key, $value, $exp = 0) {
+        if ($exp == 0) {
             $exp = $this->exp;
         }
-        //存储对象
-        if (is_array($value))
-        {
-            foreach ($value as $k => $v)
-            {
+        if (is_array($value)) {
+            //存储对象
+            foreach ($value as $k => $v) {
                 $this->_cache->hSet($key, $k, $v);
             }
             $this->_cache->setTimeout($key, $exp);
-        }
-        //存储简单类型
-        else
-        {
+        } else {
+            //存储简单类型
             $this->_cache->setex($key, $exp, $value);
         }
     }
@@ -107,8 +91,7 @@ class RedisExpress implements Cache
     */
     public function get($key)
     {
-        switch ($this->_cache->type($key))
-        {
+        switch ($this->_cache->type($key)) {
             case \Redis::REDIS_STRING:
                 return $this->_cache->get($key);
             case \Redis::REDIS_HASH:
@@ -124,8 +107,7 @@ class RedisExpress implements Cache
     * @author 洪波
     * @version 17.03.31
     */
-    public function delete($key)
-    {
+    public function delete($key) {
         return $this->_cache->delete($key);
     }
 }
