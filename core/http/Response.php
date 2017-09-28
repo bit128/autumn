@@ -15,7 +15,7 @@ class Response {
 	const RES_TOKENF	= 4;	//响应码 - 令牌错误
 	const RES_REFUSE	= 5;	//响应码 - 拒绝操作
 	const RES_NOTHAS	= 6;	//响应码 - 不存在
-	const RES_NOCHAN	= 7;	//响应码 - 无变更
+	const RES_CHANF		= 7;	//响应码 - 无变更
 
 	//结果信息
 	protected $result = [];
