@@ -8,18 +8,25 @@
 namespace core\db;
 
 class Criteria {
+
 	//查询字段
 	public $select = '*';
+
 	//联合
 	public $union = '';
+
 	//条件
 	public $condition = '';
+
 	//排序
 	public $order = '';
+
 	//分组
 	public $group = '';
+
 	//游标位置
 	public $offset = -1;
+	
 	//偏移量
 	public $limit = -1;
 

@@ -1,7 +1,14 @@
 <?php
 namespace app\models;
 
+/**
+* 业务模型示例
+* ======
+* @author bit128
+* @version 17.09.28
+*/
 class M_user extends \core\web\Model {
+
 	public $table_name = 't_user';
 
 	public function rules() {

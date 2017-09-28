@@ -3,20 +3,30 @@
 * 对象关系映射模型
 * ======
 * @author 洪波
-* @version 16.07.06
+* @version 16.07.06 - 17.09.28
 */
 namespace core\db;
 use core\Autumn;
 
 class Orm {
+
 	//模型表名称
 	public $table_name;
+
     //表主键
-    public $pk = '';
+	public $pk = '';
+	
 	//模型字段值
 	public $ar = [];
+
     //是否有动态记录
-    protected $has_record = false;
+	protected $has_record = false;
+
+	//主键是否递增
+	protected $auto_increment = false;
+
+	//数据库驱动
+	private $dbi = NULL;
 
 	/**
 	* 构造方法 - 获取表结构
@@ -26,8 +36,9 @@ class Orm {
 	* @author 洪波
 	* @version 17.03.02
 	*/
-    public function __construct($table_name) {
+    public function __construct($table_name, Db $dbi) {
 		$this->table_name = $table_name;
+		$this->dbi = $dbi;
 		$this->struct();
 	}
 
@@ -37,11 +48,13 @@ class Orm {
 	* @param $key 	键
 	* ======
 	* @author 洪波
-	* @version 17.02.21
+	* @version 17.09.28
 	*/
 	public function __get($key) {
 		if (isset($this->ar[$key])) {
 			return $this->ar[$key];
+		} else {
+			return NULL;
 		}
 	}
 
@@ -49,13 +62,18 @@ class Orm {
 	* 设置字段
 	* ======
 	* @param $key 	键
-	* @param $key 	值
+	* @param $value 值
 	* ======
 	* @author 洪波
-	* @version 17.02.21
+	* @version 17.09.28
 	*/
 	public function __set($key, $value) {
-		$this->ar[$key] = htmlspecialchars(addslashes($value));
+		if (array_key_exists($key, $this->ar)) {
+			$this->ar[$key] = htmlspecialchars(addslashes($value));
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -72,24 +90,15 @@ class Orm {
 	}
 
     /**
-    * 获取数据库连接对象
-    * ======
-    * @author 洪波
-    * @version 17.02.21
-    */
-    public function getDb() {
-        return Autumn::app()->db;
-    }
-
-    /**
     * 获取表结构
     * ======
     * @author 洪波
-    * @version 17.02.21
+    * @version 17.09.28
     */
     public function struct() {
+		$this->has_record = false;
         //获取表结构
-		$st = $this->getDb()->queryAll('desc ' . $this->table_name);
+		$st = $this->dbi->queryAll('desc ' . $this->table_name);
 		if($st) {
 			$number = array('int', 'tinyint', 'smallint', 'mediumint', 'bigint', 'float', 'double', 'decimal');
 			foreach ($st as $v) {
@@ -102,10 +111,8 @@ class Orm {
 				//判定主键
 				if($v->Key == 'PRI') {
 					$this->pk = $v->Field;
-					//设置char(13)主键默认值为uniqid()
-					if($v->Type == 'char(13)') {
-						$d = uniqid();
-					}
+					if ($v->Extra == 'auto_increment')
+						$this->auto_increment = true;
 				}
 				//设置默认值
 				$this->ar[$v->Field] = $d;
@@ -134,7 +141,7 @@ class Orm {
 				$sql .= ' where ' . $condition;
 			}
 		}
-		return $this->getDb()->queryScalar($sql);
+		return $this->dbi->queryScalar($sql);
 	}
 
 	/**
@@ -181,12 +188,12 @@ class Orm {
 		if($condition) {
 			$this->buildCondition($condition, $sql);
 		}
-		if($result = $this->getDb()->queryRow($sql))  {
+		if($result = $this->dbi->queryRow($sql))  {
             $this->has_record = true;
             $this->ar = $result;
             return $this;
         }  else {
-            return false;
+            return NULL;
         }
 	}
 
@@ -205,7 +212,7 @@ class Orm {
 		if($condition) {
 			$this->buildCondition($condition, $sql);
 		}
-		return $this->getDb()->queryAll($sql);
+		return $this->dbi->queryAll($sql);
 	}
 
     /**
@@ -214,16 +221,18 @@ class Orm {
 	* @return boolean
 	* ======
 	* @author 洪波
-	* @version 16.02.26
+	* @version 17.09.28
 	*/
 	public function save() {
+		//如果有动态记录，则更新 | 否则全新插入
 		if($this->has_record) {
-			//如果有动态记录，则更新
             $pk_val = $this->ar[$this->pk];
-			//unset($this->ar[$this->pk]);
 			return $this->updateAll($this->ar, "{$this->pk} = '{$pk_val}'");
 		} else {
-			//否则全新插入
+			//默认主键
+			if ($this->ar[$this->pk] === '' && !$this->auto_increment)
+				$this->ar[$this->pk] = uniqid();
+			//拼装字段和对应值
 			$field = '';
 			$value = '';
 			foreach ($this->ar as $k => $v) {
@@ -231,7 +240,16 @@ class Orm {
 				$value .= ",'" . $v . "'";
 			}
 			$sql = "insert into " . $this->table_name . " (" . substr($field, 1) . ") values (" . substr($value, 1) . ")";
-			return $this->getDb()->query($sql);
+			if ($this->dbi->query($sql)) {
+				//如果主键是递增字段，保存后刷新主键
+				if ($this->auto_increment && method_exists($this->dbi, 'insertId')) {
+					$this->ar[$this->pk] = $this->dbi->insertId();
+				}
+				$this->has_record = true;
+				return 1;
+			} else {
+				return 0;
+			}
 		}
 	}
 
@@ -261,7 +279,7 @@ class Orm {
 				$sql .= ' where ' . $condition;
 			}
 		}
-		return $this->getDb()->query($sql);
+		return $this->dbi->query($sql);
 	}
 
 	/**
@@ -275,7 +293,12 @@ class Orm {
 	public function delete() {
 		if($this->has_record) {
 			$pk_val = $this->ar[$this->pk];
-			return $this->deleteAll("{$this->pk} = '{$pk_val}'");
+			if ($this->deleteAll("{$this->pk} = '{$pk_val}'")) {
+				$this->struct();
+				return 1;
+			} else {
+				return 0;
+			}
 		} else {
 			return 0;
 		}
@@ -301,7 +324,7 @@ class Orm {
 				$sql .= ' where ' . $condition;
 			}
 		}
-		return $this->getDb()->query($sql);
+		return $this->dbi->query($sql);
 	}
 
 	/**

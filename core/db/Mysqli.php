@@ -9,6 +9,7 @@ namespace core\db;
 use core\Autumn;
 
 class Mysqli implements Db {
+	
 	//连接对象实例
 	private $connect = NULL;
 

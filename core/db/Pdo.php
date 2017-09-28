@@ -9,6 +9,7 @@ namespace core\db;
 use core\Autumn;
 
 class Pdo implements Db {
+	
 	//连接对象实例
 	private $connect = NULL;
 
