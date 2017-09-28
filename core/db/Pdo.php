@@ -10,7 +10,7 @@ use core\Autumn;
 
 class Pdo implements Db {
 	//连接对象实例
-	private $connect = null;
+	private $connect = NULL;
 
 	/**
 	* 构造方法创建数据库连接
@@ -140,8 +140,8 @@ class Pdo implements Db {
 	* @version 16.11.16
 	*/
 	public function close() {
-		if($this->connect != null) {
-			$this->connect = null;
+		if($this->connect != NULL) {
+			$this->connect = NULL;
 		}
 	}
 }

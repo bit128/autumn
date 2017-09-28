@@ -10,7 +10,7 @@ use core\Autumn;
 
 class Sqlite implements Db {
     //连接对象实例
-	private $connect = null;
+	private $connect = NULL;
 
     public function __construct($config) {
 		$this->connect = new \SQLite3($config['source']);

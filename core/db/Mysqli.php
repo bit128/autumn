@@ -10,7 +10,7 @@ use core\Autumn;
 
 class Mysqli implements Db {
 	//连接对象实例
-	private $connect = null;
+	private $connect = NULL;
 
 	/**
 	* 构造方法创建数据库连接
@@ -147,9 +147,9 @@ class Mysqli implements Db {
 	* @version 16.11.16
 	*/
 	public function close() {
-		if($this->connect != null) {
+		if($this->connect != NULL) {
 			mysqli_close($this->connect);
-			$this->connect = null;
+			$this->connect = NULL;
 		}
 	}
 }

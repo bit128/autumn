@@ -124,7 +124,7 @@ class Orm {
 	* @author 洪波
 	* @version 16.02.25
 	*/
-	public function count($condition = null) {
+	public function count($condition = NULL) {
 		$sql = 'select count(*) from ' . $this->table_name;
 		if($condition) {
 			if($condition instanceof Criteria) {
@@ -176,7 +176,7 @@ class Orm {
 	* @author 洪波
 	* @version 16.02.26
 	*/
-	public function find($condition = null) {
+	public function find($condition = NULL) {
 		$sql = "select * from " . $this->table_name;
 		if($condition) {
 			$this->buildCondition($condition, $sql);
@@ -200,7 +200,7 @@ class Orm {
 	* @author 洪波
 	* @version 16.02.26
 	*/
-	public function findAll($condition = null) {
+	public function findAll($condition = NULL) {
 		$sql = "select * from " . $this->table_name;
 		if($condition) {
 			$this->buildCondition($condition, $sql);

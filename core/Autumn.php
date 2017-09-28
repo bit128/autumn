@@ -11,7 +11,7 @@ class Autumn {
 	const FRAMEWORK_VERSION = '1.8.6';
 
 	//Autumn实例
-	private static $_instance = null;
+	private static $_instance = NULL;
 	
 	//核心对象实例栈
 	private $core_instance = [];

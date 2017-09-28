@@ -28,7 +28,7 @@ class Response {
 		self::RES_TOKENF	=> '操作失败：身份验证失败，或者权限不足',
 		self::RES_REFUSE	=> '操作失败：因安全策略，系统拒绝操作',
 		self::RES_NOTHAS	=> '操作失败：要操作的数据或者目标不存在',
-		self::RES_NOCHAN	=> '操作结果无变化'
+		self::RES_CHANF		=> '操作结果无变化'
 		);
 
 	/**
