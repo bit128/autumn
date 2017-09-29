@@ -24,8 +24,8 @@ abstract class Model {
 
 	public function __construct() {
 		$this->init();
-		$dbi_str = $this->dbi;
-		$this->orm = new \core\db\Orm($this->table_name, Autumn::app()->$dbi_str);
+		
+		$this->orm = new \core\db\Orm($this->table_name, $this->getDb());
 	}
 
 	/**
@@ -35,6 +35,17 @@ abstract class Model {
 	* @versin 17.03.02
 	*/
 	public function init(){}
+
+	/**
+	* 获取模型配置的数据库驱动实例
+	* ======
+	* @author 洪波
+	* @version 17.09.28
+	*/
+	public function getDb() {
+		$dbi_str = $this->dbi;
+		return Autumn::app()->$dbi_str;
+	}
 
 	/**
 	* 获取表对象orm实例
@@ -69,6 +80,19 @@ abstract class Model {
 	*/
 	public function __get($key) {
 		return $this->orm->$key;
+	}
+
+	/**
+	* （非格式化处理）设置字段
+	* ======
+	* @param $key 	键
+	* @param $key 	值
+	* ======
+	* @author 洪波
+	* @version 17.09.29
+	*/
+	public function setAttribute($key, $value) {
+		return $this->orm->setAttribute($key, $value);
 	}
 
 	/**

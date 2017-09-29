@@ -86,7 +86,12 @@ class Orm {
 	* @version 17.09.05
 	*/
 	public function setAttribute($key, $value) {
-		$this->ar[$key] = addslashes($value);
+		if (array_key_exists($key, $this->ar)) {
+			$this->ar[$key] = addslashes($value);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
     /**
