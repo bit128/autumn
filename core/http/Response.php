@@ -8,14 +8,10 @@
 namespace core\http;
 
 class Response {
+	
 	const RES_UNKNOW	= 0;	//响应码 - 未知
 	const RES_OK		= 1;	//响应码 - 成功
 	const RES_FAIL		= 2;	//响应码 - 失败
-	const RES_PARAMF	= 3;	//响应码 - 参数错误
-	const RES_TOKENF	= 4;	//响应码 - 令牌错误
-	const RES_REFUSE	= 5;	//响应码 - 拒绝操作
-	const RES_NOTHAS	= 6;	//响应码 - 不存在
-	const RES_CHANF		= 7;	//响应码 - 无变更
 
 	//结果信息
 	protected $result = [];
@@ -23,12 +19,7 @@ class Response {
 	public $code_discription = array(
 		self::RES_UNKNOW 	=> '未知状态',
 		self::RES_OK 		=> '操作成功',
-		self::RES_FAIL 		=> '操作失败',
-		self::RES_PARAMF	=> '操作失败：参数类型错误，或者缺失',
-		self::RES_TOKENF	=> '操作失败：身份验证失败，或者权限不足',
-		self::RES_REFUSE	=> '操作失败：因安全策略，系统拒绝操作',
-		self::RES_NOTHAS	=> '操作失败：要操作的数据或者目标不存在',
-		self::RES_CHANF		=> '操作结果无变化'
+		self::RES_FAIL 		=> '操作失败'
 		);
 
 	/**
@@ -55,7 +46,7 @@ class Response {
 	}
 
 	/**
-	* 设置默认结果集
+	* [新版不建议使用]设置默认结果集
 	* ======
 	* @param $code 		响应码
 	* @param $result 	结果集
@@ -88,7 +79,7 @@ class Response {
 	}
 
 	/**
-	* 设置自定义结果集
+	* [新版不建议使用]设置自定义结果集
 	* ======
 	* @param $code 		响应码
 	* @param $result 	结果集
@@ -105,7 +96,40 @@ class Response {
 	}
 
 	/**
-	* 设置额外结果集
+	 * 成功结果集
+	 * ======
+	 * @param $result	成功结果
+	 * @param $extras	扩展数据集
+	 * ======
+	 * @author 洪波
+	 * @version 18.09.20
+	 */
+	public function success($result = null, array $extras = []) {
+		$this->result['code'] = self::RES_OK;
+		$this->result['result'] = $result;
+		foreach ($extras as $k => $v) {
+			$this->result[$k] = $v;
+		}
+		return $this;
+	}
+
+	/**
+	 * 非成功结果集
+	 * ======
+	 * @param $error	非成功接轨
+	 * @param $code 	错误码
+	 * ======
+	 * @author 洪波
+	 * @version 18.09.20
+	 */
+	public function fail($error = null, $code = self::RES_FAIL) {
+		$this->result['code'] = $code;
+		$this->result['error'] = $error;
+		return $this;
+	}
+
+	/**
+	* [新版不建议使用]设置额外结果集
 	* ======
 	* @param $key 	键
 	* @param $value 值

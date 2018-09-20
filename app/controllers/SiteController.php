@@ -9,6 +9,7 @@ use core\Autumn;
 * @version 16.07.06
 */
 class SiteController extends \core\web\Controller {
+	
 	/**
 	* 测试action
 	* ======
@@ -16,9 +17,9 @@ class SiteController extends \core\web\Controller {
 	* @version 17.09.28
 	*/
 	public function actionIndex() {
-		header("Content-Type:text/html;charset=UTF-8");
-		echo 'Welcome to ',
-			Autumn::app()->config->get('app_name'), ' ',
-			Autumn::FRAMEWORK_VERSION;
+		Autumn::app()->view->render('welcome', [
+			'name' => Autumn::app()->config->get('app_name') . ' Framework for PHP',
+			'version' => Autumn::FRAMEWORK_VERSION
+		]);
 	}
 }

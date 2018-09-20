@@ -8,11 +8,10 @@
 namespace core;
 
 class Log {
-    const TYPE_NORMAL   = 'normal';  //类型 - 通用
-    const TYPE_USER     = 'user';    //类型 - 用户
-    const TYPE_CLIENT   = 'client';  //类型 - 终端
-    const TYPE_ADMIN    = 'admin';   //类型 - 管理员
-    const TYPE_DANGER   = 'danger';  //类型 - 高危
+    const TYPE_NORMAL   = 'normal';     //类型 - 通用
+    const TYPE_INFO     = 'info';       //类型 - 信息
+    const TYPE_WARNING  = 'warning';    //类型 - 警告
+    const TYPE_ERROR    = 'error';      //类型 - 错误
 
     //日志存储路径
     private $save_path;
