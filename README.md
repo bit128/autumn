@@ -1,5 +1,4 @@
-Autumn理念
-======
+### Autumn理念
 
 Autumn框架的设计灵感来源于Java的Spring框架，Autumn是一款轻巧灵活的、容器式的、依赖注入框架。
 
@@ -7,8 +6,41 @@ Autumn框架本身不关心具体模块的实现和类库工具，而是致力�
 
 Autumn当然也提供了MVC分层设计和Orm等功能的封装，但不是必须要使用，你随时可以用你更熟悉的类库和工具来替换它们。
 
+### 目录说明
 
-作者的理念
-======
+* app - __项目相关__
+    * __controllers__ - 控制器
+    * __models__ - 模型
+    * __views__ - 视图
+    * __runtimes__ - 运行时
+    * __statics__ - 静态资源
+* __config__ - 配置相关
+    * __main.php__ 主配置文件
+* __core__ - 核心相关
+* __index.php__ - 项目入口文件
+* __.htaccess__ 基于apache的友好路由配置
 
-我编程的初衷是让事物更简单。
+### 部署
+
+当你下载了Autumn框架之后，你就可以看到如上的项目目录结构，你暂时不需要配置什么，把它部署到apache里面就可以看到如下的提示了：
+
+__Layout Page__
+欢迎使用：__Autumn Framework for PHP__
+version: 1.8.8
+
+恭喜，Autumn框架已经准备好了！
+
+###功能快速索引
+
+模块|说明
+-|-
+core.web.Controller|控制器
+core.http.Request|请求
+core.http.Response|响应
+core.web.View|视图渲染器
+core.web.Model|业务模型
+core.Config|配置管理器
+
+### Controller 控制器
+
+Autumn实现了基础的mvc结构，Controller就提供了控制器相关的功能，任何开发的的控制器都需要继承于`core.web.Controller`。
