@@ -117,7 +117,6 @@ class View {
 	public function renderCache($view, $data = array(), $partial = false) {
 		//如果视图通过post请求，则不使用缓存策略 | 否则开启缓存机制
 		if(isset($_POST) && $_POST) {
-			
 			if($partial) {
 				$this->renderPartial($view, $data);
 			} else {

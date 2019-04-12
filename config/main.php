@@ -14,6 +14,10 @@ return [
 	'service_path' => 'app/models/',
 	//模块配置
 	'module' => [
+		//单元测试
+		'test' => [
+			'class' => 'core\TestList'
+		],
 		//*
 		//系统日志
 		'log' => [
