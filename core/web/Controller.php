@@ -3,7 +3,7 @@
 * 控制器
 * ======
 * @author 洪波
-* @version 16.02.25
+* @version 19.05.21
 */
 namespace core\web;
 use core\Autumn;
@@ -24,6 +24,25 @@ class Controller {
 	public function __construct() {
 		//初始化控制器
 		$this->init();
+	}
+
+	/**
+	* 控制器初始化方法
+	* 子类重写用来替代构造方法
+	* ======
+	* @author 洪波
+	* @version 16.03.09
+	*/
+	public function init(){}
+
+	/**
+	 * 判断当前是否是POST请求
+	 * ======
+	 * @author 洪波
+	 * @version 19.05.21
+	 */
+	public function isPost() {
+		return Autumn::app()->request->isPost();
 	}
 
 	/**
@@ -72,13 +91,34 @@ class Controller {
 	}
 
 	/**
-	* 控制器初始化方法
-	* 子类重写用来替代构造方法
-	* ======
-	* @author 洪波
-	* @version 16.03.09
-	*/
-	public function init(){}
+	 * 渲染视图
+	 * ======
+	 * @author 洪波
+	 * @version 19.05.12
+	 */
+	public function renderView($view, $data) {
+		Autumn::app()->view->render($view, $data);
+	}
+
+	/**
+	 * 响应成功结果集
+	 * ======
+	 * @author 洪波
+	 * @version 19.05.21
+	 */
+	public function respSuccess($result = null, array $extras = []) {
+		return Autumn::app()->response->success($result, $extras);
+	}
+
+	/**
+	 * 响应消极结果集
+	 * ======
+	 * @author 洪波
+	 * @version 19.05.21
+	 */
+	public function respError($error = null, $code = \core\http\Response::RES_FAIL) {
+		return Autumn::app()->response->fail($error, $code);
+	}
 
 	/**
 	* 默认404页面action

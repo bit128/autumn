@@ -17,7 +17,7 @@ class SiteController extends \core\web\Controller {
 	* @version 17.09.28
 	*/
 	public function actionIndex() {
-		Autumn::app()->view->render('welcome', [
+		$this->renderView('welcome', [
 			'name' => Autumn::app()->config->get('app_name') . ' Framework for PHP',
 			'version' => Autumn::FRAMEWORK_VERSION
 		]);
@@ -30,7 +30,7 @@ class SiteController extends \core\web\Controller {
 	 * @version 19.05.21
 	 */
 	public function actionTestPost() {
-        if (Autumn::app()->request->isPost()) {
+        if ($this->isPost()) {
             echo 'welcome:', Autumn::app()->request->getPost('username');
         }
 	}
@@ -43,5 +43,9 @@ class SiteController extends \core\web\Controller {
 	 */
 	public function actionTestBug() {
 		echo 1 / 0;
+	}
+
+	public function actionTestResponse() {
+		$this->respSuccess('haha')->json();
 	}
 }

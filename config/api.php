@@ -25,9 +25,6 @@ return [
             'method' => 'post',
             //请求参数 - 可空
             'data' => ['username' => 'hongbo']
-        ],
-        1 => [
-            'path' => 'site/testBug'
         ]
     ]
 ];
