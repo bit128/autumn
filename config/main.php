@@ -14,9 +14,10 @@ return [
 	'service_path' => 'app/models/',
 	//模块配置
 	'module' => [
-		//单元测试
+		//API单元测试
 		'test' => [
-			'class' => 'core\TestList'
+			'class' => 'core\tools\TestApi',
+			'config' => 'config/api.php'
 		],
 		//*
 		//系统日志

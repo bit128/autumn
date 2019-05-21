@@ -1,20 +1,25 @@
 <?php
 /**
-* 测试列表
+* Api列表测试类
 * ======
 * @author 洪波
-* @version 19.04.12
+* @version 19.05.21
 */
-namespace core;
-use \core\http\Curl;
+namespace core\tools;
 
-class TestList extends Config {
+class TestApi extends \core\Config {
 
-    private $base_url;
+    private $domain;
+
+    public function __construct($config) {
+        if (isset($config['config'])) {
+            $this->set($config['config']);
+        }
+    }
 
     public function run($index = -1) {
         echo "\n>-------------------------------<\n\n";
-        $this->base_url = $this->get('base_url');
+        $this->domain = $this->get('domain');
         if ($index == -1) {
             foreach ($this->get('list') as $item) {
                 $this->printItem($item);
@@ -31,19 +36,22 @@ class TestList extends Config {
         }
         echo "\n", $item['path'],"\n\n";
         $result = '';
-        $curl = new Curl;
+        $curl = new \core\http\Curl;
         if (isset($item['method']) && strtolower($item['method']) == 'post') {
             $data = [];
             $header = [];
+
             if (isset($item['data'])) {
-                $data = $item['data'];
+                $data = array_merge($this->get('extra'), $item['data']);
+            } else {
+                $data = $this->get('extra');
             }
             if (isset($item['header'])) {
                 $header = $item['header'];
             }
-            $result = $curl->post($this->base_url . $item['path'], $data, $header);
+            $result = $curl->post($this->domain . $item['path'], $data, $header);
         } else {
-            $result = $curl->get($this->base_url . $item['path']);
+            $result = $curl->get($this->domain . $item['path']);
         }
         echo "RESULT:\n", $result, "\n";
         echo "\n>-------------------------------<\n\n";

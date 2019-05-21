@@ -22,4 +22,26 @@ class SiteController extends \core\web\Controller {
 			'version' => Autumn::FRAMEWORK_VERSION
 		]);
 	}
+
+	/**
+	 * 测试POST传参
+	 * ======
+	 * @author 洪波
+	 * @version 19.05.21
+	 */
+	public function actionTestPost() {
+        if (Autumn::app()->request->isPost()) {
+            echo 'welcome:', Autumn::app()->request->getPost('username');
+        }
+	}
+	
+	/**
+	 * 测试异常情况
+	 * ======
+	 * @author 洪波
+	 * @version 19.05.21
+	 */
+	public function actionTestBug() {
+		echo 1 / 0;
+	}
 }
