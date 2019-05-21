@@ -91,6 +91,32 @@ class Controller {
 	}
 
 	/**
+	* 获取请求参数
+	* ======
+	* @param $key 		名称
+	* @param $default 	默认值
+	* ======
+	* @author 洪波
+	* @version 19.05.21
+	*/
+	public function getParam($key, $default = '') {
+		return Autumn::app()->request->getParam($key, $default);
+	}
+
+	/**
+	* 设置请求参数
+	* ======
+	* @param $key 		名称
+	* @param $value 	值
+	* ======
+	* @author 洪波
+	* @version 19.05.21
+	*/
+	public function setParam($key, $value) {
+		Autumn::app()->request->setParam($key, $value);
+	}
+
+	/**
 	 * 渲染视图
 	 * ======
 	 * @author 洪波

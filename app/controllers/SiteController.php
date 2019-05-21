@@ -31,7 +31,7 @@ class SiteController extends \core\web\Controller {
 	 */
 	public function actionTestPost() {
         if ($this->isPost()) {
-            echo 'welcome:', Autumn::app()->request->getPost('username');
+            echo 'welcome: ', $this->getParam('username');
         }
 	}
 	
