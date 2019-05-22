@@ -27,11 +27,12 @@ class SiteController extends \core\web\Controller {
 	 * 测试POST传参
 	 * ======
 	 * @author 洪波
-	 * @version 19.05.21
+	 * @version 19.05.22
 	 */
 	public function actionTestPost() {
         if ($this->isPost()) {
-            echo 'welcome: ', $this->getParam('username');
+			$result = 'welcome: ' . $this->getParam('username');
+			$this->respSuccess($result)->json();
         }
 	}
 	
@@ -43,9 +44,5 @@ class SiteController extends \core\web\Controller {
 	 */
 	public function actionTestBug() {
 		echo 1 / 0;
-	}
-
-	public function actionTestResponse() {
-		$this->respSuccess('haha')->json();
 	}
 }
