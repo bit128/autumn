@@ -19,7 +19,7 @@ return [
 	//IP地址防火墙
 	'ip_filter' => [
 		//是否开启IP过滤（默认关闭）
-		'enabled' => true,
+		'enabled' => false,
 		//IP配置表
 		'ip_list' => 'config/ip.php',
 	],
