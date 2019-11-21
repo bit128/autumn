@@ -8,6 +8,7 @@
 namespace core\db;
 
 interface Db {
+	
 	/**
 	* 执行sql指令
 	* ======

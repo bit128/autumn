@@ -24,7 +24,6 @@ abstract class Model {
 
 	public function __construct() {
 		$this->init();
-		
 		$this->orm = new \core\db\Orm($this->table_name, $this->getDb());
 	}
 

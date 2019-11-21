@@ -70,27 +70,6 @@ class Controller {
 	}
 
 	/**
-	* [新版不建议使用]自动载入业务模型
-	* ======
-	* @author 洪波
-	* @version 17.04.13
-	*/
-	public function __get($model_name) {
-		if(isset($this->service_instance[$model_name])) {
-			return $this->service_instance[$model_name];
-		} else {
-			$service = Autumn::app()->config->get('service_path') . ucfirst($model_name);
-			$service_class = str_replace('/', '\\', $service);
-			if (is_file('./' . $service . '.php')) {
-				$this->service_instance[$model_name] = new $service_class;
-				return $this->service_instance[$model_name];
-			} else {
-				Autumn::app()->exception->throws('业务模型：' . $service_class . ' 加载失败，请确认类路径是否正确');
-			}
-		}
-	}
-
-	/**
 	* 获取请求参数
 	* ======
 	* @param $key 		名称
