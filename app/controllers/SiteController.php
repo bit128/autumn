@@ -9,11 +9,6 @@ use core\Autumn;
 * @version 16.07.06
 */
 class SiteController extends \core\web\Controller {
-
-	public function actionTest() {
-		$this->respError(104);
-		$this->respJson();
-	}
 	
 	/**
 	* 测试action

@@ -29,17 +29,15 @@ class Log {
     * ======
     * @param $content   日志内容
     * @param $type      类型
-    * @param $by_id     业务id
+    * @param $flag      标记
     * ======
     * @author 洪波
     * @version 17.05.15
     */
-    public function write($content, $type = self::TYPE_NORMAL, $by_id = '0', $flag = '0') {
-        $data = '['.date('H:i:s').']'
-            . ' - ' . $flag
-            . ' - ' . Autumn::app()->request->getIp()
-            . ' - ' . $by_id
-            . ' - ' . $content;
+    public function write($content, $type = self::TYPE_NORMAL, $flag = '0') {
+        $data = '['.date('H:i:s')
+            . '] {' . Autumn::app()->request->getIp()
+            . '} (' . $flag . ') ' . $content;
         $file_name = $this->save_path . $this->prefix . '_' . $type . '.log';
         return file_put_contents($file_name, $data."\r\n", FILE_APPEND);
     }
