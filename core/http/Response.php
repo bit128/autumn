@@ -6,21 +6,14 @@
 * @version 16.07.13
 */
 namespace core\http;
+use core\Autumn;
 
 class Response {
-	
-	const RES_UNKNOW	= 0;	//响应码 - 未知
-	const RES_OK		= 1;	//响应码 - 成功
-	const RES_FAIL		= 2;	//响应码 - 失败
 
 	//结果信息
 	protected $result = [];
-
-	public $code_discription = array(
-		self::RES_UNKNOW 	=> '未知状态',
-		self::RES_OK 		=> '操作成功',
-		self::RES_FAIL 		=> '操作失败'
-		);
+	//响应码
+	protected $response_code = [];
 
 	/**
 	* 构造方法，刷新响应结果集
@@ -30,6 +23,7 @@ class Response {
 	*/
 	public function __construct() {
 		$this->flush();
+		$this->response_code = require_once(Autumn::app()->config->get('response_code'));
 	}
 
 	/**
@@ -40,59 +34,9 @@ class Response {
 	*/
 	public function flush() {
 		$this->result = [];
-		$this->result['code'] = self::RES_UNKNOW;
+		$this->result['code'] = 0;
 		$this->result['result'] = null;
 		$this->result['error'] = null;
-	}
-
-	/**
-	* [新版不建议使用]设置默认结果集
-	* ======
-	* @param $code 		响应码
-	* @param $result 	结果集
-	* @param $error 	保存集
-	* ======
-	* @author 洪波
-	* @version 16.07.13
-	*/
-	public function setResult($code = 0, $result = '', $error = '') {
-		if(in_array($code, array_keys($this->code_discription), true)) {
-			$this->result['code'] = $code;
-			if($this->result['code'] == self::RES_OK) {
-				if($result != '') {
-					$this->result['result'] = $result;
-				} else {
-					$this->result['result'] = $this->code_discription[self::RES_OK];
-				}
-			} else {
-				if($error != '') {
-					$this->result['error'] = $error;
-				} else {
-					$this->result['error'] = $this->code_discription[$code];
-				}
-			}
-		} else {
-			$this->result['code'] = self::RES_OK;
-			$this->result['result'] = $code;
-		}
-		return $this;
-	}
-
-	/**
-	* [新版不建议使用]设置自定义结果集
-	* ======
-	* @param $code 		响应码
-	* @param $result 	结果集
-	* @param $error 	保存集
-	* ======
-	* @author 洪波
-	* @version 17.08.30
-	*/
-	public function set($code = 0, $result = '', $error = '') {
-		$this->result['code'] = $code;
-		$this->result['result'] = $result;
-		$this->result['error'] = $error;
-		return $this;
 	}
 
 	/**
@@ -102,11 +46,17 @@ class Response {
 	 * @param $extras	扩展数据集
 	 * ======
 	 * @author 洪波
-	 * @version 18.09.20
+	 * @version 19.11.21
 	 */
-	public function success($result = null, array $extras = []) {
-		$this->result['code'] = self::RES_OK;
-		$this->result['result'] = $result;
+	public function success($result = null, array $extras = [], $code = 1) {
+		$this->result['code'] = 1;
+		if ($result == null) {
+			if (isset($this->response_code[$code])) {
+				$this->result['result'] = $this->response_code[$code];
+			}
+		} else {
+			$this->result['result'] = $result;
+		}
 		foreach ($extras as $k => $v) {
 			$this->result[$k] = $v;
 		}
@@ -116,15 +66,21 @@ class Response {
 	/**
 	 * 非成功结果集
 	 * ======
-	 * @param $error	非成功接轨
-	 * @param $code 	错误码
+	 * @param $code 	响应码
+	 * @param $error	消极结果
 	 * ======
 	 * @author 洪波
-	 * @version 18.09.20
+	 * @version 19.11.21
 	 */
-	public function fail($error = null, $code = self::RES_FAIL) {
+	public function fail($code, $error = null) {
 		$this->result['code'] = $code;
-		$this->result['error'] = $error;
+		if($error == null) {
+			if (isset($this->response_code[$code])) {
+				$this->result['error'] = $this->response_code[$code];
+			}
+		} else {
+			$this->result['error'] = $error;
+		}
 		return $this;
 	}
 

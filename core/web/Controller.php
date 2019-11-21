@@ -121,8 +121,28 @@ class Controller {
 	 * @author 洪波
 	 * @version 19.05.21
 	 */
-	public function respError($error = null, $code = \core\http\Response::RES_FAIL) {
-		return Autumn::app()->response->fail($error, $code);
+	public function respError($code, $error = null) {
+		return Autumn::app()->response->fail($code, $error);
+	}
+
+	/**
+	 * 响应json格式结果
+	 * ======
+	 * @author 洪波
+	 * @version 19.11.21
+	 */
+	public function respJson($output = true) {
+		Autumn::app()->response->json($output);
+	}
+
+	/**
+	 * 响应json格式结果
+	 * ======
+	 * @author 洪波
+	 * @version 19.11.21
+	 */
+	public function respXml($output = true) {
+		Autumn::app()->response->xml($output);
 	}
 
 	/**

@@ -8,6 +8,7 @@
 namespace core;
 
 class Log {
+    
     const TYPE_NORMAL   = 'normal';     //类型 - 通用
     const TYPE_INFO     = 'info';       //类型 - 信息
     const TYPE_WARNING  = 'warning';    //类型 - 警告
