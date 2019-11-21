@@ -1,6 +1,6 @@
 <?php
 namespace app\controllers;
-use core\Autumn;
+use core\A;
 
 /**
 * 站点控制器示例
@@ -9,7 +9,7 @@ use core\Autumn;
 * @version 16.07.06
 */
 class SiteController extends \core\web\Controller {
-	
+
 	/**
 	* 测试action
 	* ======
@@ -18,8 +18,8 @@ class SiteController extends \core\web\Controller {
 	*/
 	public function actionIndex() {
 		$this->renderView('welcome', [
-			'name' => Autumn::app()->config->get('app_name') . ' Framework for PHP',
-			'version' => Autumn::FRAMEWORK_VERSION
+			'name' => A::c()->get('app_name') . ' Framework for PHP',
+			'version' => \core\Autumn::FRAMEWORK_VERSION
 		]);
 	}
 
