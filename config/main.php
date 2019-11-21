@@ -3,24 +3,34 @@
 * autumn主配置文件
 * ======
 * @author 洪波
-* @version 17.02.24
+* @version 19.11.21
 */
 return [
 	'app_name' => 'Autumn',
 	'version' => '1',
+	//开启debug模式，可显示错误警告
+	'debug' => true,
 	//开启session
 	'session_start' => true,
 	//业务模型载入路径
 	'service_path' => 'app/models/',
 	//响应码配置路径
 	'response_code' => 'config/response.php',
+	//IP地址防火墙
+	'ip_filter' => [
+		//是否开启IP过滤（默认关闭）
+		'enabled' => true,
+		//IP配置表
+		'ip_list' => 'config/ip.php',
+	],
 	//模块配置
 	'module' => [
 		//API测试用例
+		/*
 		'test' => [
 			'class' => 'core\tools\TestApi',
 			'config' => 'config/api.php'
-		],
+		],//*/
 		//系统日志
 		'log' => [
 			'class' => 'core\Log',

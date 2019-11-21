@@ -90,9 +90,14 @@ class Autumn {
 	* 运行application
 	* ======
 	* @author 洪波
-	* @version 16.03.31
+	* @version 19.11.21
 	*/
 	public function run() {
+		if (Autumn::app()->config->get('ip_filter.enabled')) {
+			if (\in_array(Autumn::app()->request->getIp(), require_once(Autumn::app()->config->get('ip_filter.ip_list')))) {
+				Autumn::app()->exception->throws('服务器繁忙，请稍后重试~');
+			}
+		}
 		if(Autumn::app()->config->get('session_start')) {
 			session_start();
 		}
