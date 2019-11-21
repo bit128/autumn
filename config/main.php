@@ -14,7 +14,7 @@ return [
 	'service_path' => 'app/models/',
 	//模块配置
 	'module' => [
-		//API单元测试
+		//API测试用例
 		'test' => [
 			'class' => 'core\tools\TestApi',
 			'config' => 'config/api.php'
@@ -55,13 +55,13 @@ return [
 			'class' => 'core\db\Sqlite',
 			'source' => 'app/runtimes/test.db'
 		],//*/
-		/*
+		//*
 		'db' => [
 			'class' => 'core\db\Mysqli',
 			'host' => '127.0.0.1',
-			'user' => 'root',
+			'user' => '',
 			'password' => '',
-			'dbname' => 'test'
+			'dbname' => ''
 		],//*/
 		/*
 		'db' => [

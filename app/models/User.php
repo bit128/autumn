@@ -7,7 +7,7 @@ namespace app\models;
 * @author bit128
 * @version 17.09.28
 */
-class M_user extends \core\web\Model {
+class User extends \core\web\Model {
 
 	public $table_name = 't_user';
 

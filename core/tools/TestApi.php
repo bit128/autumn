@@ -1,15 +1,16 @@
 <?php
 /**
-* Api列表测试类
-* ======
-* @author 洪波
-* @version 19.05.21
-*/
+ * API测试用例类
+ * ======
+ * @author 洪波
+ * @version 19.11.21
+ */
 namespace core\tools;
 
 class TestApi extends \core\Config {
 
     private $domain;
+    private $count = 0;
 
     public function __construct($config) {
         if (isset($config['config'])) {
@@ -17,8 +18,16 @@ class TestApi extends \core\Config {
         }
     }
 
+    /**
+     * 测试用例入口
+     * ======
+     * @param $index    测试编号
+     * ======
+     * @author 洪波
+     * @version 19.11.21
+     */
     public function run($index = -1) {
-        echo "\n>-------------------------------<\n\n";
+        echo "\n*********************************\n\n";
         $this->domain = $this->get('domain');
         if ($index == -1) {
             foreach ($this->get('list') as $item) {
@@ -29,8 +38,16 @@ class TestApi extends \core\Config {
         }
     }
 
+    /**
+     * 执行测试成员
+     * ======
+     * @param $item 测试对象
+     * ======
+     * @author 洪波
+     * @version 19.11.21
+     */
     private function printItem($item) {
-        echo 'TEST: ';
+        echo ++$this->count, '. TEST: ';
         if (isset($item['name'])) {
             echo '【', $item['name'], '】';
         }

@@ -25,6 +25,10 @@ return [
             'method' => 'post',
             //请求参数 - 可空
             'data' => ['username' => 'hongbo']
+        ],
+        1 => [
+            //api地址 - 不可空
+            'path' => 'site/testBug'
         ]
     ]
 ];
