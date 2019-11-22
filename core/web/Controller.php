@@ -46,27 +46,29 @@ class Controller {
 	}
 
 	/**
-	* 注入业务模型
+	* 获取get请求参数
 	* ======
-	* @param $model_name 	模型名称
-	* @param $single		以单例方式注入
+	* @param $key 		参数名称
+	* @param $default 	默认值
 	* ======
 	* @author 洪波
-	* @version 17.09.28
+	* @version 19.11.22
 	*/
-	protected function model($model_name, $single = true) {
-		if($single && isset($this->service_instance[$model_name])) {
-			return $this->service_instance[$model_name];
-		} else {
-			$service = Autumn::app()->config->get('service_path') . ucfirst($model_name);
-			$service_class = str_replace('/', '\\', $service);
-			if (is_file('./' . $service . '.php')) {
-				$this->service_instance[$model_name] = new $service_class;
-				return $this->service_instance[$model_name];
-			} else {
-				Autumn::app()->exception->throws('业务模型：' . $service_class . ' 加载失败，请确认类路径是否正确');
-			}
-		}
+	public function getQuery($key, $default = '') {
+		return Autumn::app()->request->getQuery($key, $default);
+	}
+
+	/**
+	* 获取post请求参数
+	* ======
+	* @param $key 		参数名称
+	* @param $default 	默认值
+	* ======
+	* @author 洪波
+	* @version 19.11.22
+	*/
+	public function getPost($key, $default = '') {
+		return Autumn::app()->request->getPost($key, $default);
 	}
 
 	/**
@@ -93,6 +95,30 @@ class Controller {
 	*/
 	public function setParam($key, $value) {
 		Autumn::app()->request->setParam($key, $value);
+	}
+
+	/**
+	* 注入业务模型
+	* ======
+	* @param $model_name 	模型名称
+	* @param $single		以单例方式注入
+	* ======
+	* @author 洪波
+	* @version 17.09.28
+	*/
+	protected function model($model_name, $single = true) {
+		if($single && isset($this->service_instance[$model_name])) {
+			return $this->service_instance[$model_name];
+		} else {
+			$service = Autumn::app()->config->get('service_path') . ucfirst($model_name);
+			$service_class = str_replace('/', '\\', $service);
+			if (is_file('./' . $service . '.php')) {
+				$this->service_instance[$model_name] = new $service_class;
+				return $this->service_instance[$model_name];
+			} else {
+				Autumn::app()->exception->throws('业务模型：' . $service_class . ' 加载失败，请确认类路径是否正确');
+			}
+		}
 	}
 
 	/**
