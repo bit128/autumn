@@ -124,15 +124,21 @@ class Controller {
 	/**
 	 * 渲染视图
 	 * ======
+	 * @param $view 	视图名称
+	 * @param $data 	参数列表
+	 * ======
 	 * @author 洪波
-	 * @version 19.05.12
+	 * @version 19.11.22
 	 */
-	public function renderView($view, $data) {
+	public function renderView($view, $data = []) {
 		Autumn::app()->view->render($view, $data);
 	}
 
 	/**
 	 * 响应成功结果集
+	 * ======
+	 * @param $result	成功结果
+	 * @param $extras	扩展数据集
 	 * ======
 	 * @author 洪波
 	 * @version 19.05.21
@@ -144,6 +150,9 @@ class Controller {
 	/**
 	 * 响应消极结果集
 	 * ======
+	 * @param $code 	响应码
+	 * @param $error	消极结果
+	 * ======
 	 * @author 洪波
 	 * @version 19.05.21
 	 */
@@ -154,6 +163,8 @@ class Controller {
 	/**
 	 * 响应json格式结果
 	 * ======
+	 * @param $output 	输出模式
+	 * ======
 	 * @author 洪波
 	 * @version 19.11.21
 	 */
@@ -163,6 +174,8 @@ class Controller {
 
 	/**
 	 * 响应json格式结果
+	 * ======
+	 * @param $output 	输出模式
 	 * ======
 	 * @author 洪波
 	 * @version 19.11.21
