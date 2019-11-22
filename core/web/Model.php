@@ -24,6 +24,9 @@ abstract class Model {
 
 	public function __construct() {
 		$this->init();
+		if ($this->table_name == '') {
+			$this->table_name = \strtolower(\substr(\strrchr(\get_called_class(), '\\'), 1));
+		}
 		$this->orm = new \core\db\Orm($this->table_name, $this->getDb());
 	}
 

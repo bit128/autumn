@@ -9,7 +9,7 @@ namespace core;
 
 class Autumn {
 	
-	const FRAMEWORK_VERSION = '1.9.3';
+	const FRAMEWORK_VERSION = '1.9.4';
 
 	//Autumn实例
 	private static $_instance = null;
@@ -93,14 +93,19 @@ class Autumn {
 	* @version 19.11.21
 	*/
 	public function run() {
-		if (Autumn::app()->config->get('ip_filter.enabled')) {
-			if (\in_array(Autumn::app()->request->getIp(), require_once(Autumn::app()->config->get('ip_filter.ip_list')))) {
-				Autumn::app()->exception->throws('服务器繁忙，请稍后重试~');
+		if (Autumn::app()->config->isEnabled) {
+			if (Autumn::app()->config->get('ip_filter.enabled')) {
+				if (\in_array(Autumn::app()->request->getIp(), require_once(Autumn::app()->config->get('ip_filter.ip_list')))) {
+					Autumn::app()->exception->throws('服务器繁忙，请稍后重试~');
+				}
 			}
+			if(Autumn::app()->config->get('session_start')) {
+				session_start();
+			}
+			Autumn::app()->route->start();
+		} else {
+			Autumn::app()->config->add('debug', true);
+			Autumn::app()->exception->throws('未找到默认配置文件：' . Config::DEFAULT_CONFIG);
 		}
-		if(Autumn::app()->config->get('session_start')) {
-			session_start();
-		}
-		Autumn::app()->route->start();
 	}
 }

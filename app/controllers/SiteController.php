@@ -1,6 +1,5 @@
 <?php
 namespace app\controllers;
-use core\A;
 
 /**
 * 站点控制器示例
@@ -14,11 +13,11 @@ class SiteController extends \core\web\Controller {
 	* 测试action
 	* ======
 	* @author 洪波
-	* @version 17.09.28
+	* @version 19.11.22
 	*/
 	public function actionIndex() {
 		$this->renderView('welcome', [
-			'name' => A::c()->get('app_name') . ' Framework for PHP',
+			'name' => \core\Autumn::app()->config->get('app_name') . ' Framework for PHP',
 			'version' => \core\Autumn::FRAMEWORK_VERSION
 		]);
 	}
@@ -27,7 +26,7 @@ class SiteController extends \core\web\Controller {
 	 * 测试POST传参
 	 * ======
 	 * @author 洪波
-	 * @version 19.05.22
+	 * @version 19.11.22
 	 */
 	public function actionTestPost() {
         if ($this->isPost()) {
@@ -40,7 +39,7 @@ class SiteController extends \core\web\Controller {
 	 * 测试异常情况
 	 * ======
 	 * @author 洪波
-	 * @version 19.05.21
+	 * @version 19.11.22
 	 */
 	public function actionTestBug() {
 		echo 1 / 0;

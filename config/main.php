@@ -26,7 +26,7 @@ return [
 	//模块配置
 	'module' => [
 		//API测试用例
-		/*
+		//*
 		'test' => [
 			'class' => 'core\tools\TestApi',
 			'config' => 'config/api.php'
