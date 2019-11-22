@@ -8,13 +8,15 @@
  * @author 洪波
  * @version 19.11.22
  */
-require_once('core/Autumn.php');
-//命令行参数
-$index = -1;
-foreach ($argv as $arg) {
-    if (substr($arg, 0, 2) == '-i') {
-        $index = substr($arg, 2);
+if (isset($argv)) {
+    require_once('core/Autumn.php');
+    //命令行参数
+    $index = -1;
+    foreach ($argv as $arg) {
+        if (substr($arg, 0, 2) == '-i') {
+            $index = substr($arg, 2);
+        }
     }
+    //执行测试用例
+    \core\Autumn::app()->test->run($index);
 }
-//执行测试用例
-\core\Autumn::app()->test->run($index);

@@ -49,8 +49,8 @@ class Response {
 	 * @version 19.11.21
 	 */
 	public function success($result = null, array $extras = [], $code = 1) {
-		$this->result['code'] = 1;
-		if ($result == null) {
+		$this->result['code'] = $code;
+		if ($result === null) {
 			if (isset($this->response_code[$code])) {
 				$this->result['result'] = $this->response_code[$code];
 			}
@@ -74,7 +74,7 @@ class Response {
 	 */
 	public function fail($code, $error = null) {
 		$this->result['code'] = $code;
-		if($error == null) {
+		if($error === null) {
 			if (isset($this->response_code[$code])) {
 				$this->result['error'] = $this->response_code[$code];
 			}

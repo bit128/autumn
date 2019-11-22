@@ -53,22 +53,17 @@ class TestApi extends \core\Config {
         }
         echo "\n", $item['path'],"\n\n";
         $result = '';
-        $curl = new \core\http\Curl;
+        $http = new \core\http\Http;
         if (isset($item['method']) && strtolower($item['method']) == 'post') {
             $data = [];
-            $header = [];
-
             if (isset($item['data'])) {
                 $data = array_merge($this->get('extra'), $item['data']);
             } else {
                 $data = $this->get('extra');
             }
-            if (isset($item['header'])) {
-                $header = $item['header'];
-            }
-            $result = $curl->post($this->domain . $item['path'], $data, $header);
+            $result = $http->post($this->domain . $item['path'], $data);
         } else {
-            $result = $curl->get($this->domain . $item['path']);
+            $result = $http->get($this->domain . $item['path']);
         }
         echo "RESULT:\n", $result, "\n";
         echo "\n>-------------------------------<\n\n";
