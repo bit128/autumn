@@ -134,48 +134,18 @@ class Orm {
 	* @return integer
 	* ======
 	* @author 洪波
-	* @version 16.02.25
+	* @version 20.04.11
 	*/
 	public function count($condition = NULL) {
 		$sql = 'select count(*) from ' . $this->table_name;
 		if($condition) {
 			if($condition instanceof Criteria) {
-				if($condition->condition)
-					$sql .= ' where ' . $condition->condition;
+					$sql .= $condition->buildWhere();
 			} else {
 				$sql .= ' where ' . $condition;
 			}
 		}
 		return $this->dbi->queryScalar($sql);
-	}
-
-	/**
-	* 构建查询条件
-	* ======
-	* @param $condition 查询条件 string | Criteria
-	* @param $sql 		sql语句
-	* ======
-	* @author 洪波
-	* @version 17.06.02
-	*/
-	private function buildCondition($condition, &$sql) {
-		if($condition instanceof Criteria) {
-			$sql = "select " . $condition->select . " from " . $this->table_name;
-			if($condition->union)
-				$sql .= ' ' . $condition->union;
-			if($condition->condition)
-				$sql .= ' where ' . $condition->condition;
-			if($condition->group)
-				$sql .= ' group by ' . $condition->group;
-			if($condition->order)
-				$sql .= ' order by ' . $condition->order;
-			if($condition->offset != -1)
-				$sql .= ' limit ' . $condition->offset;
-			if($condition->limit != -1)
-				$sql .= ',' . $condition->limit;
-		} else {
-			$sql .= ' where ' . $condition;
-		}
 	}
 
     /**
@@ -186,12 +156,16 @@ class Orm {
 	* @return stdClass object
 	* ======
 	* @author 洪波
-	* @version 16.02.26
+	* @version 20.04.11
 	*/
 	public function find($condition = NULL) {
 		$sql = "select * from " . $this->table_name;
 		if($condition) {
-			$this->buildCondition($condition, $sql);
+			if($condition instanceof Criteria) {
+				$sql = $condition->build($this->table_name);
+			} else {
+				$sql .= ' where ' . $condition;
+			}
 		}
 		if($result = $this->dbi->queryRow($sql))  {
             $this->has_record = true;
@@ -210,12 +184,16 @@ class Orm {
 	* @param array<stdClass object>
 	* ======
 	* @author 洪波
-	* @version 16.02.26
+	* @version 20.04.11
 	*/
 	public function findAll($condition = NULL) {
 		$sql = "select * from " . $this->table_name;
 		if($condition) {
-			$this->buildCondition($condition, $sql);
+			if($condition instanceof Criteria) {
+				$sql = $condition->build($this->table_name);
+			} else {
+				$sql .= ' where ' . $condition;
+			}
 		}
 		return $this->dbi->queryAll($sql);
 	}
@@ -267,7 +245,7 @@ class Orm {
 	* @return boolean
 	* ======
 	* @author 洪波
-	* @version 16.02.26
+	* @version 20.04.11
 	*/
 	public function updateAll($data, $condition) {	
 		$sql = "update " . $this->table_name . " set ";
@@ -278,8 +256,7 @@ class Orm {
 		$sql .= substr($set, 1);
 		if($condition) {
 			if($condition instanceof Criteria) {
-				if($condition->condition)
-					$sql .= ' where ' . $condition->condition;
+				$sql .= $condition->buildWhere();
 			} else {
 				$sql .= ' where ' . $condition;
 			}
@@ -317,14 +294,13 @@ class Orm {
 	* @return boolean
 	* ======
 	* @author 洪波
-	* @version 16.02.26
+	* @version 20.04.11
 	*/
 	public function deleteAll($condition) {
 		$sql = "delete from " . $this->table_name;
 		if($condition) {
 			if($condition instanceof Criteria) {
-				if($condition->condition)
-					$sql .= ' where ' . $condition->condition;
+				$sql .= $condition->buildWhere();
 			} else {
 				$sql .= ' where ' . $condition;
 			}

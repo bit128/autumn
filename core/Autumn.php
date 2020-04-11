@@ -9,7 +9,7 @@ namespace core;
 
 class Autumn {
 	
-	const FRAMEWORK_VERSION = '1.9.4';
+	const FRAMEWORK_VERSION = '1.10.0';
 
 	//Autumn实例
 	private static $_instance = null;
@@ -107,5 +107,15 @@ class Autumn {
 			Autumn::app()->config->add('debug', true);
 			Autumn::app()->exception->throws('未找到默认配置文件：' . Config::DEFAULT_CONFIG);
 		}
+	}
+
+	/**
+	 * 提供外部脚本运行Autumn环境
+	 * ======
+	 * @author 洪波
+	 * @version 20.04.11
+	 */
+	public function environment($function) {
+		$function();
 	}
 }
