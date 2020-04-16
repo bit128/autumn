@@ -1,6 +1,6 @@
 ### Autumn理念
 
-Autumn框架的设计灵感来源于Java的Spring框架，Autumn是一款轻巧灵活的、容器式的、依赖注入框架。
+Autumn是一款轻巧灵活的、容器式的PHP Web框架，它可以像Java的Spring那样优美地处理依赖注入。
 
 Autumn框架本身不关心具体模块的实现和类库工具，而是致力于提供一个运行容器，用来配置、构建、运行和维护全部的程序组件。
 
@@ -32,15 +32,11 @@ version: 1.8.8
 
 ###功能快速索引
 
-模块|说明
+模块|说明
 -|-
 core.web.Controller|控制器
 core.http.Request|请求
-core.http.Response|响应
-core.web.View|视图渲染器
+core.http.Response|响应
+core.web.View|视图渲染器
 core.web.Model|业务模型
 core.Config|配置管理器
-
-### Controller 控制器
-
-Autumn实现了基础的mvc结构，Controller就提供了控制器相关的功能，任何开发的的控制器都需要继承于`core.web.Controller`。
