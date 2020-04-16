@@ -9,17 +9,6 @@ namespace app\controllers;
 */
 class SiteController extends \core\web\Controller {
 
-	public function actionTest() {
-		$orm = new \core\db\Orm('t_user', \core\Autumn::app()->db);
-		$criteria = new \core\db\Criteria;
-		$criteria->select(['user_id,user_name']);
-		$criteria->add('user_phone', '', '!=');
-		$criteria->pageLimit(3);
-		$result = $orm->findAll($criteria);
-		//$result = $orm->find("user_phone != ''");
-		\print_r($result);
-	}
-
 	/**
 	* 测试action
 	* ======

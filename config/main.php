@@ -59,6 +59,8 @@ return [
 			'layout' => 'layout',
 			//视图文件夹
 			'path' => 'app/views/',
+			//视图文件后缀
+			'suffix' => '.php',
 			//视图缓存文件夹
 			'cache_dir' => 'app/runtimes/',
 			//视图缓存有效期

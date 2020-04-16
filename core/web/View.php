@@ -83,7 +83,7 @@ class View {
 	*/
 	public function renderPartial($view, $data = array(), $output = true) {
 		$route = Autumn::app()->route->controller . DIRECTORY_SEPARATOR . $view;
-		$view = $this->config['path'] . $route . '.php';
+		$view = $this->config['path'] . $route . $this->config['suffix'];
 		if(is_file($view)) {
 			//载入用户变量
 			if(is_array($data)) {
