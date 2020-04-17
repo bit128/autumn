@@ -210,11 +210,11 @@ class Criteria {
 		if($this->order) {
 			$where .= ' order by ' . $this->order;
 		}
-		if($this->limit != -1) {
-			$where .= ' limit ' . $this->limit;
-		}
 		if($this->offset != -1) {
-			$where .= ',' . $this->offset;
+			$where .= ' limit ' . $this->offset;
+		}
+		if($this->limit != -1) {
+			$where .= ',' . $this->limit;
 		}
 		return $where;
 	}
