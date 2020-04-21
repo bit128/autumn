@@ -21,7 +21,7 @@ class Mysqli implements Db {
 	*/
 	public function __construct($config) {
 		if($this->connect = mysqli_connect($config['host'], $config['user'], $config['password'], $config['dbname'], $config['port'])) {
-			mysqli_set_charset($this->connect, 'utf8');
+			mysqli_set_charset($this->connect, $config['charset']);
 		} else {
 			Autumn::app()->exception->throws('数据库连接错误：' . mysqli_connect_error());
 		}
